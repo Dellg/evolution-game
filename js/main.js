@@ -56,6 +56,8 @@ function draw(){
     crtr.show();
     if (crtr.morreu()){
       criaturas.splice(i, 1);
+      var r = round(random(tipoAlimentos.length - 1));
+      alimentos.push(new Alimento(crtr.posicao.x, crtr.posicao.y, tipoAlimentos[r]));
     }
   }
   for (var i = 0; i < alimentos.length; i++){
