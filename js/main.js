@@ -13,7 +13,8 @@ function setup(){
     var x = random(xGame);
     var y = random(yGame);
     var t = round(random(2));
-    var criatura = new Criatura(x, y, t);
+    var c = color(random(255), random(255), random(255));
+    var criatura = new Criatura(x, y, t, c);
     criaturas.push(criatura);
   }
 

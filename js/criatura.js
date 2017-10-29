@@ -1,5 +1,6 @@
-function Criatura(x, y, t){
+function Criatura(x, y, t, c){
   // a criatura vai perdendo vida se estiver com fome
+  this.nome = "x";
   this.vida = 2;
   this.maxVida = 2;
   // fome define de quanto em quanto tempo a criatura precisa estar se alimento
@@ -9,6 +10,7 @@ function Criatura(x, y, t){
   this.resistencia = 1;
   // tipo de alimento que a criatura consome: 0 = planta, 1 = carne, 2 = ambos
   this.tipo = t;
+  this.cor = c;
 
   // dados da criatura
   this.posicao = createVector(x, y);
@@ -22,17 +24,15 @@ function Criatura(x, y, t){
   this.fitness = 0;
 
   this.codigoGenetico = [];
-  this.codigoGenetico[0] = 1; // percepção visual
-  this.codigoGenetico[1] = 1; // percepção auditiva
-  this.codigoGenetico[2] = 1; // percepção olfativa
-  this.codigoGenetico[3] = 1; // capacidade de fuga
-  this.codigoGenetico[4] = 1; // capacidade de caça
+  this.codigoGenetico[0] = 1; // raio de percepção para identificar alimento
+  this.codigoGenetico[1] = 1; // raio de percepção para identificar perigo
+  this.codigoGenetico[2] = 1; // capacidade de fuga
+  this.codigoGenetico[3] = 1; // capacidade de caça
 
   this.baseConhecimento = [];
   this.baseConhecimento[0] = []; // índice 0 = comidas que matam a fome
-  this.baseConhecimento[1] = []; // índice 1 = comidas que fazem bem à saúde
-  this.baseConhecimento[2] = []; // índice 2 = comidas que fazem mal
-  this.baseConhecimento[3] = []; // índice 3 = predadores
+  this.baseConhecimento[1] = []; // índice 1 = comidas que fazem mal
+  this.baseConhecimento[2] = []; // índice 2 = predadores
 
   this.tempo = random(30);
   this.destino = createVector(random(width), random(height));
@@ -59,7 +59,7 @@ function Criatura(x, y, t){
     translate(this.posicao.x, this.posicao.y);
     rotate(angulo);
 
-    fill(lerpColor(color(255,0,0), color(0,255,0), this.vida));
+    fill(lerpColor(color(0,0,0), this.cor, this.vida));
     stroke(lerpColor(color(255,0,0), color(0,255,0), this.fome));
 
     // desenha a forma da criatura no canvas
@@ -80,18 +80,14 @@ function Criatura(x, y, t){
   // método que define qual comportamento a criatura irá realizar
   this.comportamentos = function(comidas){
     var movimento = this.alimenta(comidas);
-    var foge = this.foge(baseConhecimento[3]);
+    //var foge = this.foge(this.baseConhecimento[3]);
 
     // andar tem o peso de 1 e fugir tem o peso de 5
     movimento.mult(1);
-    foge.mult(5);
+    //foge.mult(5);
 
     this.aceleracao.add(movimento);
-    this.aceleracao.add(foge);
-
-    if (this.vida <= 0){
-      return null;
-    }
+    //this.aceleracao.add(foge);
   }
 
   this.alimenta = function(comidas){
