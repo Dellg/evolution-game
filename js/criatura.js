@@ -6,31 +6,44 @@ function Criatura(x, y, t){
   this.fome = 1;
   this.maxFome = 1;
   // carnívoros só irão atacar outras criaturas que tem resistência menor que a deles
-  this.resistencia = 500;
+  this.resistencia = 1;
   // tipo de alimento que a criatura consome: 0 = planta, 1 = carne, 2 = ambos
   this.tipo = t;
 
   // dados da criatura
   this.posicao = createVector(x, y);
-  this.objetivo = createVector(150, 700);
   this.velocidade = p5.Vector.random2D(5);
   this.maxVelocidade = 5;
-  this.maxForca = .2;
+  this.maxForca = .1;
   this.aceleracao = createVector();
   this.raio = 5;
 
   // características da IA
-  this.baseConhecimento = [];
   this.fitness = 0;
+
   this.codigoGenetico = [];
+  this.codigoGenetico[0] = 1; // percepção visual
+  this.codigoGenetico[1] = 1; // percepção auditiva
+  this.codigoGenetico[2] = 1; // percepção olfativa
+  this.codigoGenetico[3] = 1; // capacidade de fuga
+  this.codigoGenetico[4] = 1; // capacidade de caça
+
+  this.baseConhecimento = [];
+  this.baseConhecimento[0] = []; // índice 0 = comidas que matam a fome
+  this.baseConhecimento[1] = []; // índice 1 = comidas que fazem bem à saúde
+  this.baseConhecimento[2] = []; // índice 2 = comidas que fazem mal
+  this.baseConhecimento[3] = []; // índice 3 = predadores
+
+  this.tempo = random(30);
+  this.destino = createVector(random(width), random(height));
 
   // método de atualização
   this.update = function(){
     // a criatura só começara a perder vida se estiver com fome
     if (this.fome <= 0) {
-      this.vida -= 0.0025;
+      this.vida -= 0.001;
     } else {
-      this.fome -= 0.0025;
+      this.fome -= 0.001;
     }
     this.velocidade.add(this.aceleracao);
     this.velocidade.limit(this.maxVelocidade);
@@ -90,27 +103,43 @@ function Criatura(x, y, t){
       }
     }
 
-    // This is the moment of eating!
+    // aqui define o comportamento da criatura, se irá perseguir ou se irá apenas até o local para comer
     if (maisProximo != null) {
-      if (this.fome < this.maxFome / 2) {
+      if (this.fome < this.maxFome / 4) {
         return this.persegue(maisProximo);
-      } else {
-        return this.anda(maisProximo);
+      } else if (this.fome < this.maxFome / 2.5) {
+        return this.segue(maisProximo);
       }
     }
-    return createVector(0, 0);
+
+    if (this.tempo < 0){
+      this.destino = createVector(random(width), random(height));
+      this.tempo = random(30);
+    } else {
+      this.tempo -= .1;
+    }
+    return this.anda(this.destino);
   }
 
   // método andar: usado por qualquer criatura quando estão tranquilos
   this.anda = function(obj){
+    var desejo = p5.Vector.sub(obj, this.posicao);
+    desejo.setMag(1);
+    var direcao = p5.Vector.sub(desejo, this.velocidade);
+    direcao.limit(this.maxForca);
+    return direcao;
+  }
+
+  // método seguir: usado por qualquer criatura quando estão com pouca fome
+  this.segue = function(obj){
     var desejo = p5.Vector.sub(obj.posicao, this.posicao);
     var distancia = desejo.mag();
     var vel = this.maxVelocidade;
     if (distancia < 500){
-      vel = map(distancia, 0, 500, .5, this.maxVelocidade);
+      vel = map(distancia, 0, 500, .5, this.maxVelocidade / 2);
     }
     desejo.setMag(vel);
-    direcao = p5.Vector.sub(desejo, this.velocidade);
+    var direcao = p5.Vector.sub(desejo, this.velocidade);
     direcao.limit(this.maxForca);
     return direcao;
   }
