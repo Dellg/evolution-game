@@ -80,15 +80,14 @@ function Criatura(x, y, t){
   // método que define qual comportamento a criatura irá realizar
   this.comportamentos = function(comidas){
     var movimento = this.alimenta(comidas);
-    // var mouse = createVector(mouseX, mouseY);
-    // var foge = this.foge(mouse);
+    var foge = this.foge(baseConhecimento[3]);
 
     // andar tem o peso de 1 e fugir tem o peso de 5
     movimento.mult(1);
-    // foge.mult(5);
+    foge.mult(5);
 
     this.aceleracao.add(movimento);
-    // this.aceleracao.add(foge);
+    this.aceleracao.add(foge);
 
     if (this.vida <= 0){
       return null;
@@ -105,7 +104,7 @@ function Criatura(x, y, t){
         var devorado = comidas.splice(i, 1)[0];
         // se for comida ruim, perde vida
         if (devorado.tipo == 2){
-          this.vida -= devorado.vida;
+          this.vida -= (devorado.vida * 3);
         } else {
           if (this.tipo == 2 || this.tipo == devorado.tipo){
             // onívoros comem dos dois tipos de alimento, por isso saciam apenas metade da fome que aquele alimento dá
@@ -116,8 +115,7 @@ function Criatura(x, y, t){
             this.fome += devorado.fome;
             this.vida += devorado.vida;
           } else {
-            // se comer um alimento de um tipo diferente, saciam apenas um terço da fome que o alimento dá e perde vida
-            this.fome += devorado.fome/3;
+            // se comer um alimento de um tipo diferente perde vida
             this.vida -= devorado.vida;
           }
         }
@@ -189,7 +187,7 @@ function Criatura(x, y, t){
 
   // método fugir: usado por criaturas que estão sendo perseguidas por predadores
   this.foge = function(obj){
-    var desejo = p5.Vector.sub(obj, this.posicao);
+    var desejo = p5.Vector.sub(obj.posicao, this.posicao);
     var distancia = desejo.mag();
     if (distancia < 100){
       desejo.setMag(this.maxVelocidade);

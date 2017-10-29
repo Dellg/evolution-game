@@ -1,11 +1,11 @@
 function Alimento(x, y, caracteristicas){
   // tipo do alimento: 0 = planta, 1 = carne, 2 = toxico
   this.tipo = caracteristicas[0];
-  this.vida = caracteristicas[1];
-  this.fome = caracteristicas[2];
+  this.vida = random(caracteristicas[1] - 0.25, caracteristicas[1] + 0.25);
+  this.fome = random(caracteristicas[2] - 0.25, caracteristicas[2] + 0.25);
   this.cor = caracteristicas[3];
   this.posicao = createVector(x, y);
-  this.raio = 6;
+  this.raio = (this.fome * 4);
 
   this.show = function(){
     noStroke();
