@@ -1,10 +1,10 @@
 function Criatura(x, y, t){
   // a criatura vai perdendo vida se estiver com fome
-  this.vida = 1;
-  this.maxVida = 1;
+  this.vida = 2;
+  this.maxVida = 2;
   // fome define de quanto em quanto tempo a criatura precisa estar se alimento
-  this.fome = 1;
-  this.maxFome = 1;
+  this.fome = 2;
+  this.maxFome = 2;
   // carnívoros só irão atacar outras criaturas que tem resistência menor que a deles
   this.resistencia = 1;
   // tipo de alimento que a criatura consome: 0 = planta, 1 = carne, 2 = ambos
@@ -65,8 +65,13 @@ function Criatura(x, y, t){
     // desenha a forma da criatura no canvas
     beginShape();
     vertex(0, -this.raio * 2);
-    vertex(-this.raio, this.raio * 2);
-    vertex(this.raio, this.raio * 2);
+    vertex(-this.raio, this.raio);
+    if (this.tipo == 0){
+      vertex(0, this.raio + 5);
+    } else if (this.tipo == 1){
+      vertex(0, this.raio - 5);
+    }
+    vertex(this.raio, this.raio);
     endShape(CLOSE);
 
     pop();
@@ -75,15 +80,19 @@ function Criatura(x, y, t){
   // método que define qual comportamento a criatura irá realizar
   this.comportamentos = function(comidas){
     var movimento = this.alimenta(comidas);
-    var mouse = createVector(mouseX, mouseY);
-    var foge = this.foge(mouse);
+    // var mouse = createVector(mouseX, mouseY);
+    // var foge = this.foge(mouse);
 
     // andar tem o peso de 1 e fugir tem o peso de 5
     movimento.mult(1);
-    foge.mult(5);
+    // foge.mult(5);
 
     this.aceleracao.add(movimento);
-    this.aceleracao.add(foge);
+    // this.aceleracao.add(foge);
+
+    if (this.vida <= 0){
+      return null;
+    }
   }
 
   this.alimenta = function(comidas){
@@ -93,8 +102,32 @@ function Criatura(x, y, t){
       var distancia = this.posicao.dist(comidas[i].posicao);
 
       if (distancia < this.maxVelocidade) {
-        comidas.splice(i, 1);
-        this.fome += 1; //nutrition;
+        var devorado = comidas.splice(i, 1)[0];
+        // se for comida ruim, perde vida
+        if (devorado.tipo == 2){
+          this.vida -= devorado.vida;
+        } else {
+          if (this.tipo == 2 || this.tipo == devorado.tipo){
+            // onívoros comem dos dois tipos de alimento, por isso saciam apenas metade da fome que aquele alimento dá
+            this.fome += devorado.fome/2;
+            this.vida += devorado.vida;
+          } else if (this.tipo == devorado.tipo){
+            // criaturas que comem alimento do seu tipo apenas, saciam a fome inteira que aquele alimento dá
+            this.fome += devorado.fome;
+            this.vida += devorado.vida;
+          } else {
+            // se comer um alimento de um tipo diferente, saciam apenas um terço da fome que o alimento dá e perde vida
+            this.fome += devorado.fome/3;
+            this.vida -= devorado.vida;
+          }
+        }
+        // limita a fome e a vida aos seus valores máximos
+        if (this.fome > this.maxFome){
+          this.fome = this.maxFome;
+        }
+        if (this.vida > this.maxVida){
+          this.vida = this.maxVida;
+        }
       } else {
         if (distancia < lembranca){ //&& d < perception) {
           lembranca = distancia;
@@ -105,13 +138,14 @@ function Criatura(x, y, t){
 
     // aqui define o comportamento da criatura, se irá perseguir ou se irá apenas até o local para comer
     if (maisProximo != null) {
-      if (this.fome < this.maxFome / 4) {
+      if (this.fome < this.maxFome / 3) {
         return this.persegue(maisProximo);
-      } else if (this.fome < this.maxFome / 2.5) {
+      } else if (this.fome < this.maxFome / 1.5) {
         return this.segue(maisProximo);
       }
     }
 
+    // criatura ficará passeando por um tempo se não estiver com fome
     if (this.tempo < 0){
       this.destino = createVector(random(width), random(height));
       this.tempo = random(30);
@@ -166,5 +200,10 @@ function Criatura(x, y, t){
     } else {
       return createVector(0, 0);
     }
+  }
+
+  // método pra verificar se a criatura está sem vida
+  this.morreu = function(){
+    return (this.vida <= 0);
   }
 }

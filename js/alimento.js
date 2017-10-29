@@ -1,20 +1,21 @@
-function Alimento(x, y, t){
+function Alimento(x, y, caracteristicas){
   // tipo do alimento: 0 = planta, 1 = carne, 2 = toxico
-  this.tipo = t;
-  this.vida = 500;
-  this.fome = 500;
+  this.tipo = caracteristicas[0];
+  this.vida = caracteristicas[1];
+  this.fome = caracteristicas[2];
+  this.cor = caracteristicas[3];
   this.posicao = createVector(x, y);
-  this.raio = 5;
-}
+  this.raio = 6;
 
-Alimento.prototype.show = function(){
-  noStroke();
-  if (this.tipo == 0){
-    fill(0,255,0);
-  } else if (this.tipo == 1){
-    fill(255,0,0);
-  } else if (this.tipo == 2){
-    fill(0,0,255);
+  this.show = function(){
+    noStroke();
+    fill(this.cor);
+    if (this.tipo == 0){
+      ellipse(this.posicao.x, this.posicao.y, this.raio);
+    } else if (this.tipo == 1){
+      rect(this.posicao.x, this.posicao.y, this.raio - 1, this.raio - 1);
+    } else if (this.tipo == 2){
+      triangle(this.posicao.x - this.raio/1.5, this.posicao.y - this.raio/1.5, this.posicao.x, this.posicao.y, this.posicao.x + this.raio/1.5, this.posicao.y - this.raio/1.5);
+    }
   }
-  ellipse(this.posicao.x, this.posicao.y, this.raio);
 }
