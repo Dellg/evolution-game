@@ -115,7 +115,7 @@ function setup(){
     }
     // cria as criaturas pré-definidas
     for (var i = 0; i < tipoCriaturas.length; i++){
-      for (var j = 0; j < 4; j++){
+      for (var j = 0; j < 6; j++){
         var x = random(xGame);
         var y = random(yGame);
         var criatura = new Criatura(x, y, tipoCriaturas[i]);

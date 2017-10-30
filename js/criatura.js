@@ -1,17 +1,7 @@
 function Criatura(x, y, caracteristicas){
   this.nome = caracteristicas[0];
   // tipo de alimento que a criatura consome: 0 = planta, 1 = carne, 2 = ambos
-  switch (caracteristicas[1]) {
-  case "Herbívoro":
-    this.tipo = 0;
-    break;
-  case "Carnívoro":
-    this.tipo = 1;
-    break;
-  case "Onívoro":
-    this.tipo = 2;
-    break;
-  }
+  this.tipo = caracteristicas[1];
   // a criatura vai perdendo vida se estiver com fome
   this.vida = parseFloat(caracteristicas[2]);
   this.maxVida = parseFloat(caracteristicas[2]);
