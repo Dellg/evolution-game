@@ -1,31 +1,42 @@
-function Criatura(x, y, t, c){
+function Criatura(x, y, caracteristicas){
   // a criatura vai perdendo vida se estiver com fome
-  this.nome = "x";
-  this.vida = 2;
-  this.maxVida = 2;
-  // fome define de quanto em quanto tempo a criatura precisa estar se alimento
-  this.fome = 2;
-  this.maxFome = 2;
-  // carnívoros só irão atacar outras criaturas que tem resistência menor que a deles
-  this.resistencia = 1;
+  this.nome = caracteristicas[0];
   // tipo de alimento que a criatura consome: 0 = planta, 1 = carne, 2 = ambos
-  this.tipo = t;
-  this.cor = c;
+  switch (caracteristicas[1]) {
+  case "Herbívoro":
+    this.tipo = 0;
+    break;
+  case "Carnívoro":
+    this.tipo = 1;
+    break;
+  case "Onívoro":
+    this.tipo = 2;
+    break;
+  }
+  this.vida = caracteristicas[2];
+  this.maxVida = caracteristicas[2];
+  // fome define de quanto em quanto tempo a criatura precisa estar se alimento
+  this.fome = caracteristicas[3];
+  this.maxFome = caracteristicas[3];
+  // carnívoros só irão atacar outras criaturas que tem resistência menor que a deles
+  this.velocidade = p5.Vector.random2D(caracteristicas[4]);
+  this.maxVelocidade = caracteristicas[4];
+  this.resistencia = caracteristicas[5];
+  this.cor = caracteristicas[6];
 
   // dados da criatura
   this.posicao = createVector(x, y);
-  this.velocidade = p5.Vector.random2D(5);
-  this.maxVelocidade = 5;
   this.maxForca = .1;
   this.aceleracao = createVector();
   this.raio = 5;
 
   // características da IA
+  this.geracao = 0;
   this.fitness = 0;
 
   this.codigoGenetico = [];
-  this.codigoGenetico[0] = 1; // raio de percepção para identificar alimento
-  this.codigoGenetico[1] = 1; // raio de percepção para identificar perigo
+  this.codigoGenetico[0] = caracteristicas[7]; // raio de percepção para identificar alimento
+  this.codigoGenetico[1] = caracteristicas[8]; // raio de percepção para identificar perigo
   this.codigoGenetico[2] = 1; // capacidade de fuga
   this.codigoGenetico[3] = 1; // capacidade de caça
 
@@ -41,9 +52,10 @@ function Criatura(x, y, t, c){
   this.update = function(){
     // a criatura só começara a perder vida se estiver com fome
     if (this.fome <= 0) {
-      this.vida -= 0.001;
+      this.vida -= 0.003;
     } else {
-      this.fome -= 0.001;
+      this.vida -= 0.0015;
+      this.fome -= 0.0025;
     }
     this.velocidade.add(this.aceleracao);
     this.velocidade.limit(this.maxVelocidade);
@@ -100,16 +112,16 @@ function Criatura(x, y, t, c){
         var devorado = comidas.splice(i, 1)[0];
         // se for comida ruim, perde vida
         if (devorado.tipo == 2){
-          this.vida -= (devorado.vida * 3);
+          this.vida -= abs(devorado.vida * 3);
         } else {
           if (this.tipo == 2 || this.tipo == devorado.tipo){
             // onívoros comem dos dois tipos de alimento, por isso saciam apenas metade da fome que aquele alimento dá
             this.fome += devorado.fome/2;
-            this.vida += devorado.vida;
+            this.vida += devorado.vida/2;
           } else if (this.tipo == devorado.tipo){
             // criaturas que comem alimento do seu tipo apenas, saciam a fome inteira que aquele alimento dá
             this.fome += devorado.fome;
-            this.vida += devorado.vida;
+            this.vida += devorado.vida/2;
           } else {
             // se comer um alimento de um tipo diferente perde vida
             this.vida -= devorado.vida;
