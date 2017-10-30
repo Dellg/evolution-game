@@ -1,5 +1,4 @@
 function Criatura(x, y, caracteristicas){
-  // a criatura vai perdendo vida se estiver com fome
   this.nome = caracteristicas[0];
   // tipo de alimento que a criatura consome: 0 = planta, 1 = carne, 2 = ambos
   switch (caracteristicas[1]) {
@@ -13,6 +12,7 @@ function Criatura(x, y, caracteristicas){
     this.tipo = 2;
     break;
   }
+  // a criatura vai perdendo vida se estiver com fome
   this.vida = caracteristicas[2];
   this.maxVida = caracteristicas[2];
   // fome define de quanto em quanto tempo a criatura precisa estar se alimento
