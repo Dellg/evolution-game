@@ -72,10 +72,19 @@ function setup(){
   botaoAdcCrt.mousePressed(adicionarCriatura);
 
   function adicionarCriatura() {
+    var somatorio1 = parseInt(vida.value()) + parseInt(fome.value()) + parseInt(velocidade.value()) + parseInt(resistencia.value());
+    var somatorio2 = parseInt(prcpAlimento.value()) + parseInt(prcpPerigo.value());
+
     if (nome.value() == "" || tipo.value() == "" || vida.value() == "" || fome.value() == "" ||
         velocidade.value() == "" || resistencia.value() == "" || prcpAlimento.value() == "" ||
         prcpPerigo.value() == ""){
       alert("Preencha todos os campos!")
+      return false;
+    } else if (somatorio1 != 10){
+      alert("Você deve distribuir 10 pontos em Vida, Fome, Velocidade e Resistência.")
+      return false;
+    } else if (somatorio2 != 180){
+      alert("Você deve distribuir 180 pontos nas Percepções de alimentos e perigos.")
       return false;
     }
     alert("Criatura adicionada! Continue adicionado ou aperte em Iniciar Jogo.")
@@ -100,6 +109,10 @@ function setup(){
   botaoIniciar.mousePressed(carregarDados);
 
   function carregarDados(){
+    if (tipoCriaturas.length <= 0){
+      alert("Adicione algumas criaturas para poder iniciar o jogo.")
+      return false;
+    }
     // cria as criaturas pré-definidas
     for (var i = 0; i < tipoCriaturas.length; i++){
       for (var j = 0; j < 4; j++){

@@ -13,15 +13,15 @@ function Criatura(x, y, caracteristicas){
     break;
   }
   // a criatura vai perdendo vida se estiver com fome
-  this.vida = caracteristicas[2];
-  this.maxVida = caracteristicas[2];
+  this.vida = parseFloat(caracteristicas[2]);
+  this.maxVida = parseFloat(caracteristicas[2]);
   // fome define de quanto em quanto tempo a criatura precisa estar se alimento
-  this.fome = caracteristicas[3];
-  this.maxFome = caracteristicas[3];
+  this.fome = parseFloat(caracteristicas[3]);
+  this.maxFome = parseFloat(caracteristicas[3]);
   // carnívoros só irão atacar outras criaturas que tem resistência menor que a deles
   this.velocidade = p5.Vector.random2D(caracteristicas[4]);
-  this.maxVelocidade = caracteristicas[4];
-  this.resistencia = caracteristicas[5];
+  this.maxVelocidade = parseFloat(caracteristicas[4]);
+  this.resistencia = parseFloat(caracteristicas[5]);
   this.cor = caracteristicas[6];
 
   // dados da criatura
@@ -35,8 +35,8 @@ function Criatura(x, y, caracteristicas){
   this.fitness = 0;
 
   this.codigoGenetico = [];
-  this.codigoGenetico[0] = caracteristicas[7]; // raio de percepção para identificar alimento
-  this.codigoGenetico[1] = caracteristicas[8]; // raio de percepção para identificar perigo
+  this.codigoGenetico[0] = parseFloat(caracteristicas[7]); // raio de percepção para identificar alimento
+  this.codigoGenetico[1] = parseFloat(caracteristicas[8]); // raio de percepção para identificar perigo
   this.codigoGenetico[2] = 1; // capacidade de fuga
   this.codigoGenetico[3] = 1; // capacidade de caça
 
