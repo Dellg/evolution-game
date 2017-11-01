@@ -27,8 +27,8 @@ function Criatura(x, y, caracteristicas){
   this.codigoGenetico = [];
   this.codigoGenetico[0] = parseFloat(caracteristicas[7]); // raio de percepção para identificar alimento
   this.codigoGenetico[1] = parseFloat(caracteristicas[8]); // raio de percepção para identificar perigo
-  this.codigoGenetico[2] = random(0.2, 0.6); // peso alimento
-  this.codigoGenetico[3] = random(-0.6, -0.2); // peso perigo
+  this.codigoGenetico[2] = random(-2, 2); // peso alimento
+  this.codigoGenetico[3] = random(-2, 2); // peso perigo
 
   this.baseConhecimento = [];
   this.baseConhecimento[0] = []; // índice 0 = comidas que matam a fome
@@ -227,22 +227,23 @@ function Criatura(x, y, caracteristicas){
     } else if (nivelFome == 2){
       desejo = p5.Vector.sub(obj.posicao, this.posicao);
       desejo.setMag(this.maxVelocidade);
-
     // nível 3 = foge = sendo caçado = velocidade máxima ao contrário
     } else if (nivelFome == 3){
-      if (obj.nome == undefined) // é um alimento
+      if (obj.nome == undefined) { // é um alimento
         desejo = p5.Vector.sub(obj, this.posicao);
-      else
+      } else {
         desejo = p5.Vector.sub(obj.posicao, this.posicao);
-
-      distancia = desejo.mag();
-      var raioPerigo = this.codigoGenetico[1];
-      if (distancia < raioPerigo){
+        distancia = desejo.mag();
         desejo.setMag(this.maxVelocidade);
-        desejo.mult(-1);
       }
     }
 
+    if (desejo && obj.tipo){
+      if (obj.tipo == 2 || this.tipo != obj.tipo)
+        desejo.mult(this.codigoGenetico[3]);
+      else
+        desejo.mult(this.codigoGenetico[2]);
+    }
     var direcao = p5.Vector.sub(desejo, this.velocidade);
     direcao.limit(this.maxForca);
     return direcao;
