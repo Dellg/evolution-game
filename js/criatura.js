@@ -16,8 +16,8 @@ function Criatura(x, y, caracteristicas){
 
   // dados da criatura
   this.posicao = createVector(x, y);
-  this.maxForca = random(0.1, 0.5);
   this.aceleracao = createVector();
+  this.maxForca = random(0.1, 0.3);
   this.raio = 5;
 
   // características da IA
@@ -27,8 +27,8 @@ function Criatura(x, y, caracteristicas){
   this.codigoGenetico = [];
   this.codigoGenetico[0] = parseFloat(caracteristicas[7]); // raio de percepção para identificar alimento
   this.codigoGenetico[1] = parseFloat(caracteristicas[8]); // raio de percepção para identificar perigo
-  this.codigoGenetico[2] = random(-1, 0); // capacidade de fuga
-  this.codigoGenetico[3] = random(0, 1); // capacidade de caça
+  this.codigoGenetico[2] = random(0, 0.5); // peso alimento
+  this.codigoGenetico[3] = random(-0.5, 0); // peso perigo
 
   this.baseConhecimento = [];
   this.baseConhecimento[0] = []; // índice 0 = comidas que matam a fome
@@ -36,7 +36,7 @@ function Criatura(x, y, caracteristicas){
   this.baseConhecimento[2] = []; // índice 2 = predadores
 
   this.tempo = random(30);
-  this.destino = createVector(random(width), random(height));
+  this.destino = createVector(random(width-5), random(height-5));
 
   //____________________________________________________________________________
   // método de atualização
@@ -49,6 +49,9 @@ function Criatura(x, y, caracteristicas){
       this.vida -= 0.001;
       this.fome -= 0.0015;
     }
+    //apenas para teste
+    this.vida = this.maxVida;
+    //apenas para teste
     this.velocidade.add(this.aceleracao);
     this.velocidade.limit(this.maxVelocidade);
     this.posicao.add(this.velocidade);
@@ -70,10 +73,10 @@ function Criatura(x, y, caracteristicas){
     strokeWeight(2);
     stroke(0, 255, 0);
     ellipse(0, 0, this.codigoGenetico[0] * 2);
-    line(0, 0, 0, -this.codigoGenetico[3] * 100)
+    line(0, 0, 0, -this.codigoGenetico[2] * 25)
     stroke(255, 0, 0);
     ellipse(0, 0, this.codigoGenetico[1] * 2);
-    line(0, 0, 0, -this.codigoGenetico[2] * 100);
+    line(0, 0, 0, -this.codigoGenetico[3] * 25);
     // ^ apagar depois
 
     fill(lerpColor(color(0,0,0), this.cor, this.vida));
@@ -104,10 +107,10 @@ function Criatura(x, y, caracteristicas){
       var distancia = this.posicao.dist(this.baseConhecimento[2][i].posicao);
       if (distancia < this.codigoGenetico[1]){
         movimento = this.movimenta(this.baseConhecimento[2][i], 3);
-        movimento.mult(this.codigoGenetico[2]);
+        movimento.mult(this.codigoGenetico[3]);
       }
     }
-    movimento.mult(this.codigoGenetico[3]);
+    movimento.mult(this.codigoGenetico[2]);
     this.aceleracao.add(movimento);
   }
 
@@ -141,6 +144,7 @@ function Criatura(x, y, caracteristicas){
           } else {
             // se comer um alimento de um tipo diferente perde vida
             this.vida -= abs(devorado.vida);
+            this.fome -= abs(devorado.fome);
             conhecer(this.baseConhecimento[1], devorado.tipo);
           }
         }
@@ -240,16 +244,16 @@ function Criatura(x, y, caracteristicas){
   this.limites = function() {
     var desejo = null;
 
-    if (this.posicao.x < 0) {
+    if (this.posicao.x < 5) {
       desejo = createVector(this.maxVelocidade, this.velocidade.y);
     }
-    else if (this.posicao.x > width) {
+    else if (this.posicao.x > width-5) {
       desejo = createVector(-this.maxVelocidade, this.velocidade.y);
     }
-    if (this.posicao.y < 0) {
+    if (this.posicao.y < 5) {
       desejo = createVector(this.velocidade.x, this.maxVelocidade);
     }
-    else if (this.posicao.y > height) {
+    else if (this.posicao.y > height-5) {
       desejo = createVector(this.velocidade.x, -this.maxVelocidade);
     }
     if (desejo !== null) {

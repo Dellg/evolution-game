@@ -160,8 +160,8 @@ function setup(){
     }
     // cria alimentos usando os tipos pré-criados
     for (var i = 0; i < countAlimentos; i++){
-      var x = random(xGame);
-      var y = random(yGame);
+      var x = random(5, xGame-5);
+      var y = random(5, yGame-5);
       var r = round(random(tipoAlimentos.length - 1));
       alimentos.push(new Alimento(x, y, tipoAlimentos[r]));
     }
@@ -199,8 +199,8 @@ function draw(){
     // gera novas comidas se tiver menos de 30 comidas no canvas
     if (alimentos.length < countAlimentos){
       if (random(1) < 0.1) {
-        var x = random(xGame);
-        var y = random(yGame);
+        var x = random(5, xGame-5);
+        var y = random(5, yGame-5);
         var r = round(random(tipoAlimentos.length - 1));
         alimentos.push(new Alimento(x, y, tipoAlimentos[r]));
       }
