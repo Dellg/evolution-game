@@ -3,10 +3,13 @@ var yGame = 750;
 var menu = 0;
 var criaturas = [];
 var alimentos = [];
-var countAlimentos = 50;
+var countAlimentos = 25;//50;
 var tipoCriaturas = [];
 var tipoAlimentos = [];
 
+//______________________________________________________________________________
+// preparação do jogo e recebimento de dados do usuário
+//______________________________________________________________________________
 function setup(){
   createCanvas(xGame, yGame);
   background(15);
@@ -71,6 +74,10 @@ function setup(){
   botaoAdcCrt.position(50, 550);
   botaoAdcCrt.mousePressed(adicionarCriatura);
 
+  var botaoAdcRnd = createButton('Adicionar 3 criaturas aleatórias');
+  botaoAdcRnd.position(50,580);
+  botaoAdcRnd.mousePressed(adicionarAleatorios);
+
   function adicionarCriatura() {
     var somatorio1 = parseInt(vida.value()) + parseInt(fome.value()) + parseInt(velocidade.value()) + parseInt(resistencia.value());
     var somatorio2 = parseInt(prcpAlimento.value()) + parseInt(prcpPerigo.value());
@@ -104,6 +111,27 @@ function setup(){
     prcpPerigo.value("");
   }
 
+  function adicionarAleatorios() {
+    for (var i = 0; i < 2; i++){
+      var temp = random(50, 200);
+      tipoCriaturas.push(["Criatura" + i, round(random(1, 2)), random(1, 4), random(1, 4), random(1, 4),
+                          random(1, 4), color(random(255), random(255), random(255)),
+                          temp, (200 - temp)]);
+    }
+    alert("Criaturas adicionadas! Aperte em Iniciar Jogo para começar.")
+    nome.value("");
+    tipo.value(false);
+    vida.value("");
+    fome.value("");
+    velocidade.value("");
+    resistencia.value("");
+    corR.value(0);
+    corG.value(0);
+    corB.value(0);
+    prcpAlimento.value("");
+    prcpPerigo.value("");
+  }
+
   var botaoIniciar = createButton('Iniciar Jogo');
   botaoIniciar.position(50, 700);
   botaoIniciar.mousePressed(carregarDados);
@@ -113,9 +141,9 @@ function setup(){
       alert("Adicione algumas criaturas para poder iniciar o jogo.")
       return false;
     }
-    // cria as criaturas pré-definidas
+    // cria quantidades das criaturas pré-definidas
     for (var i = 0; i < tipoCriaturas.length; i++){
-      for (var j = 0; j < 6; j++){
+      for (var j = 0; j < 1; j++){ // <--------------------------- alterar aqui pra criar mais de uma de cada tipo
         var x = random(xGame);
         var y = random(yGame);
         var criatura = new Criatura(x, y, tipoCriaturas[i]);
@@ -150,11 +178,15 @@ function setup(){
     prcpAlimento.remove();
     prcpPerigo.remove();
     botaoAdcCrt.remove();
+    botaoAdcRnd.remove();
     botaoIniciar.remove();
     menu = 1;
   }
 }
 
+//______________________________________________________________________________
+// onde o jogo acontece, de fato
+//______________________________________________________________________________
 function draw(){
   // menu principal de entrada de dados
   if (menu == 0){
@@ -176,6 +208,7 @@ function draw(){
     for (var i = 0; i < criaturas.length; i++){
       var crtr = criaturas[i];
       crtr.comportamentos(alimentos, criaturas);
+      crtr.limites();
       crtr.update();
       crtr.show();
       if (crtr.morreu()){

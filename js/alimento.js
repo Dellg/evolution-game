@@ -1,6 +1,17 @@
 function Alimento(x, y, caracteristicas){
   // tipo do alimento: 0 = planta, 1 = carne, 2 = toxico
   this.tipo = caracteristicas[0];
+  switch (this.tipo) {
+    case 0:
+      this.nome = "planta";
+      break;
+    case 1:
+      this.nome = "carne";
+      break;
+    case 2:
+      this.nome = "veneno";
+      break;
+  }
   this.vida = random(caracteristicas[1] - 0.25, caracteristicas[1] + 0.25);
   this.fome = random(caracteristicas[2] - 0.25, caracteristicas[2] + 0.25);
   this.cor = caracteristicas[3];
