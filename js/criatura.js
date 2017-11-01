@@ -70,10 +70,10 @@ function Criatura(x, y, caracteristicas){
     strokeWeight(2);
     stroke(0, 255, 0);
     ellipse(0, 0, this.codigoGenetico[0] * 2);
-    line(0, 0, 0, -this.codigoGenetico[2] * 100);
+    line(0, 0, 0, -this.codigoGenetico[3] * 100)
     stroke(255, 0, 0);
     ellipse(0, 0, this.codigoGenetico[1] * 2);
-    line(0, 0, 0, -this.codigoGenetico[3] * 100)
+    line(0, 0, 0, -this.codigoGenetico[2] * 100);
     // ^ apagar depois
 
     fill(lerpColor(color(0,0,0), this.cor, this.vida));
