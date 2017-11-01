@@ -3,7 +3,7 @@ var yGame = 750;
 var menu = 0;
 var criaturas = [];
 var alimentos = [];
-var countAlimentos = 25;//50;
+var countAlimentos = 50;//50;
 var tipoCriaturas = [];
 var tipoAlimentos = [];
 
@@ -112,9 +112,9 @@ function setup(){
   }
 
   function adicionarAleatorios() {
-    for (var i = 0; i < 2; i++){
+    for (var i = 0; i < 3; i++){
       var temp = random(50, 200);
-      tipoCriaturas.push(["Criatura" + i, round(random(1, 2)), random(1, 4), random(1, 4), random(1, 4),
+      tipoCriaturas.push(["Criatura" + i, round(random(2)), random(1, 4), random(1, 4), random(1, 4),
                           random(1, 4), color(random(255), random(255), random(255)),
                           temp, (200 - temp)]);
     }
@@ -222,4 +222,14 @@ function draw(){
       almt.show();
     }
   }
+}
+
+Array.prototype.contains = function(obj) {
+    var i = this.length;
+    while (i--) {
+        if (this[i] === obj) {
+            return true;
+        }
+    }
+    return false;
 }
