@@ -3,7 +3,7 @@ var yGame = 750;
 var menu = 0;
 var criaturas = [];
 var alimentos = [];
-var countAlimentos = 50;//50;
+var countAlimentos = 150;//50;
 var tipoCriaturas = [];
 var tipoAlimentos = [];
 
@@ -112,7 +112,7 @@ function setup(){
   }
 
   function adicionarAleatorios() {
-    for (var i = 0; i < 3; i++){
+    for (var i = 0; i < 1; i++){ // <---------------------------------- quantidade de criaturas aleatórias
       var temp = random(50, 200);
       tipoCriaturas.push(["Criatura" + i, round(random(2)), random(1, 4), random(1, 4), random(1, 4),
                           random(1, 4), color(random(255), random(255), random(255)),
@@ -197,7 +197,7 @@ function draw(){
   } else if (menu == 1){
     background(15);
     // gera novas comidas se tiver menos de 30 comidas no canvas
-    if (alimentos.length < countAlimentos){
+    if (random(1) < 0.05 || alimentos.length < countAlimentos){
       if (random(1) < 0.1) {
         var x = random(5, xGame-5);
         var y = random(5, yGame-5);
@@ -227,9 +227,8 @@ function draw(){
 Array.prototype.contains = function(obj) {
     var i = this.length;
     while (i--) {
-        if (this[i] === obj) {
+        if (this[i].tipo === obj.tipo)
             return true;
-        }
     }
     return false;
 }

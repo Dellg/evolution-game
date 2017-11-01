@@ -17,7 +17,7 @@ function Criatura(x, y, caracteristicas){
   // dados da criatura
   this.posicao = createVector(x, y);
   this.aceleracao = createVector();
-  this.maxForca = random(0.1, 0.3);
+  this.maxForca = random(0.2, 0.5);
   this.raio = 5;
 
   // características da IA
@@ -27,15 +27,15 @@ function Criatura(x, y, caracteristicas){
   this.codigoGenetico = [];
   this.codigoGenetico[0] = parseFloat(caracteristicas[7]); // raio de percepção para identificar alimento
   this.codigoGenetico[1] = parseFloat(caracteristicas[8]); // raio de percepção para identificar perigo
-  this.codigoGenetico[2] = random(0, 0.5); // peso alimento
-  this.codigoGenetico[3] = random(-0.5, 0); // peso perigo
+  this.codigoGenetico[2] = random(0.2, 0.6); // peso alimento
+  this.codigoGenetico[3] = random(-0.6, -0.2); // peso perigo
 
   this.baseConhecimento = [];
   this.baseConhecimento[0] = []; // índice 0 = comidas que matam a fome
   this.baseConhecimento[1] = []; // índice 1 = comidas que fazem mal
   this.baseConhecimento[2] = []; // índice 2 = predadores
 
-  this.tempo = random(30);
+  this.tempo = random(100);
   this.destino = createVector(random(width-5), random(height-5));
 
   //____________________________________________________________________________
@@ -70,7 +70,7 @@ function Criatura(x, y, caracteristicas){
 
     //apagar depois
     noFill();
-    strokeWeight(2);
+    strokeWeight(1);
     stroke(0, 255, 0);
     ellipse(0, 0, this.codigoGenetico[0] * 2);
     line(0, 0, 0, -this.codigoGenetico[2] * 25)
@@ -87,9 +87,9 @@ function Criatura(x, y, caracteristicas){
     vertex(0, -this.raio * 2);
     vertex(-this.raio, this.raio);
     if (this.tipo == 0){
-      vertex(0, this.raio + 5);
+      vertex(0, this.raio + this.raio);
     } else if (this.tipo == 1){
-      vertex(0, this.raio - 5);
+      vertex(0, this.raio - this.raio);
     }
     vertex(this.raio, this.raio);
     endShape(CLOSE);
@@ -102,16 +102,27 @@ function Criatura(x, y, caracteristicas){
   //____________________________________________________________________________
   this.comportamentos = function(comidas){
     var movimento = this.alimenta(comidas);
-
+    var fuga = null;
+    // verifica se está próximo de comidas ruins
+    for (var i = this.baseConhecimento[1].length - 1; i >= 0; i--){
+      var distancia = this.posicao.dist(this.baseConhecimento[1][i].posicao);
+      if (distancia < this.codigoGenetico[1])
+        fuga = this.movimenta(this.baseConhecimento[1][i], 3);
+    }
+    // verifica se está próximo de predadores
     for (var i = this.baseConhecimento[2].length - 1; i >= 0; i--){
       var distancia = this.posicao.dist(this.baseConhecimento[2][i].posicao);
-      if (distancia < this.codigoGenetico[1]){
-        movimento = this.movimenta(this.baseConhecimento[2][i], 3);
-        movimento.mult(this.codigoGenetico[3]);
-      }
+      if (distancia < this.codigoGenetico[1])
+        fuga = this.movimenta(this.baseConhecimento[2][i], 3);
     }
+
     movimento.mult(this.codigoGenetico[2]);
+    if (fuga != null)
+      fuga.mult(this.codigoGenetico[3]);
+
     this.aceleracao.add(movimento);
+    if (fuga != null)
+      this.aceleracao.add(fuga);
   }
 
   //____________________________________________________________________________
@@ -124,28 +135,28 @@ function Criatura(x, y, caracteristicas){
     for (var i = comidas.length - 1; i >= 0; i--) {
       var distancia = this.posicao.dist(comidas[i].posicao);
 
-      if (distancia < this.maxVelocidade) {
+      if (distancia < this.maxVelocidade + 2) {
         var devorado = comidas.splice(i, 1)[0];
         // se for comida ruim, perde vida e adiciona aquele tipo à base de conhecimento
         if (devorado.tipo == 2){
           this.vida -= abs(devorado.vida * 2);
-          conhecer(this.baseConhecimento[1], devorado.tipo);
+          conhecer(this.baseConhecimento[1], devorado);
         } else {
           if (this.tipo == 2){
             // onívoros comem dos dois tipos de alimento, por isso saciam pouca fome com cada alimento
-            this.fome += abs(devorado.fome)/1.5;
+            this.fome += abs(devorado.fome);
             this.vida += abs(devorado.vida)/2;
-            conhecer(this.baseConhecimento[0], devorado.tipo);
+            conhecer(this.baseConhecimento[0], devorado);
           } else if (this.tipo == devorado.tipo){
             // criaturas que comem alimento do seu tipo apenas, saciam a fome inteira que aquele alimento dá
-            this.fome += abs(devorado.fome);
+            this.fome += abs(devorado.fome) * 1.5;
             this.vida += abs(devorado.vida)/1.5;
-            conhecer(this.baseConhecimento[0], devorado.tipo);
+            conhecer(this.baseConhecimento[0], devorado);
           } else {
             // se comer um alimento de um tipo diferente perde vida
             this.vida -= abs(devorado.vida);
             this.fome -= abs(devorado.fome);
-            conhecer(this.baseConhecimento[1], devorado.tipo);
+            conhecer(this.baseConhecimento[1], devorado);
           }
         }
         // limita a fome e a vida aos seus valores máximos
@@ -184,7 +195,7 @@ function Criatura(x, y, caracteristicas){
     // criatura ficará passeando por um tempo se não estiver com fome
     if (this.tempo < 0){
       this.destino = createVector(random(width), random(height));
-      this.tempo = random(30);
+      this.tempo = random(100);
     } else {
       this.tempo -= .1;
     }
@@ -196,6 +207,7 @@ function Criatura(x, y, caracteristicas){
   //____________________________________________________________________________
   this.movimenta = function(obj, nivelFome){
     var desejo;
+    var distancia;
     // nível 0 = andar = só passeando
     if (nivelFome == 0){
       desejo = p5.Vector.sub(obj, this.posicao);
@@ -204,7 +216,7 @@ function Criatura(x, y, caracteristicas){
     // nível 1 = segue = pouca fome
     } else if (nivelFome == 1){
       desejo = p5.Vector.sub(obj.posicao, this.posicao);
-      var distancia = desejo.mag();
+      distancia = desejo.mag();
       var vel = this.maxVelocidade;
       var raioAlimento = this.codigoGenetico[0];
       if (distancia < raioAlimento)
@@ -218,7 +230,12 @@ function Criatura(x, y, caracteristicas){
 
     // nível 3 = foge = sendo caçado = velocidade máxima ao contrário
     } else if (nivelFome == 3){
-      var distancia = desejo.mag();
+      if (obj.nome == undefined) // é um alimento
+        desejo = p5.Vector.sub(obj, this.posicao);
+      else
+        desejo = p5.Vector.sub(obj.posicao, this.posicao);
+
+      distancia = desejo.mag();
       var raioPerigo = this.codigoGenetico[1];
       if (distancia < raioPerigo){
         desejo.setMag(this.maxVelocidade);
