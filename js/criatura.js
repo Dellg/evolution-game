@@ -28,8 +28,9 @@ function Criatura(x, y, caracteristicas){
   this.codigoGenetico[0] = random(-1, 1); // peso planta
   this.codigoGenetico[1] = random(-1, 1); // peso carne
   this.codigoGenetico[2] = random(-1, 1); // peso perigo
-  this.codigoGenetico[4] = parseFloat(caracteristicas[7]); // raio de percepção para identificar alimento
-  this.codigoGenetico[5] = parseFloat(caracteristicas[8]); // raio de percepção para identificar perigo
+  this.codigoGenetico[4] = parseFloat(caracteristicas[7]); // raio de percepção para identificar alimento planta
+  this.codigoGenetico[5] = parseFloat(caracteristicas[7]); // raio de percepção para identificar alimento carne
+  this.codigoGenetico[6] = parseFloat(caracteristicas[8]); // raio de percepção para identificar perigo
 
   this.baseConhecimento = [];
   this.baseConhecimento[0] = []; // índice 0 = comidas que matam a fome
@@ -68,8 +69,8 @@ function Criatura(x, y, caracteristicas){
   //____________________________________________________________________________
   this.comportamentos = function(plantas, carnes, venenos, criaturas) {
     var seguePlanta = this.alimenta(plantas, this.codigoGenetico[4]);
-    var segueCarne = this.alimenta(carnes, this.codigoGenetico[4]);
-    var segueVeneno = this.alimenta(venenos, this.codigoGenetico[5]);
+    var segueCarne = this.alimenta(carnes, this.codigoGenetico[5]);
+    var segueVeneno = this.alimenta(venenos, this.codigoGenetico[6]);
 
     seguePlanta.mult(this.codigoGenetico[0]);
     segueCarne.mult(this.codigoGenetico[1]);
@@ -94,20 +95,21 @@ function Criatura(x, y, caracteristicas){
 
       if (distancia < this.maxVelocidade + 2) {
         var devorado = comidas.splice(i, 1)[0];
-        // se for comida ruim, perde vida e adiciona aquele tipo à base de conhecimento
         if (devorado.tipo == 2){
+        // se for comida ruim, perde vida e adiciona aquele tipo à base de conhecimento
           this.vida -= abs(devorado.vida) * 2;
-        // onívoros comem dos dois tipos de alimento, por isso saciam pouca fome com cada alimento
         } else if (this.tipo == 2){
+        // onívoros comem dos dois tipos de alimento, por isso saciam pouca fome com cada alimento
           this.vida += abs(devorado.vida)/2;
           this.fome += abs(devorado.fome);
-        // criaturas que comem alimento do seu tipo apenas, saciam a fome inteira que aquele alimento dá
         } else if (this.tipo == devorado.tipo){
+        // criaturas que comem alimento do seu tipo apenas, saciam a fome inteira que aquele alimento dá
           this.vida += abs(devorado.vida)/1.5;
           this.fome += abs(devorado.fome) * 1.5;
-        // se comer um alimento de um tipo diferente perde vida
         } else {
+        // se comer um alimento de um tipo diferente perde vida
           this.fome -= abs(devorado.fome);
+          this.vida -= abs(devorado.vida)/2;
         }
         // limita a fome e a vida aos seus valores máximos
         if (this.fome > this.maxFome)
@@ -171,9 +173,10 @@ function Criatura(x, y, caracteristicas){
     // ellipse(0, 0, this.codigoGenetico[4] * 2);
     // line(0, 0, 0, -this.codigoGenetico[0] * 25)
     // stroke(0, 0, 255);
+    // ellipse(0, 0, this.codigoGenetico[5] * 2);
     // line(0, 0, 0, -this.codigoGenetico[1] * 25);
     // stroke(255, 0, 0);
-    // ellipse(0, 0, this.codigoGenetico[5] * 2);
+    // ellipse(0, 0, this.codigoGenetico[6] * 2);
     // line(0, 0, 0, -this.codigoGenetico[2] * 25);
     // ^ apagar depois
 
