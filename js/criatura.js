@@ -17,7 +17,7 @@ function Criatura(x, y, caracteristicas){
   // dados da criatura
   this.posicao = createVector(x, y);
   this.aceleracao = createVector();
-  this.maxForca = random(0.2, 0.5);
+  this.maxForca = random(0.1, 0.5);
   this.raio = 5;
 
   // características da IA
@@ -25,10 +25,11 @@ function Criatura(x, y, caracteristicas){
   this.fitness = 0;
 
   this.codigoGenetico = [];
-  this.codigoGenetico[0] = parseFloat(caracteristicas[7]); // raio de percepção para identificar alimento
-  this.codigoGenetico[1] = parseFloat(caracteristicas[8]); // raio de percepção para identificar perigo
-  this.codigoGenetico[2] = random(-2, 2); // peso alimento
-  this.codigoGenetico[3] = random(-2, 2); // peso perigo
+  this.codigoGenetico[0] = random(-1, 1); // peso planta
+  this.codigoGenetico[1] = random(-1, 1); // peso carne
+  this.codigoGenetico[2] = random(-1, 1); // peso perigo
+  this.codigoGenetico[4] = parseFloat(caracteristicas[7]); // raio de percepção para identificar alimento
+  this.codigoGenetico[5] = parseFloat(caracteristicas[8]); // raio de percepção para identificar perigo
 
   this.baseConhecimento = [];
   this.baseConhecimento[0] = []; // índice 0 = comidas que matam a fome
@@ -41,7 +42,7 @@ function Criatura(x, y, caracteristicas){
   //____________________________________________________________________________
   // método de atualização
   //____________________________________________________________________________
-  this.update = function(){
+  this.update = function() {
     // a criatura só começara a perder vida se estiver com fome
     if (this.fome <= 0) {
       this.vida -= 0.002;
@@ -49,13 +50,108 @@ function Criatura(x, y, caracteristicas){
       this.vida -= 0.001;
       this.fome -= 0.0015;
     }
-    //apenas para teste
-    this.vida = this.maxVida;
-    //apenas para teste
     this.velocidade.add(this.aceleracao);
     this.velocidade.limit(this.maxVelocidade);
     this.posicao.add(this.velocidade);
     this.aceleracao.mult(0);
+  }
+
+  //____________________________________________________________________________
+  //  método que aplica força na aceleração
+  //____________________________________________________________________________
+  this.aplicaForca = function(forca) {
+    this.aceleracao.add(forca);
+  }
+
+  //____________________________________________________________________________
+  //  método que define qual comportamento a criatura irá realizar
+  //____________________________________________________________________________
+  this.comportamentos = function(plantas, carnes, venenos, criaturas) {
+    var seguePlanta = this.alimenta(plantas, this.codigoGenetico[4]);
+    var segueCarne = this.alimenta(carnes, this.codigoGenetico[4]);
+    var segueVeneno = this.alimenta(venenos, this.codigoGenetico[5]);
+
+    seguePlanta.mult(this.codigoGenetico[0]);
+    segueCarne.mult(this.codigoGenetico[1]);
+    segueVeneno.mult(this.codigoGenetico[2]);
+
+    this.aplicaForca(seguePlanta);
+    this.aplicaForca(segueCarne);
+    this.aplicaForca(segueVeneno);
+  }
+
+  //____________________________________________________________________________
+  // método que define a forma como a criatura irá se alimentar, dependendo da fome
+  //____________________________________________________________________________
+  this.alimenta = function(comidas, percepcao) {
+    var lembranca = Infinity;
+    var maisProximo = null;
+
+    // a percepção usada ainda é a mesma, independente do tipo de alimento
+
+    for (var i = comidas.length - 1; i >= 0; i--) {
+      var distancia = this.posicao.dist(comidas[i].posicao);
+
+      if (distancia < this.maxVelocidade + 2) {
+        var devorado = comidas.splice(i, 1)[0];
+        // se for comida ruim, perde vida e adiciona aquele tipo à base de conhecimento
+        if (devorado.tipo == 2){
+          this.vida -= abs(devorado.vida) * 2;
+        // onívoros comem dos dois tipos de alimento, por isso saciam pouca fome com cada alimento
+        } else if (this.tipo == 2){
+          this.vida += abs(devorado.vida)/2;
+          this.fome += abs(devorado.fome);
+        // criaturas que comem alimento do seu tipo apenas, saciam a fome inteira que aquele alimento dá
+        } else if (this.tipo == devorado.tipo){
+          this.vida += abs(devorado.vida)/1.5;
+          this.fome += abs(devorado.fome) * 1.5;
+        // se comer um alimento de um tipo diferente perde vida
+        } else {
+          this.fome -= abs(devorado.fome);
+        }
+        // limita a fome e a vida aos seus valores máximos
+        if (this.fome > this.maxFome)
+          this.fome = this.maxFome;
+        if (this.vida > this.maxVida)
+          this.vida = this.maxVida;
+
+      } else {
+        if (distancia < lembranca && distancia < percepcao) {
+          lembranca = distancia;
+          maisProximo = comidas[i];
+        }
+      }
+    }
+
+    // aqui define o comportamento da criatura, se irá perseguir ou se irá apenas até o local para comer
+    if (maisProximo != null) {
+      return this.movimenta(maisProximo);
+    }
+    return createVector(0, 0);
+  }
+
+  //____________________________________________________________________________
+  // método de movimento da criatura
+  //____________________________________________________________________________
+  this.movimenta = function(obj) {
+
+    // adicionar movimentos diferentes, dependendo da necessidade
+    // movimento seguir com calma: vel = map(distancia, 0, raioAlimento, .5, this.maxVelocidade / 2);
+    // movimento andar aleatorio: com temporizador
+
+    var desejo = p5.Vector.sub(obj.posicao, this.posicao);
+    desejo.setMag(this.maxVelocidade);
+
+    var direcao = p5.Vector.sub(desejo, this.velocidade);
+    direcao.limit(this.maxForca);
+    return direcao;
+  }
+
+  //____________________________________________________________________________
+  // método pra verificar se a criatura está sem vida
+  //____________________________________________________________________________
+  this.morreu = function() {
+    return (this.vida < 0)
   }
 
   //____________________________________________________________________________
@@ -69,14 +165,16 @@ function Criatura(x, y, caracteristicas){
     rotate(angulo);
 
     //apagar depois
-    noFill();
-    strokeWeight(1);
-    stroke(0, 255, 0);
-    ellipse(0, 0, this.codigoGenetico[0] * 2);
-    line(0, 0, 0, -this.codigoGenetico[2] * 25)
-    stroke(255, 0, 0);
-    ellipse(0, 0, this.codigoGenetico[1] * 2);
-    line(0, 0, 0, -this.codigoGenetico[3] * 25);
+    // noFill();
+    // strokeWeight(1);
+    // stroke(0, 255, 0);
+    // ellipse(0, 0, this.codigoGenetico[4] * 2);
+    // line(0, 0, 0, -this.codigoGenetico[0] * 25)
+    // stroke(0, 0, 255);
+    // line(0, 0, 0, -this.codigoGenetico[1] * 25);
+    // stroke(255, 0, 0);
+    // ellipse(0, 0, this.codigoGenetico[5] * 2);
+    // line(0, 0, 0, -this.codigoGenetico[2] * 25);
     // ^ apagar depois
 
     fill(lerpColor(color(0,0,0), this.cor, this.vida));
@@ -98,188 +196,29 @@ function Criatura(x, y, caracteristicas){
   }
 
   //____________________________________________________________________________
-  //  método que define qual comportamento a criatura irá realizar
-  //____________________________________________________________________________
-  this.comportamentos = function(comidas){
-    var movimento = this.alimenta(comidas);
-    var fuga = null;
-    // verifica se está próximo de comidas ruins
-    for (var i = this.baseConhecimento[1].length - 1; i >= 0; i--){
-      var distancia = this.posicao.dist(this.baseConhecimento[1][i].posicao);
-      if (distancia < this.codigoGenetico[1])
-        fuga = this.movimenta(this.baseConhecimento[1][i], 3);
-    }
-    // verifica se está próximo de predadores
-    for (var i = this.baseConhecimento[2].length - 1; i >= 0; i--){
-      var distancia = this.posicao.dist(this.baseConhecimento[2][i].posicao);
-      if (distancia < this.codigoGenetico[1])
-        fuga = this.movimenta(this.baseConhecimento[2][i], 3);
-    }
-
-    movimento.mult(this.codigoGenetico[2]);
-    if (fuga != null)
-      fuga.mult(this.codigoGenetico[3]);
-
-    this.aceleracao.add(movimento);
-    if (fuga != null)
-      this.aceleracao.add(fuga);
-  }
-
-  //____________________________________________________________________________
-  // método que define a forma como a criatura irá se alimentar, dependendo da fome
-  //____________________________________________________________________________
-  this.alimenta = function(comidas){
-    var lembranca = Infinity;
-    var maisProximo = null;
-
-    for (var i = comidas.length - 1; i >= 0; i--) {
-      var distancia = this.posicao.dist(comidas[i].posicao);
-
-      if (distancia < this.maxVelocidade + 2) {
-        var devorado = comidas.splice(i, 1)[0];
-        // se for comida ruim, perde vida e adiciona aquele tipo à base de conhecimento
-        if (devorado.tipo == 2){
-          this.vida -= abs(devorado.vida * 2);
-          conhecer(this.baseConhecimento[1], devorado);
-        } else {
-          if (this.tipo == 2){
-            // onívoros comem dos dois tipos de alimento, por isso saciam pouca fome com cada alimento
-            this.fome += abs(devorado.fome);
-            this.vida += abs(devorado.vida)/2;
-            conhecer(this.baseConhecimento[0], devorado);
-          } else if (this.tipo == devorado.tipo){
-            // criaturas que comem alimento do seu tipo apenas, saciam a fome inteira que aquele alimento dá
-            this.fome += abs(devorado.fome) * 1.5;
-            this.vida += abs(devorado.vida)/1.5;
-            conhecer(this.baseConhecimento[0], devorado);
-          } else {
-            // se comer um alimento de um tipo diferente perde vida
-            this.vida -= abs(devorado.vida);
-            this.fome -= abs(devorado.fome);
-            conhecer(this.baseConhecimento[1], devorado);
-          }
-        }
-        // limita a fome e a vida aos seus valores máximos
-        if (this.fome > this.maxFome){
-          this.fome = this.maxFome;
-        }
-        if (this.vida > this.maxVida){
-          this.vida = this.maxVida;
-        }
-      } else {
-        // essa variável identifica se está perseguindo uma comida boa ou ruim
-        var percepcaoUsada;
-        if (this.baseConhecimento[1].contains(comidas[i].tipo)){
-          percepcaoUsada = this.codigoGenetico[1];
-        } else {
-          percepcaoUsada = this.codigoGenetico[0];
-        }
-        if (distancia < lembranca && distancia < percepcaoUsada) {
-          lembranca = distancia;
-          maisProximo = comidas[i];
-        }
-      }
-    }
-
-    // aqui define o comportamento da criatura, se irá perseguir ou se irá apenas até o local para comer
-    if (maisProximo != null) {
-      if (this.fome < this.maxFome / 4 || this.vida < this.maxVida / 3) {
-        // com muita fome, persegue
-        return this.movimenta(maisProximo, 2);
-      } else if (this.fome < this.maxFome / 1.5 || this.vida < this.maxVida / 2) {
-        // com pouca fome, só segue
-        return this.movimenta(maisProximo, 1);
-      }
-    }
-
-    // criatura ficará passeando por um tempo se não estiver com fome
-    if (this.tempo < 0){
-      this.destino = createVector(random(width), random(height));
-      this.tempo = random(100);
-    } else {
-      this.tempo -= .1;
-    }
-    return this.movimenta(this.destino, 0);
-  }
-
-  //____________________________________________________________________________
-  // método de movimento da criatura
-  //____________________________________________________________________________
-  this.movimenta = function(obj, nivelFome){
-    var desejo;
-    var distancia;
-    // nível 0 = andar = só passeando
-    if (nivelFome == 0){
-      desejo = p5.Vector.sub(obj, this.posicao);
-      desejo.setMag(0.5);
-
-    // nível 1 = segue = pouca fome
-    } else if (nivelFome == 1){
-      desejo = p5.Vector.sub(obj.posicao, this.posicao);
-      distancia = desejo.mag();
-      var vel = this.maxVelocidade;
-      var raioAlimento = this.codigoGenetico[0];
-      if (distancia < raioAlimento)
-        vel = map(distancia, 0, raioAlimento, .5, this.maxVelocidade / 2);
-      desejo.setMag(vel);
-
-    // nível 2 = persegue = muita fome = velocidade máxima
-    } else if (nivelFome == 2){
-      desejo = p5.Vector.sub(obj.posicao, this.posicao);
-      desejo.setMag(this.maxVelocidade);
-    // nível 3 = foge = sendo caçado = velocidade máxima ao contrário
-    } else if (nivelFome == 3){
-      if (obj.nome == undefined) { // é um alimento
-        desejo = p5.Vector.sub(obj, this.posicao);
-      } else {
-        desejo = p5.Vector.sub(obj.posicao, this.posicao);
-        distancia = desejo.mag();
-        desejo.setMag(this.maxVelocidade);
-      }
-    }
-
-    if (desejo && obj.tipo){
-      if (obj.tipo == 2 || this.tipo != obj.tipo)
-        desejo.mult(this.codigoGenetico[3]);
-      else
-        desejo.mult(this.codigoGenetico[2]);
-    }
-    var direcao = p5.Vector.sub(desejo, this.velocidade);
-    direcao.limit(this.maxForca);
-    return direcao;
-  }
-
-  //____________________________________________________________________________
-  // método pra verificar se a criatura está sem vida
-  //____________________________________________________________________________
-  this.morreu = function(){
-    return (this.vida <= 0);
-  }
-
-  //____________________________________________________________________________
   // método que impede a criatura de sair da tela (comidas não são geradas fora da tela)
   //____________________________________________________________________________
   this.limites = function() {
     var desejo = null;
 
-    if (this.posicao.x < 5) {
+    if (this.posicao.x < 10) {
       desejo = createVector(this.maxVelocidade, this.velocidade.y);
-    }
-    else if (this.posicao.x > width-5) {
+    } else if (this.posicao.x > width - 10) {
       desejo = createVector(-this.maxVelocidade, this.velocidade.y);
     }
-    if (this.posicao.y < 5) {
+
+    if (this.posicao.y < 10) {
       desejo = createVector(this.velocidade.x, this.maxVelocidade);
-    }
-    else if (this.posicao.y > height-5) {
+    } else if (this.posicao.y > height - 10) {
       desejo = createVector(this.velocidade.x, -this.maxVelocidade);
     }
+
     if (desejo !== null) {
       desejo.normalize();
       desejo.mult(this.maxVelocidade);
       var direcao = p5.Vector.sub(desejo, this.velocidade);
       direcao.limit(this.maxForca);
-      this.aceleracao.add(direcao);
+      this.aplicaForca(direcao);
     }
   }
 
@@ -287,6 +226,7 @@ function Criatura(x, y, caracteristicas){
   // função que adiciona um objeto à uma base de conhecimento
   //____________________________________________________________________________
   function conhecer(base, obj){
+    // ainda não está sendo utilizada
     if (!base.contains(obj))
       base.push(obj);
   }
