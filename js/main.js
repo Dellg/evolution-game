@@ -129,7 +129,7 @@ function setup(){
     // cria tipos de alimentos diferentes
     for (var i = 0; i < 20; i++){
       var t = i%3;
-      var v = random(-0.5, 1);
+      var v = random(0.5, 1.5);
       var f = random(0.5, 3);
       var c = color(random(255), random(255), random(255));
       tipoAlimentos[i] = [t, v, f, c];
@@ -274,7 +274,7 @@ function adicionaNovaComida(x, y){
 Array.prototype.contains = function(obj) {
     var i = this.length;
     while (i--) {
-        if (this[i].tipo === obj.tipo)
+        if (this[i].codigo === obj.codigo)
             return true;
     }
     return false;
