@@ -1,4 +1,4 @@
-function Criatura(x, y, caracteristicas){
+function Criatura(x, y, caracteristicas, heranca, geracao){
   this.nome = caracteristicas[0];
   // tipo de alimento que a criatura consome: 0 = planta, 1 = carne, 2 = ambos
   this.tipo = caracteristicas[1];
@@ -6,7 +6,7 @@ function Criatura(x, y, caracteristicas){
   this.vida = parseFloat(caracteristicas[2]);
   this.maxVida = parseFloat(caracteristicas[2]);
   // fome define de quanto em quanto tempo a criatura precisa estar se alimento
-  this.fome = parseFloat(caracteristicas[3]);
+  this.fome = random(1, caracteristicas[3]);
   this.maxFome = parseFloat(caracteristicas[3]);
   this.velocidade = p5.Vector.random2D(caracteristicas[4]);
   this.maxVelocidade = parseFloat(caracteristicas[4]);
@@ -21,16 +21,46 @@ function Criatura(x, y, caracteristicas){
   this.raio = 5;
 
   // características da IA
-  this.geracao = 0;
+  this.geracao = geracao;
+  this.reproducao = 0;
   this.fitness = 0;
 
   this.codigoGenetico = [];
-  this.codigoGenetico[0] = random(-1, 1); // peso planta
-  this.codigoGenetico[1] = random(-1, 1); // peso carne
-  this.codigoGenetico[2] = random(-1, 1); // peso perigo
-  this.codigoGenetico[4] = parseFloat(caracteristicas[7]); // raio de percepção para identificar alimento planta
-  this.codigoGenetico[5] = parseFloat(caracteristicas[7]); // raio de percepção para identificar alimento carne
-  this.codigoGenetico[6] = parseFloat(caracteristicas[8]); // raio de percepção para identificar perigo
+  // criatura nova
+  if (heranca === null){
+    this.codigoGenetico[0] = random(-1, 1); // peso planta
+    this.codigoGenetico[1] = random(-1, 1); // peso carne
+    this.codigoGenetico[2] = random(-1, 1); // peso perigo
+    this.codigoGenetico[3] = random(caracteristicas[7] - 10, caracteristicas[7] + 10); // raio de percepção para identificar alimento planta
+    this.codigoGenetico[4] = random(caracteristicas[7] - 10, caracteristicas[7] + 10); // raio de percepção para identificar alimento carne
+    this.codigoGenetico[5] = random(caracteristicas[8] - 10, caracteristicas[8] + 10); // raio de percepção para identificar perigo
+  // filho de alguma criatura - chances de mutação
+  } else {
+    this.codigoGenetico[0] = heranca[0];
+    if (random(1) < taxaMutacao){
+      this.codigoGenetico[0] += random(-0.1, 0.1);
+    }
+    this.codigoGenetico[1] = heranca[1];
+    if (random(1) < taxaMutacao){
+      this.codigoGenetico[1] += random(-0.1, 0.1);
+    }
+    this.codigoGenetico[2] = heranca[2];
+    if (random(1) < taxaMutacao){
+      this.codigoGenetico[2] += random(-0.1, 0.1);
+    }
+    this.codigoGenetico[3] = heranca[3];
+    if (random(1) < taxaMutacao){
+      this.codigoGenetico[3] += random(-10, 10);
+    }
+    this.codigoGenetico[4] = heranca[4];
+    if (random(1) < taxaMutacao){
+      this.codigoGenetico[4] += random(-10, 10);
+    }
+    this.codigoGenetico[5] = heranca[5];
+    if (random(1) < taxaMutacao){
+      this.codigoGenetico[5] += random(-10, 10);
+    }
+  }
 
   this.baseConhecimento = [];
   this.baseConhecimento[0] = []; // índice 0 = comidas que matam a fome
@@ -44,6 +74,10 @@ function Criatura(x, y, caracteristicas){
   // método de atualização
   //____________________________________________________________________________
   this.update = function() {
+    // fitness vai subindo com o tempo, se comer o tipo de comida errada, perde um pouco
+    this.reproducao += 0.01;
+    this.fitness += 0.01;
+
     // a criatura só começara a perder vida se estiver com fome
     if (this.fome <= 0) {
       this.vida -= 0.002;
@@ -68,9 +102,9 @@ function Criatura(x, y, caracteristicas){
   //  método que define qual comportamento a criatura irá realizar
   //____________________________________________________________________________
   this.comportamentos = function(plantas, carnes, venenos, criaturas) {
-    var seguePlanta = this.alimenta(plantas, this.codigoGenetico[4]);
-    var segueCarne = this.alimenta(carnes, this.codigoGenetico[5]);
-    var segueVeneno = this.alimenta(venenos, this.codigoGenetico[6]);
+    var seguePlanta = this.alimenta(plantas, this.codigoGenetico[3]);
+    var segueCarne = this.alimenta(carnes, this.codigoGenetico[4]);
+    var segueVeneno = this.alimenta(venenos, this.codigoGenetico[5]);
 
     seguePlanta.mult(this.codigoGenetico[0]);
     segueCarne.mult(this.codigoGenetico[1]);
@@ -97,19 +131,23 @@ function Criatura(x, y, caracteristicas){
         var devorado = comidas.splice(i, 1)[0];
         if (devorado.tipo == 2){
         // se for comida ruim, perde vida e adiciona aquele tipo à base de conhecimento
-          this.vida -= abs(devorado.vida) * 2;
+          this.vida -= abs(devorado.vida) * 1.5;
+          this.fitness -= 5;
         } else if (this.tipo == 2){
         // onívoros comem dos dois tipos de alimento, por isso saciam pouca fome com cada alimento
           this.vida += abs(devorado.vida)/2;
           this.fome += abs(devorado.fome);
+          this.fitness += 1;
         } else if (this.tipo == devorado.tipo){
         // criaturas que comem alimento do seu tipo apenas, saciam a fome inteira que aquele alimento dá
           this.vida += abs(devorado.vida)/1.5;
           this.fome += abs(devorado.fome) * 1.5;
+          this.fitness += 1;
         } else {
         // se comer um alimento de um tipo diferente perde vida
           this.fome -= abs(devorado.fome);
           this.vida -= abs(devorado.vida)/2;
+          this.fitness -= 2;
         }
         // limita a fome e a vida aos seus valores máximos
         if (this.fome > this.maxFome)
@@ -150,6 +188,49 @@ function Criatura(x, y, caracteristicas){
   }
 
   //____________________________________________________________________________
+  // método onde as duas melhores criaturas da espécie gerará um filho
+  //____________________________________________________________________________
+  this.reproduz = function() {
+    //var chance = random(1);
+    // para reproduzir, precisa estar com 75% da saúde máxima
+    if (this.vida >= (this.maxVida - this.maxVida/4) && this.reproducao > 15){
+      if (random(1) < 0.03){
+        var melhorParceiro = null;
+        // vai procurar o melhor parceiro para gerar um filho
+        for (var i = 0; i < criaturas.length; i++){
+          if ((criaturas[i] != this) && (criaturas[i].nome == this.nome)){
+            if (melhorParceiro == null){
+              melhorParceiro = criaturas[i];
+            } else {
+              if (criaturas[i].fitness > melhorParceiro.fitness){
+                melhorParceiro = criaturas[i];
+              }
+            }
+          }
+        }
+        if (melhorParceiro == null){
+          return null;
+        } else {
+          // aqui mistura o código genético dos pais para criar o do filho (ainda sem mutação)
+          var codigoGeneticoFilho = [];
+          for (var j = 0; j < this.codigoGenetico.length; j++){
+            //chance = random(1);
+            if (random(1) > 0.5){
+              codigoGeneticoFilho[j] = this.codigoGenetico[j];
+            } else {
+              codigoGeneticoFilho[j] = melhorParceiro.codigoGenetico[j];
+            }
+          }
+          console.log(this.nome + " reproduziu");
+          this.reproducao = 0;
+          melhorParceiro.reproducao = 0;
+          return new Criatura(this.posicao.x, this.posicao.y, caracteristicas, codigoGeneticoFilho, this.geracao + 1);
+        }
+      }
+    }
+  }
+
+  //____________________________________________________________________________
   // método pra verificar se a criatura está sem vida
   //____________________________________________________________________________
   this.morreu = function() {
@@ -170,13 +251,13 @@ function Criatura(x, y, caracteristicas){
     // noFill();
     // strokeWeight(1);
     // stroke(0, 255, 0);
-    // ellipse(0, 0, this.codigoGenetico[4] * 2);
+    // ellipse(0, 0, this.codigoGenetico[3] * 2);
     // line(0, 0, 0, -this.codigoGenetico[0] * 25)
     // stroke(0, 0, 255);
-    // ellipse(0, 0, this.codigoGenetico[5] * 2);
+    // ellipse(0, 0, this.codigoGenetico[4] * 2);
     // line(0, 0, 0, -this.codigoGenetico[1] * 25);
     // stroke(255, 0, 0);
-    // ellipse(0, 0, this.codigoGenetico[6] * 2);
+    // ellipse(0, 0, this.codigoGenetico[5] * 2);
     // line(0, 0, 0, -this.codigoGenetico[2] * 25);
     // ^ apagar depois
 
@@ -228,7 +309,7 @@ function Criatura(x, y, caracteristicas){
   //____________________________________________________________________________
   // função que adiciona um objeto à uma base de conhecimento
   //____________________________________________________________________________
-  function conhecer(base, obj){
+  this.conhecer = function(base, obj){
     // ainda não está sendo utilizada
     if (!base.contains(obj))
       base.push(obj);

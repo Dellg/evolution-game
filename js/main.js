@@ -5,10 +5,11 @@ var criaturas = [];
 var alimentosPlanta;
 var alimentosCarne;
 var alimentosVeneno;
-var countAlimentos = 50; // será para cada tipo de alimento
+var countAlimentos = 75; // será para cada tipo de alimento
 var tipoCriaturas = [];
 var tipoAlimentos = [];
 var geracao = 0;
+var taxaMutacao = 0.01;
 
 //______________________________________________________________________________
 // preparação do jogo e recebimento de dados do usuário
@@ -186,11 +187,11 @@ function draw(){
     background(15);
     fill(255);
     text("Geração " + geracao, 10, 20);
-    // gera novas comidas se tiver menos da quantidade definida comidas no canvas
     if (criaturas.length <= 0){
       geracao += 1;
       iniciaGeracao();
     } else {
+      // gera novas comidas se tiver menos da quantidade definida comidas no canvas
       if (random(1) < 0.05 || (alimentosPlanta.length + alimentosCarne.length + alimentosVeneno.length) < countAlimentos){
         if (random(1) < 0.1) {
           adicionaNovaComida(null, null);
@@ -202,7 +203,16 @@ function draw(){
         crtr.limites();
         crtr.update();
         crtr.show();
+
+        // aqui verifica se foi feita reprodução, para adicionar os filhos à população
+        var filho = criaturas[i].reproduz();
+        if (filho != null) {
+          console.log(criaturas[i].nome + " reproduziu.");
+          criaturas.push(filho);
+        }
+        // aqui verifica se a criatura morreu, para retirá-la da população
         if (crtr.morreu()){
+          console.log(criaturas[i].nome + " morreu.");
           criaturas.splice(i, 1);
           adicionaNovaComida(crtr.posicao.x, crtr.posicao.y);
         }
@@ -229,10 +239,10 @@ function draw(){
 function iniciaGeracao(){
   // cria quantidades das criaturas pré-definidas
   for (var i = 0; i < tipoCriaturas.length; i++){
-    for (var j = 0; j < 3; j++){ // <--------------------------- alterar aqui pra criar mais de uma de cada tipo
+    for (var j = 0; j < 6; j++){ // <--------------------------- alterar aqui pra criar mais de uma de cada tipo
       var x = random(xGame);
       var y = random(yGame);
-      var criatura = new Criatura(x, y, tipoCriaturas[i]);
+      var criatura = new Criatura(x, y, tipoCriaturas[i], null, geracao);
       criaturas.push(criatura);
     }
   }
