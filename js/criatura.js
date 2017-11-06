@@ -194,7 +194,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
     //var chance = random(1);
     // para reproduzir, precisa estar com 75% da saúde máxima
     if (this.vida >= (this.maxVida - this.maxVida/4) && this.reproducao > 15){
-      if (random(1) < 0.03){
+      if (random(1) < 0.1){
         var melhorParceiro = null;
         // vai procurar o melhor parceiro para gerar um filho
         for (var i = 0; i < criaturas.length; i++){
