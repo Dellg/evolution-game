@@ -127,7 +127,7 @@ function setup(){
       return false;
     }
     // cria tipos de alimentos diferentes
-    for (var i = 0; i < 12; i++){
+    for (var i = 0; i < 20; i++){
       var t = i%3;
       var v = random(-0.5, 1);
       var f = random(0.5, 3);
