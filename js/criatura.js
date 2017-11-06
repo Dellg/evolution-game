@@ -38,42 +38,33 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
     this.codigoGenetico[7] = random(0.001, 0.01); // taxa de reprodução
   // filho de alguma criatura - chances de mutação
   } else {
-    this.codigoGenetico[0] = heranca[0];
-    if (random(1) < taxaMutacao){
-      this.codigoGenetico[0] += random(-0.1, 0.1);
-    }
-    this.codigoGenetico[1] = heranca[1];
-    if (random(1) < taxaMutacao){
-      this.codigoGenetico[1] += random(-0.1, 0.1);
-    }
-    this.codigoGenetico[2] = heranca[2];
-    if (random(1) < taxaMutacao){
-      this.codigoGenetico[2] += random(-0.1, 0.1);
-    }
-    this.codigoGenetico[3] = heranca[3];
-    if (random(1) < taxaMutacao){
-      this.codigoGenetico[3] += random(-10, 10);
-    }
-    this.codigoGenetico[4] = heranca[4];
-    if (random(1) < taxaMutacao){
-      this.codigoGenetico[4] += random(-10, 10);
-    }
-    this.codigoGenetico[5] = heranca[5];
-    if (random(1) < taxaMutacao){
-      this.codigoGenetico[5] += random(-10, 10);
-    }
-    this.codigoGenetico[6] = heranca[6];
-    if (random(1) < taxaMutacao){
-      this.codigoGenetico[6] += random(-10, 10);
-    }
-    this.codigoGenetico[7] = heranca[7];
-    if (random(1) < taxaMutacao){
-      this.codigoGenetico[7] += random(-0.001, 0.001);
-      // limita a taxa de reprodução para ficar entre 0.001 e 0.01
-      if (this.codigoGenetico[7] > 0.01)
-        this.codigoGenetico = 0.01;
-      else if (this.codigoGenetico < 0.001)
-        this.codigoGenetico = 0.001;
+    for (var i = 0; i < this.codigoGenetico.length; i++){
+      this.codigoGenetico[i] = heranca[i];
+      switch (i) {
+        case 0:
+        case 1:
+        case 2:
+          if (random(1) < taxaMutacao)
+            this.codigoGenetico[i] += random(-0.1, 0.1);
+          break;
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+          if (random(1) < taxaMutacao)
+            this.codigoGenetico[5] += random(-10, 10);
+          break;
+        case 7:
+          if (random(1) < taxaMutacao){
+            this.codigoGenetico[7] += random(-0.001, 0.001);
+            // limita a taxa de reprodução para ficar entre 0.001 e 0.01
+            if (this.codigoGenetico[7] > 0.01)
+              this.codigoGenetico = 0.01;
+            else if (this.codigoGenetico < 0.001)
+              this.codigoGenetico = 0.001;
+          }
+          break;
+      }
     }
   }
 
