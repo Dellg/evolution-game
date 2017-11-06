@@ -191,7 +191,6 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   // método onde as duas melhores criaturas da espécie gerará um filho
   //____________________________________________________________________________
   this.reproduz = function() {
-    //var chance = random(1);
     // para reproduzir, precisa estar com 75% da saúde máxima
     if (this.vida >= (this.maxVida - this.maxVida/4) && this.reproducao > 15){
       if (random(1) < 0.1){
@@ -211,10 +210,9 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
         if (melhorParceiro == null){
           return null;
         } else {
-          // aqui mistura o código genético dos pais para criar o do filho (ainda sem mutação)
+          // aqui cruza o código genético dos pais para criar o do filho
           var codigoGeneticoFilho = [];
           for (var j = 0; j < this.codigoGenetico.length; j++){
-            //chance = random(1);
             if (random(1) > 0.5){
               codigoGeneticoFilho[j] = this.codigoGenetico[j];
             } else {
@@ -246,22 +244,22 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
     translate(this.posicao.x, this.posicao.y);
     rotate(angulo);
 
-    //apagar depois
+    // se debug estiver ativo, desenha percepções
     if (debug){
       noFill();
       strokeWeight(1);
       stroke(0, 255, 0);
-      ellipse(0, 0, this.codigoGenetico[3] * 2);
+      ellipse(0, 0, this.codigoGenetico[3] * 5);
       line(0, 0, 0, -this.codigoGenetico[0] * 25)
       stroke(0, 0, 255);
-      ellipse(0, 0, this.codigoGenetico[4] * 2);
+      ellipse(0, 0, this.codigoGenetico[4] * 5);
       line(0, 0, 0, -this.codigoGenetico[1] * 25);
       stroke(255, 0, 0);
-      ellipse(0, 0, this.codigoGenetico[5] * 2);
+      ellipse(0, 0, this.codigoGenetico[5] * 5);
       line(0, 0, 0, -this.codigoGenetico[2] * 25);
     }
-    // ^ apagar depois
 
+    // cor da criatura vai desaparecendo dependendo da vida
     fill(lerpColor(color(0,0,0), this.cor, this.vida));
     stroke(lerpColor(color(255,0,0), color(0,255,0), this.fome));
 

@@ -175,7 +175,7 @@ function setup(){
 }
 
 //______________________________________________________________________________
-// método temporário: botão do mouse ativa o modo debug
+// método que ativa o modo debug com o botão do mouse
 //______________________________________________________________________________
 function mousePressed(){
   this.debug = !this.debug;
@@ -289,6 +289,9 @@ function adicionaNovaComida(x, y){
   }
 }
 
+//______________________________________________________________________________
+// método para verificar se um array contém um objeto
+//______________________________________________________________________________
 Array.prototype.contains = function(obj) {
     var i = this.length;
     while (i--) {
