@@ -10,6 +10,7 @@ var tipoCriaturas = [];
 var tipoAlimentos = [];
 var geracao = 0;
 var taxaMutacao = 0.01;
+var debug = false;
 
 //______________________________________________________________________________
 // preparação do jogo e recebimento de dados do usuário
@@ -174,6 +175,13 @@ function setup(){
 }
 
 //______________________________________________________________________________
+// método temporário: botão do mouse ativa o modo debug
+//______________________________________________________________________________
+function mousePressed(){
+  this.debug = !this.debug;
+}
+
+//______________________________________________________________________________
 // onde o jogo acontece, de fato
 //______________________________________________________________________________
 function draw(){
@@ -207,12 +215,14 @@ function draw(){
         // aqui verifica se foi feita reprodução, para adicionar os filhos à população
         var filho = criaturas[i].reproduz();
         if (filho != null) {
-          console.log(criaturas[i].nome + " reproduziu.");
+          if (this.debug)
+            console.log(criaturas[i].nome + " reproduziu.");
           criaturas.push(filho);
         }
         // aqui verifica se a criatura morreu, para retirá-la da população
         if (crtr.morreu()){
-          console.log(criaturas[i].nome + " morreu.");
+          if (this.debug)
+            console.log(criaturas[i].nome + " morreu.");
           criaturas.splice(i, 1);
           adicionaNovaComida(crtr.posicao.x, crtr.posicao.y);
         }

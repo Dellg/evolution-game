@@ -6,7 +6,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   this.vida = parseFloat(caracteristicas[2]);
   this.maxVida = parseFloat(caracteristicas[2]);
   // fome define de quanto em quanto tempo a criatura precisa estar se alimento
-  this.fome = random(1, caracteristicas[3]);
+  this.fome = random(caracteristicas[3]/2, caracteristicas[3]);
   this.maxFome = parseFloat(caracteristicas[3]);
   this.velocidade = p5.Vector.random2D(caracteristicas[4]);
   this.maxVelocidade = parseFloat(caracteristicas[4]);
@@ -221,7 +221,6 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
               codigoGeneticoFilho[j] = melhorParceiro.codigoGenetico[j];
             }
           }
-          console.log(this.nome + " reproduziu");
           this.reproducao = 0;
           melhorParceiro.reproducao = 0;
           return new Criatura(this.posicao.x, this.posicao.y, caracteristicas, codigoGeneticoFilho, this.geracao + 1);
@@ -248,17 +247,19 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
     rotate(angulo);
 
     //apagar depois
-    // noFill();
-    // strokeWeight(1);
-    // stroke(0, 255, 0);
-    // ellipse(0, 0, this.codigoGenetico[3] * 2);
-    // line(0, 0, 0, -this.codigoGenetico[0] * 25)
-    // stroke(0, 0, 255);
-    // ellipse(0, 0, this.codigoGenetico[4] * 2);
-    // line(0, 0, 0, -this.codigoGenetico[1] * 25);
-    // stroke(255, 0, 0);
-    // ellipse(0, 0, this.codigoGenetico[5] * 2);
-    // line(0, 0, 0, -this.codigoGenetico[2] * 25);
+    if (debug){
+      noFill();
+      strokeWeight(1);
+      stroke(0, 255, 0);
+      ellipse(0, 0, this.codigoGenetico[3] * 2);
+      line(0, 0, 0, -this.codigoGenetico[0] * 25)
+      stroke(0, 0, 255);
+      ellipse(0, 0, this.codigoGenetico[4] * 2);
+      line(0, 0, 0, -this.codigoGenetico[1] * 25);
+      stroke(255, 0, 0);
+      ellipse(0, 0, this.codigoGenetico[5] * 2);
+      line(0, 0, 0, -this.codigoGenetico[2] * 25);
+    }
     // ^ apagar depois
 
     fill(lerpColor(color(0,0,0), this.cor, this.vida));
