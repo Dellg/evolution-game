@@ -130,26 +130,8 @@ Criatura.prototype.alimenta = function(comidas, percepcao) {
 
     if (distancia < this.maxVelocidade + 2) {
       var devorado = comidas.splice(i, 1)[0];
-      if (devorado.tipo == 2){
-      // se for comida ruim, perde vida e adiciona aquele tipo à base de conhecimento
-        this.vida -= devorado.vida;
-        this.fitness -= 5;
-      } else if (this.tipo == 2){
-      // onívoros comem dos dois tipos de alimento, por isso saciam pouca fome com cada alimento
-        this.vida += devorado.vida/1.5;
-        this.fome += devorado.fome;
-        this.fitness += 1;
-      } else if (this.tipo == devorado.tipo){
-      // criaturas que comem alimento do seu tipo apenas, saciam mais a fome com cada alimento
-        this.vida += devorado.vida/1.25;
-        this.fome += devorado.fome * 1.25;
-        this.fitness += 1;
-      } else {
-      // se comer um alimento de um tipo diferente perde vida e fica com um pouco mais de fome
-        this.fome -= devorado.fome/2;
-        this.vida -= devorado.vida/2;
-        this.fitness -= 2;
-      }
+      this.conhecer(devorado);
+
       // limita a fome e a vida aos seus valores máximos
       if (this.fome > this.maxFome)
         this.fome = this.maxFome;
@@ -321,7 +303,33 @@ Criatura.prototype.limites = function() {
 //____________________________________________________________________________
 // função que adiciona um objeto à uma base de conhecimento
 //____________________________________________________________________________
-Criatura.prototype.conhecer = function(base, obj){
-  if (!base.contains(obj))
-    base.push(obj);
+Criatura.prototype.conhecer = function(devorado){
+  var base = null;
+  if (devorado.tipo == 2){
+  // se for comida ruim, perde vida e adiciona aquele tipo à base de conhecimento
+    this.vida -= devorado.vida;
+    this.fitness -= 5;
+    base = this.baseConhecimento[1];
+  } else if (this.tipo == 2){
+  // onívoros comem dos dois tipos de alimento, por isso saciam pouca fome com cada alimento
+    this.vida += devorado.vida/1.5;
+    this.fome += devorado.fome;
+    this.fitness += 1;
+    base = this.baseConhecimento[0];
+  } else if (this.tipo == devorado.tipo){
+  // criaturas que comem alimento do seu tipo apenas, saciam mais a fome com cada alimento
+    this.vida += devorado.vida/1.25;
+    this.fome += devorado.fome * 1.25;
+    this.fitness += 1;
+    base = this.baseConhecimento[0];
+  } else {
+  // se comer um alimento de um tipo diferente perde vida e fica com um pouco mais de fome
+    this.fome -= devorado.fome/2;
+    this.vida -= devorado.vida/2;
+    this.fitness -= 2;
+    base = this.baseConhecimento[1];
+  }
+  // após selecionar a base de conhecimento apropriada, adiciona o alimento se ainda não estiver lá
+  if (!base.contains(devorado))
+    base.push(devorado);
 }

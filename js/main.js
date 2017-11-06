@@ -98,7 +98,7 @@ function setup(){
     for (var i = 0; i < 5; i++){ // <---------------------------------- quantidade de criaturas aleatórias
       var temp1 = random(1, 4);
       var temp2 = random(1, 4);
-      tipoCriaturas.push(["Criatura" + i, round(random(2)), temp1, (4 - temp1), temp2, (4 - temp2),
+      tipoCriaturas.push(["Criatura" + i, abs(round(random(-0.5, 2.4))), temp1, (4 - temp1), temp2, (4 - temp2),
                           color(random(255), random(255), random(255))]);
     }
     alert("Criaturas adicionadas! Aperte em Iniciar Jogo para começar.")
