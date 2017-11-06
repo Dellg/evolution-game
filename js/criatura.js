@@ -33,7 +33,8 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
     this.codigoGenetico[2] = random(-1, 1); // peso perigo
     this.codigoGenetico[3] = random(20, 100); // raio de percepção para identificar alimento planta
     this.codigoGenetico[4] = random(20, 100); // raio de percepção para identificar alimento carne
-    this.codigoGenetico[5] = random(20, 100); // raio de percepção para identificar perigo
+    this.codigoGenetico[5] = random(20, 100); // raio de percepção para identificar alimento veneno
+    this.codigoGenetico[6] = random(20, 100); // raio de percepção para identificar perigo
   // filho de alguma criatura - chances de mutação
   } else {
     this.codigoGenetico[0] = heranca[0];
@@ -60,6 +61,10 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
     if (random(1) < taxaMutacao){
       this.codigoGenetico[5] += random(-10, 10);
     }
+    this.codigoGenetico[6] = heranca[6];
+    if (random(1) < taxaMutacao){
+      this.codigoGenetico[6] += random(-10, 10);
+    }
   }
 
   this.baseConhecimento = [];
@@ -79,12 +84,12 @@ Criatura.prototype.update = function() {
   this.reproducao += 0.01;
   this.fitness += 0.01;
 
-  // a criatura só começara a perder vida se estiver com fome
+  // a criatura começará a perder muita vida se estiver com fome
   if (this.fome <= 0) {
-    this.vida -= 0.002;
-  } else {
     this.vida -= 0.001;
-    this.fome -= 0.0015;
+  } else {
+    this.vida -= 0.00025;
+    this.fome -= 0.001;
   }
   this.velocidade.add(this.aceleracao);
   this.velocidade.limit(this.maxVelocidade);
@@ -240,23 +245,28 @@ Criatura.prototype.show = function(){
   // se debug estiver ativo, desenha percepções
   if (debug){
     noFill();
+    strokeWeight(4);
+    stroke(255, 255, 0);
+    ellipse(0, 0, this.codigoGenetico[6] * 2); // aura predador
     strokeWeight(3);
     stroke(0, 255, 0);
-    ellipse(0, 0, this.codigoGenetico[3] * 2);
-    line(0, 0, 0, -this.codigoGenetico[0] * 50)
+    ellipse(0, 0, this.codigoGenetico[3] * 2); // aura planta
+    line(0, 0, 0, -this.codigoGenetico[0] * 50);
     strokeWeight(2);
     stroke(0, 0, 255);
-    ellipse(0, 0, this.codigoGenetico[4] * 2);
+    ellipse(0, 0, this.codigoGenetico[4] * 2); // aura carne
     line(0, 0, 0, -this.codigoGenetico[1] * 50);
     strokeWeight(1);
     stroke(255, 0, 0);
-    ellipse(0, 0, this.codigoGenetico[5] * 2);
+    ellipse(0, 0, this.codigoGenetico[5] * 2); // aura veneno
     line(0, 0, 0, -this.codigoGenetico[2] * 50);
+    // aqui mostra um contorno na criatura significando sua fome
+    strokeWeight(2);
+    stroke(lerpColor(color(255,0,0), color(0,255,0), this.fome));
   }
 
   // cor da criatura vai desaparecendo dependendo da vida
   fill(lerpColor(color(0,0,0), this.cor, this.vida));
-  stroke(lerpColor(color(255,0,0), color(0,255,0), this.fome));
 
   // desenha a forma da criatura no canvas
   beginShape();
@@ -328,6 +338,11 @@ Criatura.prototype.conhecer = function(devorado){
     this.vida -= devorado.vida/2;
     this.fitness -= 2;
     base = this.baseConhecimento[1];
+  }
+  // chance de pequena melhoria na percepção após se alimentar
+  if (random(1) < taxaMutacao){
+    console.log("criatura mutou");
+    this.codigoGenetico[devorado.tipo] += random(0.1);
   }
   // após selecionar a base de conhecimento apropriada, adiciona o alimento se ainda não estiver lá
   if (!base.contains(devorado))

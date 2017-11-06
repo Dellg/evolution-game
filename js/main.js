@@ -77,6 +77,13 @@ function setup(){
   botaoAdcRnd.position(50,580);
   botaoAdcRnd.mousePressed(adicionarAleatorios);
 
+  var botaoIniciar = createButton('Iniciar Jogo');
+  botaoIniciar.position(50, 700);
+  botaoIniciar.mousePressed(carregarDados);
+
+  //______________________________________________________________________________
+  // adicionar uma criatura definida pelo usuário
+  //______________________________________________________________________________
   function adicionarCriatura() {
     var somatorio = parseInt(vida.value()) + parseInt(fome.value()) + parseInt(velocidade.value()) + parseInt(resistencia.value());
 
@@ -94,6 +101,9 @@ function setup(){
     limparCampos();
   }
 
+  //______________________________________________________________________________
+  // adicionar criaturas aleatoriamente
+  //______________________________________________________________________________
   function adicionarAleatorios() {
     for (var i = 0; i < 5; i++){ // <---------------------------------- quantidade de criaturas aleatórias
       var temp1 = random(1, 4);
@@ -105,6 +115,9 @@ function setup(){
     limparCampos();
   }
 
+  //______________________________________________________________________________
+  // limpar os campos de entrada de dados
+  //______________________________________________________________________________
   function limparCampos(){
     nome.value("");
     tipo.value(false);
@@ -117,10 +130,9 @@ function setup(){
     corB.value(0);
   }
 
-  var botaoIniciar = createButton('Iniciar Jogo');
-  botaoIniciar.position(50, 700);
-  botaoIniciar.mousePressed(carregarDados);
-
+  //______________________________________________________________________________
+  // carrega os dados dos alimentos e inicia o jogo com uma geração
+  //______________________________________________________________________________
   function carregarDados(){
     if (tipoCriaturas.length <= 0){
       alert("Adicione algumas criaturas para poder iniciar o jogo.")
