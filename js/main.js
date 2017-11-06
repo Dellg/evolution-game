@@ -65,16 +65,6 @@ function setup(){
   corB = createSlider(0, 255, 0);
   corB.position(50, 412);
 
-  text("Percepção para alimentos:", 45, 450);
-  var prcpAlimento = createInput(0,"number");
-  prcpAlimento.style("width", "220px");
-  prcpAlimento.position(50, 465);
-
-  text("Percepção para perigo:", 45, 500);
-  var prcpPerigo = createInput(0,"number");
-  prcpPerigo.style("width", "220px");
-  prcpPerigo.position(50, 515);
-
   var botaoAdcCrt = createButton('Adicionar Criatura');
   botaoAdcCrt.position(50, 550);
   botaoAdcCrt.mousePressed(adicionarCriatura);
@@ -88,25 +78,19 @@ function setup(){
   botaoAdcRnd.mousePressed(adicionarAleatorios);
 
   function adicionarCriatura() {
-    var somatorio1 = parseInt(vida.value()) + parseInt(fome.value()) + parseInt(velocidade.value()) + parseInt(resistencia.value());
-    var somatorio2 = parseInt(prcpAlimento.value()) + parseInt(prcpPerigo.value());
+    var somatorio = parseInt(vida.value()) + parseInt(fome.value()) + parseInt(velocidade.value()) + parseInt(resistencia.value());
 
     if (nome.value() == "" || tipo.value() == "" || vida.value() == "" || fome.value() == "" ||
-        velocidade.value() == "" || resistencia.value() == "" || prcpAlimento.value() == "" ||
-        prcpPerigo.value() == ""){
+        velocidade.value() == "" || resistencia.value() == ""){
       alert("Preencha todos os campos!")
       return false;
-    } else if (somatorio1 != 10){
+    } else if (somatorio != 10){
       alert("Você deve distribuir 10 pontos em Vida, Fome, Velocidade e Resistência.")
-      return false;
-    } else if (somatorio2 != 180){
-      alert("Você deve distribuir 180 pontos nas Percepções de alimentos e perigos.")
       return false;
     }
     alert("Criatura adicionada! Continue adicionado ou aperte em Iniciar Jogo.")
     tipoCriaturas.push([nome.value(), tipo.value(), vida.value(), fome.value(), velocidade.value(),
-                        resistencia.value(), color(corR.value(), corG.value(), corB.value()),
-                        prcpAlimento.value(), prcpPerigo.value()]);
+                        resistencia.value(), color(corR.value(), corG.value(), corB.value())]);
     limparCampos();
   }
 
@@ -114,9 +98,8 @@ function setup(){
     for (var i = 0; i < 5; i++){ // <---------------------------------- quantidade de criaturas aleatórias
       var temp1 = random(1, 4);
       var temp2 = random(1, 4);
-      var temp3 = random(20, 100);
       tipoCriaturas.push(["Criatura" + i, round(random(2)), temp1, (4 - temp1), temp2, (4 - temp2),
-                          color(random(255), random(255), random(255)), temp3, (100 - temp3)]);
+                          color(random(255), random(255), random(255))]);
     }
     alert("Criaturas adicionadas! Aperte em Iniciar Jogo para começar.")
     limparCampos();
@@ -132,8 +115,6 @@ function setup(){
     corR.value(0);
     corG.value(0);
     corB.value(0);
-    prcpAlimento.value("");
-    prcpPerigo.value("");
   }
 
   var botaoIniciar = createButton('Iniciar Jogo');
@@ -164,8 +145,6 @@ function setup(){
     corR.remove();
     corG.remove();
     corB.remove();
-    prcpAlimento.remove();
-    prcpPerigo.remove();
     botaoAdcCrt.remove();
     botaoAdcRnd.remove();
     botaoLimpar.remove();
