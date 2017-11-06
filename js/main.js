@@ -206,14 +206,10 @@ function draw(){
         // aqui verifica se foi feita reprodução, para adicionar os filhos à população
         var filho = criaturas[i].reproduz();
         if (filho != null) {
-          if (this.debug)
-            console.log(criaturas[i].nome + " reproduziu.");
           criaturas.push(filho);
         }
         // aqui verifica se a criatura morreu, para retirá-la da população
         if (crtr.morreu()){
-          if (this.debug)
-            console.log(criaturas[i].nome + " morreu.");
           criaturas.splice(i, 1);
           adicionaNovaComida(crtr.posicao.x, crtr.posicao.y);
         }

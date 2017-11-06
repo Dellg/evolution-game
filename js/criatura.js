@@ -35,6 +35,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
     this.codigoGenetico[4] = random(20, 100); // raio de percepção para identificar alimento carne
     this.codigoGenetico[5] = random(20, 100); // raio de percepção para identificar alimento veneno
     this.codigoGenetico[6] = random(20, 100); // raio de percepção para identificar perigo
+    this.codigoGenetico[7] = random(0.001, 0.01); // taxa de reprodução
   // filho de alguma criatura - chances de mutação
   } else {
     this.codigoGenetico[0] = heranca[0];
@@ -65,6 +66,15 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
     if (random(1) < taxaMutacao){
       this.codigoGenetico[6] += random(-10, 10);
     }
+    this.codigoGenetico[7] = heranca[7];
+    if (random(1) < taxaMutacao){
+      this.codigoGenetico[7] += random(-0.001, 0.001);
+      // limita a taxa de reprodução para ficar entre 0.001 e 0.01
+      if (this.codigoGenetico[7] > 0.01)
+        this.codigoGenetico = 0.01;
+      else if (this.codigoGenetico < 0.001)
+        this.codigoGenetico = 0.001;
+    }
   }
 
   this.baseConhecimento = [];
@@ -81,7 +91,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
 //____________________________________________________________________________
 Criatura.prototype.update = function() {
   // fitness vai subindo com o tempo, se comer o tipo de comida errada, perde um pouco
-  this.reproducao += 0.01;
+  this.reproducao += this.codigoGenetico[7];
   this.fitness += 0.01;
 
   // a criatura começará a perder muita vida se estiver com fome
