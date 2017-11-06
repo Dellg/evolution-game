@@ -339,10 +339,13 @@ Criatura.prototype.conhecer = function(devorado){
     this.fitness -= 2;
     base = this.baseConhecimento[1];
   }
-  // chance de pequena melhoria na percepção após se alimentar
+  // chance de pequena melhoria na percepção com base na taxa de mutação após se alimentar
   if (random(1) < taxaMutacao){
-    console.log("criatura mutou");
-    this.codigoGenetico[devorado.tipo] += random(0.1);
+    // verifica se é alimento bom ou ruim pra poder incrementar ou decrementar, respectivamente
+    if (devorado.tipo == 2)
+      this.codigoGenetico[devorado.tipo] -= random(0.1);
+    else
+      this.codigoGenetico[devorado.tipo] += random(0.1);
   }
   // após selecionar a base de conhecimento apropriada, adiciona o alimento se ainda não estiver lá
   if (!base.contains(devorado))
