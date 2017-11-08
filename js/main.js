@@ -2,9 +2,7 @@ var xGame = 1000;
 var yGame = 750;
 var menu = 0;
 var criaturas = [];
-var alimentosPlanta;
-var alimentosCarne;
-var alimentosVeneno;
+var alimentos;
 var countAlimentos = 75; // será para cada tipo de alimento
 var tipoCriaturas = [];
 var tipoAlimentos = [];
@@ -191,14 +189,14 @@ function draw(){
       iniciaGeracao();
     } else {
       // gera novas comidas se tiver menos da quantidade definida comidas no canvas
-      if (random(1) < 0.05 || (alimentosPlanta.length + alimentosCarne.length + alimentosVeneno.length) < countAlimentos){
+      if (random(1) < 0.05 || (alimentos.length) < countAlimentos){
         if (random(1) < 0.1) {
           adicionaNovaComida(null, null);
         }
       }
       for (var i = 0; i < criaturas.length; i++){
         var crtr = criaturas[i];
-        crtr.comportamentos(alimentosPlanta, alimentosCarne, alimentosVeneno, criaturas);
+        crtr.comportamentos(alimentos, criaturas);
         crtr.limites();
         crtr.update();
         crtr.show();
@@ -214,16 +212,8 @@ function draw(){
           adicionaNovaComida(crtr.posicao.x, crtr.posicao.y);
         }
       }
-      for (var i = 0; i < alimentosPlanta.length; i++){
-        var almt = alimentosPlanta[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosCarne.length; i++){
-        var almt = alimentosCarne[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosVeneno.length; i++){
-        var almt = alimentosVeneno[i];
+      for (var i = 0; i < alimentos.length; i++){
+        var almt = alimentos[i];
         almt.show();
       }
     }
@@ -243,9 +233,7 @@ function iniciaGeracao(){
       criaturas.push(criatura);
     }
   }
-  alimentosPlanta = [];
-  alimentosCarne = [];
-  alimentosVeneno = [];
+  alimentos = [];
   // cria alimentos usando os tipos pré-criados
   for (var i = 0; i < countAlimentos; i++){
     adicionaNovaComida(null, null);
@@ -263,17 +251,7 @@ function adicionaNovaComida(x, y){
     y = random(5, yGame-5);
   }
   var r = round(random(tipoAlimentos.length - 1));
-  switch (tipoAlimentos[r][0]) {
-    case 0:
-      alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
-      break;
-    case 1:
-      alimentosCarne.push(new Alimento(x, y, tipoAlimentos[r]));
-      break;
-    case 2:
-      alimentosVeneno.push(new Alimento(x, y, tipoAlimentos[r]));
-      break;
-  }
+  alimentos.push(new Alimento(x, y, tipoAlimentos[r]));
 }
 
 //______________________________________________________________________________
