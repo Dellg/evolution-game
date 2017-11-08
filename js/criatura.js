@@ -25,16 +25,16 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   this.reproducao = 0;
   this.fitness = 0;
 
+  // criatura nova gera o código genético aleatório
   this.codigoGenetico = [];
-  // criatura nova
   if (heranca === null){
-    this.codigoGenetico[0] = random(-1, 1); // peso planta
-    this.codigoGenetico[1] = random(-1, 1); // peso carne
-    this.codigoGenetico[2] = random(-1, 1); // peso perigo
-    this.codigoGenetico[3] = random(20, 100); // raio de percepção para identificar alimento planta
-    this.codigoGenetico[4] = random(20, 100); // raio de percepção para identificar alimento carne
-    this.codigoGenetico[5] = random(20, 100); // raio de percepção para identificar alimento veneno
-    this.codigoGenetico[6] = random(20, 100); // raio de percepção para identificar perigo
+    this.codigoGenetico[0] = random(-1, 1); // peso comida boa
+    this.codigoGenetico[1] = random(-1, 1); // peso comida ruim
+    this.codigoGenetico[2] = random(-1, 1); // peso predadores
+    this.codigoGenetico[3] = random(20, 100); // raio de percepção para detectar alimento desconhecido
+    this.codigoGenetico[4] = random(20, 100); // raio de percepção para detectar alimento bom
+    this.codigoGenetico[5] = random(20, 100); // raio de percepção para detectar alimento ruim
+    this.codigoGenetico[6] = random(20, 100); // raio de percepção para detectar predadores
     this.codigoGenetico[7] = random(0.001, 0.01); // taxa de reprodução
   // filho de alguma criatura - chances de mutação
   } else {
@@ -52,16 +52,16 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
         case 5:
         case 6:
           if (random(1) < taxaMutacao)
-            this.codigoGenetico[5] += random(-10, 10);
+            this.codigoGenetico[i] += random(-10, 10);
           break;
         case 7:
           if (random(1) < taxaMutacao){
-            this.codigoGenetico[7] += random(-0.001, 0.001);
+            this.codigoGenetico[i] += random(-0.001, 0.001);
             // limita a taxa de reprodução para ficar entre 0.001 e 0.01
-            if (this.codigoGenetico[7] > 0.01)
-              this.codigoGenetico = 0.01;
-            else if (this.codigoGenetico < 0.001)
-              this.codigoGenetico = 0.001;
+            if (this.codigoGenetico[i] > 0.01)
+              this.codigoGenetico[i] = 0.01;
+            else if (this.codigoGenetico[i] < 0.001)
+              this.codigoGenetico[i] = 0.001;
           }
           break;
       }
@@ -69,8 +69,8 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   }
 
   this.baseConhecimento = [];
-  this.baseConhecimento[0] = []; // índice 0 = comidas que matam a fome
-  this.baseConhecimento[1] = []; // índice 1 = comidas que fazem mal
+  this.baseConhecimento[0] = []; // índice 0 = comidas boas
+  this.baseConhecimento[1] = []; // índice 1 = comidas ruins
   this.baseConhecimento[2] = []; // índice 2 = predadores
 
   this.tempo = random(100);
@@ -108,32 +108,61 @@ Criatura.prototype.aplicaForca = function(forca) {
 //____________________________________________________________________________
 //  método que define qual comportamento a criatura irá realizar
 //____________________________________________________________________________
-Criatura.prototype.comportamentos = function(plantas, carnes, venenos, criaturas) {
-  var seguePlanta = this.alimenta(plantas, this.codigoGenetico[3]);
-  var segueCarne = this.alimenta(carnes, this.codigoGenetico[4]);
-  var segueVeneno = this.alimenta(venenos, this.codigoGenetico[5]);
+Criatura.prototype.comportamentos = function(comidas, criaturas) {
+  var desconhecido = this.alimenta(comidas, null, this.codigoGenetico[3]);
+  desconhecido.mult(1);
+  this.aplicaForca(desconhecido);
+  // desviará das comidas que a criatura já sabe que é ruim
+  if (this.baseConhecimento[1].length > 0){
+    var desvia = this.alimenta(comidas, this.baseConhecimento[1], this.codigoGenetico[5]);
+    desvia.mult(this.codigoGenetico[1]);
+    this.aplicaForca(desvia);
+  }
+  // dará preferência às comidas que a criatura já sabe que é boa
+  if (this.baseConhecimento[0].length > 0){
+    var preferencia = this.alimenta(comidas, this.baseConhecimento[0], this.codigoGenetico[4]);
+    preferencia.mult(this.codigoGenetico[0]);
+    this.aplicaForca(preferencia);
+  }
+  // fugirá das criaturas que já sabe que são predadores
+  if (this.baseConhecimento[2].length > 0){
+    var foge = this.alimenta(criaturas, this.baseConhecimento[2], this.codigoGenetico[6]);
+    foge.mult(this.codigoGenetico[2]);
+    this.aplicaForca(foge);
+  }
 
-  seguePlanta.mult(this.codigoGenetico[0]);
-  segueCarne.mult(this.codigoGenetico[1]);
-  segueVeneno.mult(this.codigoGenetico[2]);
-
-  this.aplicaForca(seguePlanta);
-  this.aplicaForca(segueCarne);
-  this.aplicaForca(segueVeneno);
+  // var seguePlanta = this.alimenta(plantas, this.codigoGenetico[3]);
+  // var segueCarne = this.alimenta(carnes, this.codigoGenetico[4]);
+  // var segueVeneno = this.alimenta(venenos, this.codigoGenetico[5]);
+  //
+  // seguePlanta.mult(this.codigoGenetico[0]);
+  // segueCarne.mult(this.codigoGenetico[1]);
+  // segueVeneno.mult(this.codigoGenetico[2]);
+  //
+  // this.aplicaForca(seguePlanta);
+  // this.aplicaForca(segueCarne);
+  // this.aplicaForca(segueVeneno);
 }
 
 //____________________________________________________________________________
 // método que define a forma como a criatura irá se alimentar, dependendo da fome
 //____________________________________________________________________________
-Criatura.prototype.alimenta = function(comidas, percepcao) {
+Criatura.prototype.alimenta = function(comidas, base, percepcao) {
   var lembranca = Infinity;
   var maisProximo = null;
-
-  // a percepção usada ainda é a mesma, independente do tipo de alimento
+  var usandoBase = false;
+  // verifica se está usando alguma base de conhecimento
+  if (base != null)
+    usandoBase = true;
 
   for (var i = comidas.length - 1; i >= 0; i--) {
-    var distancia = this.posicao.dist(comidas[i].posicao);
+    // verifica se a comida está na base de conhecimento, caso esteja usando
+    if (usandoBase){
+      if (!base.contains(comidas[i]))
+        continue;
+    }
 
+    var distancia = this.posicao.dist(comidas[i].posicao);
     if (distancia < this.maxVelocidade + 2) {
       var devorado = comidas.splice(i, 1)[0];
       this.conhecer(devorado);
@@ -180,8 +209,8 @@ Criatura.prototype.movimenta = function(obj) {
 // método onde as duas melhores criaturas da espécie gerará um filho
 //____________________________________________________________________________
 Criatura.prototype.reproduz = function() {
-  // para reproduzir, precisa estar com 75% da saúde máxima
-  if (this.vida >= (this.maxVida - this.maxVida/4) && this.reproducao > 15){
+  // para reproduzir, precisa estar com, pelo menos, 2/3 da saúde máxima
+  if (this.vida >= (this.maxVida - this.maxVida/3) && this.reproducao > 15){
     if (random(1) < 0.1){
       var melhorParceiro = null;
       // vai procurar o melhor parceiro para gerar um filho
@@ -246,20 +275,17 @@ Criatura.prototype.show = function(){
   // se debug estiver ativo, desenha percepções
   if (debug){
     noFill();
-    strokeWeight(4);
-    stroke(255, 255, 0);
-    ellipse(0, 0, this.codigoGenetico[6] * 2); // aura predador
     strokeWeight(3);
     stroke(0, 255, 0);
-    ellipse(0, 0, this.codigoGenetico[3] * 2); // aura planta
+    ellipse(0, 0, this.codigoGenetico[4] * 2); // aura para comida boa
     line(0, 0, 0, -this.codigoGenetico[0] * 50);
     strokeWeight(2);
     stroke(0, 0, 255);
-    ellipse(0, 0, this.codigoGenetico[4] * 2); // aura carne
+    ellipse(0, 0, this.codigoGenetico[5] * 2); // aura para comida ruim
     line(0, 0, 0, -this.codigoGenetico[1] * 50);
     strokeWeight(1);
     stroke(255, 0, 0);
-    ellipse(0, 0, this.codigoGenetico[5] * 2); // aura veneno
+    ellipse(0, 0, this.codigoGenetico[6] * 2); // aura para predadores
     line(0, 0, 0, -this.codigoGenetico[2] * 50);
     // aqui mostra um contorno na criatura significando sua fome
     strokeWeight(2);
@@ -316,30 +342,34 @@ Criatura.prototype.limites = function() {
 //____________________________________________________________________________
 Criatura.prototype.conhecer = function(devorado){
   var base = null;
-  if (devorado.tipo == 2){
   // se for comida ruim, perde vida e adiciona aquele tipo à base de conhecimento
+  if (devorado.tipo == 2){
     this.vida -= devorado.vida;
     this.fitness -= 5;
     base = this.baseConhecimento[1];
-  } else if (this.tipo == 2){
+
   // onívoros comem dos dois tipos de alimento, por isso saciam pouca fome com cada alimento
+  } else if (this.tipo == 2){
     this.vida += devorado.vida/1.5;
     this.fome += devorado.fome;
     this.fitness += 1;
     base = this.baseConhecimento[0];
-  } else if (this.tipo == devorado.tipo){
+
   // criaturas que comem alimento do seu tipo apenas, saciam mais a fome com cada alimento
+  } else if (this.tipo == devorado.tipo){
     this.vida += devorado.vida/1.25;
     this.fome += devorado.fome * 1.25;
     this.fitness += 1;
     base = this.baseConhecimento[0];
-  } else {
+
   // se comer um alimento de um tipo diferente perde vida e fica com um pouco mais de fome
+  } else {
     this.fome -= devorado.fome/2;
     this.vida -= devorado.vida/2;
     this.fitness -= 2;
     base = this.baseConhecimento[1];
   }
+
   // chance de pequena melhoria na percepção com base na taxa de mutação após se alimentar
   if (random(1) < taxaMutacao){
     // verifica se é alimento bom ou ruim pra poder incrementar ou decrementar, respectivamente
@@ -348,6 +378,7 @@ Criatura.prototype.conhecer = function(devorado){
     else
       this.codigoGenetico[devorado.tipo] += random(0.1);
   }
+
   // após selecionar a base de conhecimento apropriada, adiciona o alimento se ainda não estiver lá
   if (!base.contains(devorado))
     base.push(devorado);

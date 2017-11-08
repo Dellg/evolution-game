@@ -103,7 +103,7 @@ function setup(){
   // adicionar criaturas aleatoriamente
   //______________________________________________________________________________
   function adicionarAleatorios() {
-    for (var i = 0; i < 5; i++){ // <---------------------------------- quantidade de criaturas aleatórias
+    for (var i = 0; i < 1; i++){ // <---------------------------------- quantidade de criaturas aleatórias
       var temp1 = random(1, 4);
       var temp2 = random(1, 4);
       tipoCriaturas.push(["Criatura" + i, abs(round(random(-0.5, 2.4))), temp1, (4 - temp1), temp2, (4 - temp2),
