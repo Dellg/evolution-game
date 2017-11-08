@@ -17,7 +17,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   // dados da criatura
   this.posicao = createVector(x, y);
   this.aceleracao = createVector();
-  this.maxForca = random(0.1, 0.5);
+  this.maxForca = random(0.01, 0.3);
   this.raio = 5;
 
   // características da IA
@@ -38,7 +38,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
     this.codigoGenetico[7] = random(0.001, 0.01); // taxa de reprodução
   // filho de alguma criatura - chances de mutação
   } else {
-    for (var i = 0; i < this.codigoGenetico.length; i++){
+    for (var i = 0; i < heranca.length; i++){
       this.codigoGenetico[i] = heranca[i];
       switch (i) {
         case 0:
@@ -283,10 +283,10 @@ Criatura.prototype.show = function(){
     stroke(0, 0, 255);
     ellipse(0, 0, this.codigoGenetico[5] * 2); // aura para comida ruim
     line(0, 0, 0, -this.codigoGenetico[1] * 50);
-    strokeWeight(1);
-    stroke(255, 0, 0);
-    ellipse(0, 0, this.codigoGenetico[6] * 2); // aura para predadores
-    line(0, 0, 0, -this.codigoGenetico[2] * 50);
+    // strokeWeight(1);
+    // stroke(255, 0, 0);
+    // ellipse(0, 0, this.codigoGenetico[6] * 2); // aura para predadores
+    // line(0, 0, 0, -this.codigoGenetico[2] * 50);
     // aqui mostra um contorno na criatura significando sua fome
     strokeWeight(2);
     stroke(lerpColor(color(255,0,0), color(0,255,0), this.fome));
