@@ -2,7 +2,10 @@ var xGame = 1000;
 var yGame = 750;
 var menu = 0;
 var criaturas = [];
+var variacaoCriaturas = 1; // variável que controla a quantidade de tipo de criatura
+var quantiaEspecie = 1; // variável que controla quantas de cada criatura serão geradas
 var alimentos;
+var variacaoAlimentos = 3; // variável que controla quantos tipos de alimentos serão criados
 var countAlimentos = 75; // será para cada tipo de alimento
 var tipoCriaturas = [];
 var tipoAlimentos = [];
@@ -103,9 +106,9 @@ function setup(){
   // adicionar criaturas aleatoriamente
   //______________________________________________________________________________
   function adicionarAleatorios() {
-    for (var i = 0; i < 1; i++){ // <---------------------------------- quantidade de criaturas aleatórias
-      var temp1 = random(1, 4);
-      var temp2 = random(1, 4);
+    for (var i = 0; i < variacaoCriaturas; i++){
+      var temp1 = random(1, 3);
+      var temp2 = random(1, 3);
       tipoCriaturas.push(["Criatura" + i, abs(round(random(-0.5, 2.4))), temp1, (4 - temp1), temp2, (4 - temp2),
                           color(random(255), random(255), random(255))]);
     }
@@ -137,7 +140,7 @@ function setup(){
       return false;
     }
     // cria tipos de alimentos diferentes
-    for (var i = 0; i < 20; i++){
+    for (var i = 0; i < variacaoAlimentos; i++){
       var t = i%3;
       var v = random(0.5, 1.5);
       var f = random(0.5, 3);
@@ -226,7 +229,7 @@ function draw(){
 function iniciaGeracao(){
   // cria quantidades das criaturas pré-definidas
   for (var i = 0; i < tipoCriaturas.length; i++){
-    for (var j = 0; j < 6; j++){ // <--------------------------- alterar aqui pra criar mais de uma de cada tipo
+    for (var j = 0; j < quantiaEspecie; j++){
       var x = random(xGame);
       var y = random(yGame);
       var criatura = new Criatura(x, y, tipoCriaturas[i], null, geracao);
