@@ -4,7 +4,9 @@ var menu = 0;
 var criaturas = [];
 var variacaoCriaturas = 1; // variável que controla a quantidade de tipo de criatura
 var quantiaEspecie = 2; // variável que controla quantas de cada criatura serão geradas
-var alimentos;
+var alimentosPlanta;
+var alimentosCarne;
+var alimentosVeneno;
 var variacaoAlimentos = 3; // variável que controla quantos tipos de alimentos serão criados
 var countAlimentos = 25; // será para cada tipo de alimento
 var tipoCriaturas = [];
@@ -192,14 +194,14 @@ function draw(){
       iniciaGeracao();
     } else {
       // gera novas comidas se tiver menos da quantidade definida comidas no canvas
-      if (random(1) < 0.05 || (alimentos.length) < countAlimentos){
+      if (random(1) < 0.05 || (alimentosPlanta.length + alimentosCarne.length + alimentosVeneno.length) < countAlimentos){
         if (random(1) < 0.1) {
           adicionaNovaComida(null, null);
         }
       }
       for (var i = 0; i < criaturas.length; i++){
         var crtr = criaturas[i];
-        crtr.comportamentos(alimentos, criaturas);
+        crtr.comportamentos(alimentosPlanta, alimentosCarne, alimentosVeneno, criaturas);
         crtr.limites();
         crtr.update();
         crtr.show();
@@ -215,8 +217,16 @@ function draw(){
           adicionaNovaComida(crtr.posicao.x, crtr.posicao.y);
         }
       }
-      for (var i = 0; i < alimentos.length; i++){
-        var almt = alimentos[i];
+      for (var i = 0; i < alimentosPlanta.length; i++){
+        var almt = alimentosPlanta[i];
+        almt.show();
+      }
+      for (var i = 0; i < alimentosCarne.length; i++){
+        var almt = alimentosCarne[i];
+        almt.show();
+      }
+      for (var i = 0; i < alimentosVeneno.length; i++){
+        var almt = alimentosVeneno[i];
         almt.show();
       }
     }
@@ -236,7 +246,9 @@ function iniciaGeracao(){
       criaturas.push(criatura);
     }
   }
-  alimentos = [];
+  alimentosPlanta = [];
+  alimentosCarne = [];
+  alimentosVeneno = [];
   // cria alimentos usando os tipos pré-criados
   for (var i = 0; i < countAlimentos; i++){
     adicionaNovaComida(null, null);
@@ -254,7 +266,17 @@ function adicionaNovaComida(x, y){
     y = random(5, yGame-5);
   }
   var r = round(random(tipoAlimentos.length - 1));
-  alimentos.push(new Alimento(x, y, tipoAlimentos[r]));
+  switch (r) {
+    case 0:
+      alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
+      break;
+    case 1:
+      alimentosCarne.push(new Alimento(x, y, tipoAlimentos[r]));
+      break;
+    case 2:
+      alimentosVeneno.push(new Alimento(x, y, tipoAlimentos[r]));
+      break;
+  }
 }
 
 //______________________________________________________________________________

@@ -28,14 +28,13 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   // criatura nova gera o código genético aleatório
   this.codigoGenetico = [];
   if (heranca === null){
-    this.codigoGenetico[0] = random(-1, 1); // peso comida boa
-    this.codigoGenetico[1] = random(-1, 1); // peso comida ruim
-    this.codigoGenetico[2] = random(-1, 1); // peso predadores
-    this.codigoGenetico[3] = random(20, 100); // raio de percepção para detectar alimento desconhecido
-    this.codigoGenetico[4] = random(20, 100); // raio de percepção para detectar alimento bom
-    this.codigoGenetico[5] = random(20, 100); // raio de percepção para detectar alimento ruim
-    this.codigoGenetico[6] = random(20, 100); // raio de percepção para detectar predadores
-    this.codigoGenetico[7] = random(0.001, 0.01); // taxa de reprodução
+    this.codigoGenetico[0] = random(-1, 1); // peso comida planta
+    this.codigoGenetico[1] = random(-1, 1); // peso comida carne
+    this.codigoGenetico[2] = random(-1, 1); // peso perigo
+    this.codigoGenetico[3] = random(20, 100); // raio de percepção para detectar alimento bom
+    this.codigoGenetico[4] = random(20, 100); // raio de percepção para detectar alimento ruim
+    this.codigoGenetico[5] = random(20, 100); // raio de percepção para detectar perigo (veneno e predadores)
+    this.codigoGenetico[6] = random(0.001, 0.01); // taxa de reprodução
   // filho de alguma criatura - chances de mutação
   } else {
     for (var i = 0; i < heranca.length; i++){
@@ -82,7 +81,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
 //____________________________________________________________________________
 Criatura.prototype.update = function() {
   // fitness vai subindo com o tempo, se comer o tipo de comida errada, perde um pouco
-  this.reproducao += this.codigoGenetico[7];
+  this.reproducao += this.codigoGenetico[6];
   this.fitness += 0.01;
 
   // a criatura começará a perder muita vida se estiver com fome
@@ -108,59 +107,29 @@ Criatura.prototype.aplicaForca = function(forca) {
 //____________________________________________________________________________
 //  método que define qual comportamento a criatura irá realizar
 //____________________________________________________________________________
-Criatura.prototype.comportamentos = function(comidas, criaturas) {
-  var desconhecido = this.alimenta(comidas, null, this.codigoGenetico[3]);
-  desconhecido.mult(1);
-  this.aplicaForca(desconhecido);
-  // desviará das comidas que a criatura já sabe que é ruim
-  if (this.baseConhecimento[1].length > 0){
-    var desvia = this.alimenta(comidas, this.baseConhecimento[1], this.codigoGenetico[5]);
-    desvia.mult(this.codigoGenetico[1]);
-    this.aplicaForca(desvia);
-  }
-  // dará preferência às comidas que a criatura já sabe que é boa
-  if (this.baseConhecimento[0].length > 0){
-    var preferencia = this.alimenta(comidas, this.baseConhecimento[0], this.codigoGenetico[4]);
-    preferencia.mult(this.codigoGenetico[0]);
-    this.aplicaForca(preferencia);
-  }
-  // fugirá das criaturas que já sabe que são predadores
-  if (this.baseConhecimento[2].length > 0){
-    var foge = this.alimenta(criaturas, this.baseConhecimento[2], this.codigoGenetico[6]);
-    foge.mult(this.codigoGenetico[2]);
-    this.aplicaForca(foge);
-  }
+Criatura.prototype.comportamentos = function(plantas, carnes, venenos, criaturas) {
 
-  // var seguePlanta = this.alimenta(plantas, this.codigoGenetico[3]);
-  // var segueCarne = this.alimenta(carnes, this.codigoGenetico[4]);
-  // var segueVeneno = this.alimenta(venenos, this.codigoGenetico[5]);
-  //
-  // seguePlanta.mult(this.codigoGenetico[0]);
-  // segueCarne.mult(this.codigoGenetico[1]);
-  // segueVeneno.mult(this.codigoGenetico[2]);
-  //
-  // this.aplicaForca(seguePlanta);
-  // this.aplicaForca(segueCarne);
-  // this.aplicaForca(segueVeneno);
+  var seguePlanta = this.alimenta(plantas, this.codigoGenetico[3]);
+  var segueCarne = this.alimenta(carnes, this.codigoGenetico[4]);
+  var segueVeneno = this.alimenta(venenos, this.codigoGenetico[5]);
+
+  seguePlanta.mult(this.codigoGenetico[0]);
+  segueCarne.mult(this.codigoGenetico[1]);
+  segueVeneno.mult(this.codigoGenetico[2]);
+
+  this.aplicaForca(seguePlanta);
+  this.aplicaForca(segueCarne);
+  this.aplicaForca(segueVeneno);
 }
 
 //____________________________________________________________________________
 // método que define a forma como a criatura irá se alimentar, dependendo da fome
 //____________________________________________________________________________
-Criatura.prototype.alimenta = function(comidas, base, percepcao) {
+Criatura.prototype.alimenta = function(comidas, percepcao) {
   var lembranca = Infinity;
   var maisProximo = null;
-  var usandoBase = false;
-  // verifica se está usando alguma base de conhecimento
-  if (base != null)
-    usandoBase = true;
 
   for (var i = comidas.length - 1; i >= 0; i--) {
-    // verifica se a comida está na base de conhecimento, caso esteja usando
-    if (usandoBase){
-      if (!base.contains(comidas[i]))
-        continue;
-    }
 
     var distancia = this.posicao.dist(comidas[i].posicao);
     if (distancia < this.maxVelocidade + 2) {
@@ -277,16 +246,16 @@ Criatura.prototype.show = function(){
     noFill();
     strokeWeight(3);
     stroke(0, 255, 0);
-    ellipse(0, 0, this.codigoGenetico[4] * 2); // aura para comida boa
+    ellipse(0, 0, this.codigoGenetico[3] * 2); // aura para comida planta
     line(0, 0, 0, -this.codigoGenetico[0] * 50);
     strokeWeight(2);
     stroke(0, 0, 255);
-    ellipse(0, 0, this.codigoGenetico[5] * 2); // aura para comida ruim
+    ellipse(0, 0, this.codigoGenetico[4] * 2); // aura para comida carne
     line(0, 0, 0, -this.codigoGenetico[1] * 50);
-    // strokeWeight(1);
-    // stroke(255, 0, 0);
-    // ellipse(0, 0, this.codigoGenetico[6] * 2); // aura para predadores
-    // line(0, 0, 0, -this.codigoGenetico[2] * 50);
+    strokeWeight(1);
+    stroke(255, 0, 0);
+    ellipse(0, 0, this.codigoGenetico[5] * 2); // aura para perigo
+    line(0, 0, 0, -this.codigoGenetico[2] * 50);
     // aqui mostra um contorno na criatura significando sua fome
     strokeWeight(2);
     stroke(lerpColor(color(255,0,0), color(0,255,0), this.fome));
