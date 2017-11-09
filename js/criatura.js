@@ -17,7 +17,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   // dados da criatura
   this.posicao = createVector(x, y);
   this.aceleracao = createVector();
-  this.maxForca = random(0.01, 0.3);
+  this.maxForca = random(0.01, 0.25);
   this.raio = 5;
 
   // características da IA
@@ -28,9 +28,9 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   // criatura nova gera o código genético aleatório
   this.codigoGenetico = [];
   if (heranca === null){
-    this.codigoGenetico[0] = random(-1, 1); // peso comida planta
-    this.codigoGenetico[1] = random(-1, 1); // peso comida carne
-    this.codigoGenetico[2] = random(-1, 1); // peso perigo
+    this.codigoGenetico[0] = random(-0.5, 1); // peso comida planta
+    this.codigoGenetico[1] = random(-0.5, 1); // peso comida carne
+    this.codigoGenetico[2] = random(-0.5, 1); // peso perigo
     this.codigoGenetico[3] = random(20, 100); // raio de percepção para detectar alimento bom
     this.codigoGenetico[4] = random(20, 100); // raio de percepção para detectar alimento ruim
     this.codigoGenetico[5] = random(20, 100); // raio de percepção para detectar perigo (veneno e predadores)
@@ -109,17 +109,17 @@ Criatura.prototype.aplicaForca = function(forca) {
 //____________________________________________________________________________
 Criatura.prototype.comportamentos = function(plantas, carnes, venenos, criaturas) {
 
+  var segueVeneno = this.alimenta(venenos, this.codigoGenetico[5]);
   var seguePlanta = this.alimenta(plantas, this.codigoGenetico[3]);
   var segueCarne = this.alimenta(carnes, this.codigoGenetico[4]);
-  var segueVeneno = this.alimenta(venenos, this.codigoGenetico[5]);
 
+  segueVeneno.mult(this.codigoGenetico[2]);
   seguePlanta.mult(this.codigoGenetico[0]);
   segueCarne.mult(this.codigoGenetico[1]);
-  segueVeneno.mult(this.codigoGenetico[2]);
 
+  this.aplicaForca(segueVeneno);
   this.aplicaForca(seguePlanta);
   this.aplicaForca(segueCarne);
-  this.aplicaForca(segueVeneno);
 }
 
 //____________________________________________________________________________

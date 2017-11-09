@@ -2,13 +2,13 @@ var xGame = 1000;
 var yGame = 750;
 var menu = 0;
 var criaturas = [];
-var variacaoCriaturas = 1; // variável que controla a quantidade de tipo de criatura
-var quantiaEspecie = 2; // variável que controla quantas de cada criatura serão geradas
+var variacaoCriaturas = 6; // variável que controla a quantidade de tipo de criatura
+var quantiaEspecie = 4; // variável que controla quantas de cada criatura serão geradas
 var alimentosPlanta;
 var alimentosCarne;
 var alimentosVeneno;
-var variacaoAlimentos = 3; // variável que controla quantos tipos de alimentos serão criados
-var countAlimentos = 25; // será para cada tipo de alimento
+var variacaoAlimentos = 20; // variável que controla quantos tipos de alimentos serão criados
+var countAlimentos = 75; // será para cada tipo de alimento
 var tipoCriaturas = [];
 var tipoAlimentos = [];
 var geracao = 0;
@@ -266,7 +266,7 @@ function adicionaNovaComida(x, y){
     y = random(5, yGame-5);
   }
   var r = round(random(tipoAlimentos.length - 1));
-  switch (r) {
+  switch (tipoAlimentos[r][0]) {
     case 0:
       alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
       break;
