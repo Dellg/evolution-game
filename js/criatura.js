@@ -51,7 +51,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
         case 5:
         case 6:
           if (random(1) < taxaMutacao)
-            this.codigoGenetico[i] += random(-10, 10);
+            this.codigoGenetico[i] += random(-5, 5);
           break;
         case 7:
           if (random(1) < taxaMutacao){
@@ -67,13 +67,14 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
     }
   }
 
-  this.baseConhecimento = [];
-  this.baseConhecimento[0] = []; // índice 0 = comidas boas
-  this.baseConhecimento[1] = []; // índice 1 = comidas ruins
-  this.baseConhecimento[2] = []; // índice 2 = predadores
-
-  this.tempo = random(100);
-  this.destino = createVector(random(width-5), random(height-5));
+  if (caracteristicas[7] == null){
+    this.baseConhecimento = [];
+    this.baseConhecimento[0] = []; // índice 0 = comidas boas
+    this.baseConhecimento[1] = []; // índice 1 = comidas ruins
+    this.baseConhecimento[2] = []; // índice 2 = predadores
+  } else {
+    this.baseConhecimento = caracteristicas[7];
+  }
 }
 
 //____________________________________________________________________________
@@ -117,7 +118,9 @@ Criatura.prototype.comportamentos = function(plantas, carnes, venenos, criaturas
   seguePlanta.mult(this.codigoGenetico[0]);
   segueCarne.mult(this.codigoGenetico[1]);
 
-  this.aplicaForca(segueVeneno);
+  if (seguePlanta.x == 0 && seguePlanta.y == 0 && segueCarne.x == 0 && segueCarne.y == 0){
+    this.aplicaForca(segueVeneno);
+  }
   this.aplicaForca(seguePlanta);
   this.aplicaForca(segueCarne);
 }
@@ -132,7 +135,7 @@ Criatura.prototype.alimenta = function(comidas, percepcao) {
   for (var i = comidas.length - 1; i >= 0; i--) {
 
     var distancia = this.posicao.dist(comidas[i].posicao);
-    if (distancia < this.maxVelocidade + 2) {
+    if (distancia < this.maxVelocidade + this.raio/2) {
       var devorado = comidas.splice(i, 1)[0];
       this.conhecer(devorado);
 
@@ -217,6 +220,7 @@ Criatura.prototype.reproduz = function() {
         novasCaracteristicas.push(this.maxVelocidade);
         novasCaracteristicas.push(this.resistencia);
         novasCaracteristicas.push(this.cor);
+        novasCaracteristicas.push(this.baseConhecimento);
         // criando nova criatura com novas características e código genético herdado dos pais
         return new Criatura(this.posicao.x, this.posicao.y, novasCaracteristicas, codigoGeneticoFilho, this.geracao + 1);
       }
