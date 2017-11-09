@@ -114,10 +114,7 @@ Criatura.prototype.comportamentos = function(plantas, carnes, venenos, criaturas
   var seguePlanta = this.alimenta(plantas, this.codigoGenetico[3]);
   var segueCarne = this.alimenta(carnes, this.codigoGenetico[4]);
 
-  segueVeneno.mult(this.codigoGenetico[2]);
-  seguePlanta.mult(this.codigoGenetico[0]);
-  segueCarne.mult(this.codigoGenetico[1]);
-
+  // só se importará com veneno se não houver carne ou planta no alcance
   if (seguePlanta.x == 0 && seguePlanta.y == 0 && segueCarne.x == 0 && segueCarne.y == 0){
     this.aplicaForca(segueVeneno);
   }
@@ -165,15 +162,41 @@ Criatura.prototype.alimenta = function(comidas, percepcao) {
 //____________________________________________________________________________
 Criatura.prototype.movimenta = function(obj) {
 
-  // adicionar movimentos diferentes, dependendo da necessidade
-  // movimento seguir com calma: vel = map(distancia, 0, raioAlimento, .5, this.maxVelocidade / 2);
-  // movimento andar aleatorio: com temporizador
-
   var desejo = p5.Vector.sub(obj.posicao, this.posicao);
   desejo.setMag(this.maxVelocidade);
 
   var direcao = p5.Vector.sub(desejo, this.velocidade);
   direcao.limit(this.maxForca);
+
+  // verificação da base de conhecimento sobre o veneno
+  if (obj.tipo == 2){
+    if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[2] > 0){
+      direcao.mult(-1);
+    } else {
+      direcao.mult(this.codigoGenetico[2]);
+    }
+  }
+  // verificação da base de conhecimento sobre a planta
+  if (obj.tipo == 0){
+    if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[0] > 0){
+      direcao.mult(-1);
+    } else if (this.baseConhecimento[0].contains(obj) && this.codigoGenetico[0] <= 0){
+      direcao.mult(-1);
+    } else {
+      direcao.mult(this.codigoGenetico[0]);
+    }
+  }
+  // verificação da base de conhecimento sobre a carne
+  if (obj.tipo == 1){
+    if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[1] > 0){
+      direcao.mult(-1);
+    } else if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[1] <= 0){
+      direcao.mult(-1);
+    } else {
+      direcao.mult(this.codigoGenetico[1]);
+    }
+  }
+
   return direcao;
 }
 
