@@ -49,11 +49,10 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
         case 3:
         case 4:
         case 5:
-        case 6:
           if (random(1) < taxaMutacao)
             this.codigoGenetico[i] += random(-5, 5);
           break;
-        case 7:
+        case 6:
           if (random(1) < taxaMutacao){
             this.codigoGenetico[i] += random(-0.001, 0.001);
             // limita a taxa de reprodução para ficar entre 0.001 e 0.01
