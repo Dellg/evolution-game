@@ -175,7 +175,7 @@ Criatura.prototype.persegue = function(predadores, percepcao) {
       if (this.tipo > 0 && this.resistencia > predadores[i].resistencia){
         if (distancia < this.maxVelocidade + this.raio/2) {
           var devorado = predadores.splice(i, 1)[0];
-          //this.conhecer(devorado);
+          this.matou(devorado);
 
           // limita a fome e a vida aos seus valores máximos
           if (this.fome > this.maxFome)
@@ -196,11 +196,11 @@ Criatura.prototype.persegue = function(predadores, percepcao) {
           var direcao = p5.Vector.sub(desejo, this.velocidade);
           direcao.limit(this.maxForca);
 
-          // verifica se tem o predador/presa na base de conhecimento
+          // verifica se tem o predador/presa na base de conhecimento para caçar/fugir 2 vezes mais rápido
           if (this.baseConhecimento[2].contains(maisProximo) && this.codigoGenetico[7] > 0){
             direcao.mult(-2);
           } else {
-            direcao.mult(this.codigoGenetico[7]);
+            direcao.mult(this.codigoGenetico[7] * 2);
           }
 
           return direcao;
@@ -263,7 +263,10 @@ Criatura.prototype.reproduz = function() {
     if (random(1) < 0.1){
       var melhorParceiro = null;
       // vai procurar o melhor parceiro para gerar um filho
-      for (var i = 0; i < criaturas.length; i++){
+      for (var i = criaturas.length - 1; i >= 0; i--){
+        if (criaturas[i] === undefined){
+          continue;
+        }
         if ((criaturas[i] != this) && (criaturas[i].nome == this.nome)){
           if (melhorParceiro == null){
             melhorParceiro = criaturas[i];
@@ -325,18 +328,18 @@ Criatura.prototype.show = function(){
   // se debug estiver ativo, desenha percepções
   if (debug){
     noFill();
-    strokeWeight(3);
     stroke(0, 255, 0);
     ellipse(0, 0, this.codigoGenetico[3] * 2); // aura para comida planta
     line(0, 0, 0, -this.codigoGenetico[0] * 50);
-    strokeWeight(2);
     stroke(0, 0, 255);
     ellipse(0, 0, this.codigoGenetico[4] * 2); // aura para comida carne
     line(0, 0, 0, -this.codigoGenetico[1] * 50);
-    strokeWeight(1);
     stroke(255, 0, 0);
     ellipse(0, 0, this.codigoGenetico[5] * 2); // aura para perigo
     line(0, 0, 0, -this.codigoGenetico[2] * 50);
+    stroke(255, 255, 0);
+    ellipse(0, 0, this.codigoGenetico[8] * 2); // aura para predador/presa
+    line(0, 0, 0, -this.codigoGenetico[7] * 50);
     // aqui mostra um contorno na criatura significando sua fome
     strokeWeight(2);
     stroke(lerpColor(color(255,0,0), color(0,255,0), this.fome));
@@ -388,6 +391,45 @@ Criatura.prototype.limites = function() {
 }
 
 //____________________________________________________________________________
+// método usado quando um predador caça uma presa
+//____________________________________________________________________________
+Criatura.prototype.matou = function(devorado){
+  // predador ganha propriedades de vida e de fome por caçar
+  this.vida += devorado.vida/2;
+  this.fome += devorado.maxFome/2;
+  if (this.tipo == 1){
+    this.fitness += 5;
+  } else if (this. tipo == 2){
+    this.fitness += 3;
+  }
+  // chance de pequena melhora nas habilidades de caça do predador
+  if (random(1) < taxaMutacao){
+    this.codigoGenetico[7] += random(0.1);
+  }
+  // chance de pequena melhoria na percepção de presas com base na taxa de mutação
+  if (random(1) < taxaMutacao){
+    this.codigoGenetico[8] += random(0.1);
+  }
+
+  // todas as criaturas do mesmo tipo da presa irão adicionar esse predador na base de conhecimento
+  for (var i = criaturas.length - 1; i >= 0; i--){
+    if (criaturas[i].nome == devorado.nome){
+      if (!criaturas[i].baseConhecimento[2].contains(this))
+        criaturas[i].baseConhecimento[2].push(this);
+
+      // chance de pequena melhoria na capacidade de fuga de predadores com base na taxa de mutação
+      if (random(1) < taxaMutacao){
+        criaturas[i].codigoGenetico[7] -= random(0.1);
+      }
+      // chance de pequena melhoria na percepção de predadores com base na taxa de mutação
+      if (random(1) < taxaMutacao){
+        criaturas[i].codigoGenetico[8] += random(0.1);
+      }
+    }
+  }
+}
+
+//____________________________________________________________________________
 // função que adiciona um objeto à uma base de conhecimento
 //____________________________________________________________________________
 Criatura.prototype.conhecer = function(devorado){
@@ -407,9 +449,16 @@ Criatura.prototype.conhecer = function(devorado){
 
   // criaturas que comem alimento do seu tipo apenas, saciam mais a fome com cada alimento
   } else if (this.tipo == devorado.tipo){
-    this.vida += devorado.vida/1.25;
-    this.fome += devorado.fome * 1.25;
-    this.fitness += 1;
+    // herbívoros ganham mais pontos por comer plantas, pois é a única coisa que comem
+    if (this.tipo == 0){
+      this.vida += devorado.vida/1.1;
+      this.fome += devorado.fome * 1.4;
+      this.fitness += 3;
+    } else {
+      this.vida += devorado.vida/1.25;
+      this.fome += devorado.fome * 1.25;
+      this.fitness += 1;
+    }
     base = this.baseConhecimento[0];
 
   // se comer um alimento de um tipo diferente perde vida e fica com um pouco mais de fome

@@ -195,11 +195,11 @@ function draw(){
     } else {
       // gera novas comidas se tiver menos da quantidade definida comidas no canvas
       if (random(1) < 0.05 || (alimentosPlanta.length + alimentosCarne.length + alimentosVeneno.length) < countAlimentos){
-        if (random(1) < 0.1) {
+        if (random(1) < 0.2) {
           adicionaNovaComida(null, null);
         }
       }
-      for (var i = 0; i < criaturas.length; i++){
+      for (var i = criaturas.length - 1; i > 0; i--){
         var crtr = criaturas[i];
         crtr.comportamentos(alimentosPlanta, alimentosCarne, alimentosVeneno, criaturas);
         crtr.limites();
