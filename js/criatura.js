@@ -483,6 +483,7 @@ Criatura.prototype.conhecer = function(devorado){
       this.codigoGenetico[devorado.tipo] -= random(0.1);
     else
       this.codigoGenetico[devorado.tipo] += random(0.1);
+    console.log(this.nome + " sofreu mutação ao comer.");
   }
 
   // após selecionar a base de conhecimento apropriada, adiciona o alimento se ainda não estiver lá
