@@ -31,10 +31,12 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
     this.codigoGenetico[0] = random(-0.5, 1); // peso comida planta
     this.codigoGenetico[1] = random(-0.5, 1); // peso comida carne
     this.codigoGenetico[2] = random(-0.5, 1); // peso perigo
-    this.codigoGenetico[3] = random(20, 100); // raio de percepção para detectar alimento bom
-    this.codigoGenetico[4] = random(20, 100); // raio de percepção para detectar alimento ruim
-    this.codigoGenetico[5] = random(20, 100); // raio de percepção para detectar perigo (veneno e predadores)
-    this.codigoGenetico[6] = random(0.001, 0.01); // taxa de reprodução
+    this.codigoGenetico[3] = random(20, 100); // raio de percepção para detectar planta
+    this.codigoGenetico[4] = random(20, 100); // raio de percepção para detectar carne
+    this.codigoGenetico[5] = random(20, 100); // raio de percepção para detectar veneno
+    this.codigoGenetico[6] = random(0.005, 0.01); // taxa de reprodução
+    this.codigoGenetico[7] = random(-0.5, 1); // peso predador/presa
+    this.codigoGenetico[8] = random(20, 100); // raio de percepção para detectar predadores/presa
   // filho de alguma criatura - chances de mutação
   } else {
     for (var i = 0; i < heranca.length; i++){
@@ -43,23 +45,25 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
         case 0:
         case 1:
         case 2:
+        case 7:
           if (random(1) < taxaMutacao)
             this.codigoGenetico[i] += random(-0.1, 0.1);
           break;
         case 3:
         case 4:
         case 5:
+        case 8:
           if (random(1) < taxaMutacao)
             this.codigoGenetico[i] += random(-5, 5);
           break;
         case 6:
           if (random(1) < taxaMutacao){
             this.codigoGenetico[i] += random(-0.001, 0.001);
-            // limita a taxa de reprodução para ficar entre 0.001 e 0.01
+            // limita a taxa de reprodução para ficar entre 0.005 e 0.01
             if (this.codigoGenetico[i] > 0.01)
               this.codigoGenetico[i] = 0.01;
-            else if (this.codigoGenetico[i] < 0.001)
-              this.codigoGenetico[i] = 0.001;
+            else if (this.codigoGenetico[i] < 0.005)
+              this.codigoGenetico[i] = 0.005;
           }
           break;
       }
@@ -112,6 +116,7 @@ Criatura.prototype.comportamentos = function(plantas, carnes, venenos, criaturas
   var segueVeneno = this.alimenta(venenos, this.codigoGenetico[5]);
   var seguePlanta = this.alimenta(plantas, this.codigoGenetico[3]);
   var segueCarne = this.alimenta(carnes, this.codigoGenetico[4]);
+  var predadorPresa = this.persegue(criaturas, this.codigoGenetico[8]);
 
   // só se importará com veneno se não houver carne ou planta no alcance
   if (seguePlanta.x == 0 && seguePlanta.y == 0 && segueCarne.x == 0 && segueCarne.y == 0){
@@ -119,6 +124,7 @@ Criatura.prototype.comportamentos = function(plantas, carnes, venenos, criaturas
   }
   this.aplicaForca(seguePlanta);
   this.aplicaForca(segueCarne);
+  this.aplicaForca(predadorPresa);
 }
 
 //____________________________________________________________________________
@@ -152,6 +158,55 @@ Criatura.prototype.alimenta = function(comidas, percepcao) {
   // aqui define o comportamento da criatura, se irá perseguir ou se irá apenas até o local para comer
   if (maisProximo != null) {
     return this.movimenta(maisProximo);
+  }
+  return createVector(0, 0);
+}
+
+//____________________________________________________________________________
+// método que define se a criatura irá perseguir ou fugir de alguma outra criatura
+//____________________________________________________________________________
+Criatura.prototype.persegue = function(predadores, percepcao) {
+  var lembranca = Infinity;
+  var maisProximo = null;
+
+  for (var i = predadores.length - 1; i >= 0; i--) {
+    if (predadores[i] != this && predadores[i].nome != this.nome){
+      var distancia = this.posicao.dist(predadores[i].posicao);
+      if (this.tipo > 0 && this.resistencia > predadores[i].resistencia){
+        if (distancia < this.maxVelocidade + this.raio/2) {
+          var devorado = predadores.splice(i, 1)[0];
+          //this.conhecer(devorado);
+
+          // limita a fome e a vida aos seus valores máximos
+          if (this.fome > this.maxFome)
+            this.fome = this.maxFome;
+          if (this.vida > this.maxVida)
+            this.vida = this.maxVida;
+        } else {
+          if (distancia < lembranca && distancia < percepcao) {
+            lembranca = distancia;
+            maisProximo = predadores[i];
+          }
+        }
+      } else {
+        if (maisProximo != null){
+          var desejo = p5.Vector.sub(maisProximo.posicao, this.posicao);
+          desejo.setMag(this.maxVelocidade);
+
+          var direcao = p5.Vector.sub(desejo, this.velocidade);
+          direcao.limit(this.maxForca);
+
+          // verifica se tem o predador/presa na base de conhecimento
+          if (this.baseConhecimento[2].contains(maisProximo) && this.codigoGenetico[7] > 0){
+            direcao.mult(-2);
+          } else {
+            direcao.mult(this.codigoGenetico[7]);
+          }
+
+          return direcao;
+        }
+      }
+    }
   }
   return createVector(0, 0);
 }
