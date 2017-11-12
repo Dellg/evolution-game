@@ -3,7 +3,7 @@ var yGame = 750;
 var menu = 0;
 var criaturas = [];
 var variacaoCriaturas = 6; // variável que controla a quantidade de tipo de criatura
-var quantiaEspecie = 4; // variável que controla quantas de cada criatura serão geradas
+var quantiaEspecie = 6; // variável que controla quantas de cada criatura serão geradas
 var alimentosPlanta;
 var alimentosCarne;
 var alimentosVeneno;
@@ -207,9 +207,11 @@ function draw(){
         crtr.show();
 
         // aqui verifica se foi feita reprodução, para adicionar os filhos à população
-        var filho = criaturas[i].reproduz();
-        if (filho != null) {
-          criaturas.push(filho);
+        if (crtr != undefined){
+          var filho = crtr.reproduz();
+          if (filho != null) {
+            criaturas.push(filho);
+          }
         }
         // aqui verifica se a criatura morreu, para retirá-la da população
         if (crtr.morreu()){

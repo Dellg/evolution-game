@@ -6,7 +6,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   this.vida = parseFloat(caracteristicas[2]);
   this.maxVida = parseFloat(caracteristicas[2]);
   // fome define de quanto em quanto tempo a criatura precisa estar se alimento
-  this.fome = random(caracteristicas[3]/2, caracteristicas[3]);
+  this.fome = random(caracteristicas[3]/3, caracteristicas[3]);
   this.maxFome = parseFloat(caracteristicas[3]);
   this.velocidade = p5.Vector.random2D(caracteristicas[4]);
   this.maxVelocidade = parseFloat(caracteristicas[4]);
@@ -23,6 +23,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   // características da IA
   this.geracao = geracao;
   this.reproducao = 0;
+  this.intervaloReproducao = random(10, 20);
   this.fitness = 0;
 
   // criatura nova gera o código genético aleatório
@@ -46,15 +47,19 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
         case 1:
         case 2:
         case 7:
-          if (random(1) < taxaMutacao)
+          if (random(1) < taxaMutacao){
             this.codigoGenetico[i] += random(-0.1, 0.1);
+            console.log("... e seu filho sofreu mutação.")
+          }
           break;
         case 3:
         case 4:
         case 5:
         case 8:
-          if (random(1) < taxaMutacao)
+          if (random(1) < taxaMutacao){
             this.codigoGenetico[i] += random(-5, 5);
+            console.log("... e seu filho sofreu mutação.")
+          }
           break;
         case 6:
           if (random(1) < taxaMutacao){
@@ -64,6 +69,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
               this.codigoGenetico[i] = 0.01;
             else if (this.codigoGenetico[i] < 0.005)
               this.codigoGenetico[i] = 0.005;
+            console.log("... e seu filho sofreu mutação.")
           }
           break;
       }
@@ -259,7 +265,7 @@ Criatura.prototype.movimenta = function(obj) {
 //____________________________________________________________________________
 Criatura.prototype.reproduz = function() {
   // para reproduzir, precisa estar com, pelo menos, 2/3 da saúde máxima
-  if (this.vida >= (this.maxVida - this.maxVida/3) && this.reproducao > 15){
+  if (this.vida >= (this.maxVida - this.maxVida/3) && this.reproducao > this.intervaloReproducao){
     if (random(1) < 0.1){
       var melhorParceiro = null;
       // vai procurar o melhor parceiro para gerar um filho
@@ -301,6 +307,7 @@ Criatura.prototype.reproduz = function() {
         novasCaracteristicas.push(this.resistencia);
         novasCaracteristicas.push(this.cor);
         novasCaracteristicas.push(this.baseConhecimento);
+        console.log(this.nome + " reproduziu...");
         // criando nova criatura com novas características e código genético herdado dos pais
         return new Criatura(this.posicao.x, this.posicao.y, novasCaracteristicas, codigoGeneticoFilho, this.geracao + 1);
       }
