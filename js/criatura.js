@@ -405,8 +405,8 @@ Criatura.prototype.limites = function() {
 //____________________________________________________________________________
 Criatura.prototype.matou = function(devorado){
   // predador ganha propriedades de vida e de fome por caçar
-  this.vida += devorado.vida/4;
-  this.fome += devorado.maxFome/3;
+  this.vida += devorado.vida/3;
+  this.fome += devorado.maxFome/1.5;
   if (this.tipo == 1){
     this.fitness += 5;
   } else if (this. tipo == 2){

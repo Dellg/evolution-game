@@ -190,6 +190,27 @@ function draw(){
     background(15);
     fill(255);
     text("Geração " + geracao, 10, 20);
+    if (this.debug){
+      text("  Legenda:", 10, 40);
+      text("Alimentos:", 10, 60);
+      text("- com formato de círculo são plantas;", 10, 80);
+      text("- com formato de quadrado são carnes;", 10, 100);
+      text("- com formato de triângulo são venenos.", 10, 120);
+      text("Criaturas:", 10, 150);
+      text("- com formato de losango são herbívoros;", 10, 170);
+      text("- com formato de triângulo são onívoros;", 10, 190);
+      text("- com formato de seta são carnívoros.", 10, 210);
+      text("Aura das criaturas:", 10, 240);
+      text("- verde é a área de percepção para plantas;", 10, 260);
+      text("- azul é a área de percepção para carnes;", 10, 280);
+      text("- vermelho é a área de percepção para venenos;", 10, 300);
+      text("- amarelo é a área de percepção para predadores/presas.", 10, 320);
+      text("Linhas que saem pela frente e por trás das criaturas são forças de atração e repulsão, respectivamente:", 10, 350);
+      text("- verde é a força de atração/repulsão por plantas;", 10, 370);
+      text("- azul é a força de atração/repulsão por carnes;", 10, 390);
+      text("- vermelho é a força de atração/repulsão por venenos;", 10, 410);
+      text("- amarelo é a força de atração/repulsão por predadores/presas.", 10, 430);
+    }
     if (criaturas.length <= 0){
       geracao += 1;
       iniciaGeracao();
