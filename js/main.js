@@ -194,7 +194,7 @@ function draw(){
       iniciaGeracao();
     } else {
       // gera novas comidas se tiver menos da quantidade definida comidas no canvas
-      if (random(1) < 0.05 || (alimentosPlanta.length + alimentosCarne.length + alimentosVeneno.length) < countAlimentos){
+      if ((alimentosPlanta.length + alimentosCarne.length + alimentosVeneno.length) < countAlimentos){
         if (random(1) < 0.2) {
           adicionaNovaComida(null, null);
         }
@@ -270,14 +270,20 @@ function adicionaNovaComida(x, y){
   var r = round(random(tipoAlimentos.length - 1));
   switch (tipoAlimentos[r][0]) {
     case 0:
-      alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
-      alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
+      if (alimentosPlanta.length < (countAlimentos/2)){
+        alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
+        alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
+      }
       break;
     case 1:
-      alimentosCarne.push(new Alimento(x, y, tipoAlimentos[r]));
+      if (alimentosCarne.length < (countAlimentos/2)/2){
+        alimentosCarne.push(new Alimento(x, y, tipoAlimentos[r]));
+      }
       break;
     case 2:
-      alimentosVeneno.push(new Alimento(x, y, tipoAlimentos[r]));
+      if (alimentosVeneno.length < (countAlimentos/2)/2){
+        alimentosVeneno.push(new Alimento(x, y, tipoAlimentos[r]));
+      }
       break;
   }
 }
