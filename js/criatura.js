@@ -90,8 +90,11 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
 // método de atualização
 //____________________________________________________________________________
 Criatura.prototype.update = function() {
+  // capacidade de reprodução só aumenta se a criatura estiver bem alimentada
+  if (this.fome > (this.maxFome - this.maxFome/4)){
+    this.reproducao += this.codigoGenetico[6];
+  }
   // fitness vai subindo com o tempo, se comer o tipo de comida errada, perde um pouco
-  this.reproducao += this.codigoGenetico[6];
   this.fitness += 0.01;
 
   // a criatura começará a perder muita vida se estiver com fome
