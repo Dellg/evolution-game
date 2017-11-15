@@ -195,7 +195,7 @@ Criatura.prototype.persegue = function(predadores, percepcao) {
           }
         }
       } else {
-        if (maisProximo != null){
+        if (maisProximo != null && this.fome <= this.maxFome/2){
           var desejo = p5.Vector.sub(maisProximo.posicao, this.posicao);
           desejo.setMag(this.maxVelocidade);
 

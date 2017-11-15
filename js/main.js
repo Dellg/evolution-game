@@ -8,7 +8,7 @@ var alimentosPlanta;
 var alimentosCarne;
 var alimentosVeneno;
 var variacaoAlimentos = 20; // variável que controla quantos tipos de alimentos serão criados
-var countAlimentos = 75; // será para cada tipo de alimento
+var countAlimentos = 80; // será para cada tipo de alimento
 var tipoCriaturas = [];
 var tipoAlimentos = [];
 var geracao = 0;
@@ -270,6 +270,7 @@ function adicionaNovaComida(x, y){
   var r = round(random(tipoAlimentos.length - 1));
   switch (tipoAlimentos[r][0]) {
     case 0:
+      alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
       alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
       break;
     case 1:
