@@ -109,9 +109,10 @@ function setup(){
   //______________________________________________________________________________
   function adicionarAleatorios() {
     for (var i = 0; i < variacaoCriaturas; i++){
+      var t = i%3;
       var temp1 = random(1, 3);
       var temp2 = random(1, 3);
-      tipoCriaturas.push(["Criatura" + i, abs(round(random(-0.5, 2.4))), temp1, (4 - temp1), temp2, (4 - temp2),
+      tipoCriaturas.push(["Criatura" + i, t, temp1, (4 - temp1), temp2, (4 - temp2),
                           color(random(255), random(255), random(255))]);
     }
     alert("Criaturas adicionadas! Aperte em Iniciar Jogo para começar.")

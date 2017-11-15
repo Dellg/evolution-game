@@ -23,7 +23,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   // características da IA
   this.geracao = geracao;
   this.reproducao = 0;
-  this.intervaloReproducao = random(10, 20);
+  this.intervaloReproducao = random(15, 25);
   this.fitness = 0;
 
   // criatura nova gera o código genético aleatório
@@ -405,8 +405,8 @@ Criatura.prototype.limites = function() {
 //____________________________________________________________________________
 Criatura.prototype.matou = function(devorado){
   // predador ganha propriedades de vida e de fome por caçar
-  this.vida += devorado.vida/2;
-  this.fome += devorado.maxFome/2;
+  this.vida += devorado.vida/4;
+  this.fome += devorado.maxFome/3;
   if (this.tipo == 1){
     this.fitness += 5;
   } else if (this. tipo == 2){
@@ -453,7 +453,7 @@ Criatura.prototype.conhecer = function(devorado){
   // onívoros comem dos dois tipos de alimento, por isso saciam pouca fome com cada alimento
   } else if (this.tipo == 2){
     this.vida += devorado.vida/1.5;
-    this.fome += devorado.fome;
+    this.fome += devorado.fome - (devorado.fome/4);
     this.fitness += 1;
     base = this.baseConhecimento[0];
 
