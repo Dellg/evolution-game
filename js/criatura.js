@@ -4,7 +4,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   // tipo de alimento que a criatura consome: 0 = planta, 1 = carne, 2 = ambos
   this.tipo = caracteristicas[1];
   // a criatura vai perdendo vida se estiver com fome
-  this.vida = parseFloat(caracteristicas[2]);
+  this.vida = random(caracteristicas[2]/3, caracteristicas[2]);
   this.maxVida = parseFloat(caracteristicas[2]);
   // fome define de quanto em quanto tempo a criatura precisa estar se alimento
   this.fome = random(caracteristicas[3]/3, caracteristicas[3]);
@@ -23,13 +23,16 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
 
   // características da IA
   this.geracao = geracao;
-  this.reproducao = 0;
   this.intervaloReproducao = random(15, 25);
+  this.reproducao = 0;
   this.fitness = 0;
 
   // criatura nova gera o código genético aleatório
   this.codigoGenetico = [];
   if (heranca === null){
+    // não faz parte do código genético, criatura sem parente terá reprodução aleatória
+    this.reproducao = random(0, this.intervaloReproducao);
+    // código genético
     this.codigoGenetico[0] = random(-0.5, 1); // peso comida planta
     this.codigoGenetico[1] = random(-0.5, 1); // peso comida carne
     this.codigoGenetico[2] = random(-0.5, 1); // peso perigo
@@ -186,6 +189,7 @@ Criatura.prototype.persegue = function(predadores, percepcao) {
         if (distancia < this.maxVelocidade + this.raio/2) {
           var devorado = predadores.splice(i, 1)[0];
           this.matou(devorado);
+          console.log(this.nome + " caçou " + devorado.nome);
 
           // limita a fome e a vida aos seus valores máximos
           if (this.fome > this.maxFome)
@@ -276,7 +280,7 @@ Criatura.prototype.reproduz = function() {
       var melhorParceiro = null;
       // vai procurar o melhor parceiro para gerar um filho
       for (var i = criaturas.length - 1; i >= 0; i--){
-        if (criaturas[i] === undefined){
+        if ((criaturas[i] === undefined) || (criaturas[i].vida < criaturas[i].maxVida/2)){
           continue;
         }
         if ((criaturas[i] != this) && (criaturas[i].nome == this.nome)){

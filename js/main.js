@@ -238,6 +238,7 @@ function draw(){
         // aqui verifica se a criatura morreu, para retirá-la da população
         if (crtr.morreu()){
           criaturas.splice(i, 1);
+          console.log(crtr.nome + " morreu.")
           adicionaNovaComida(crtr.posicao.x, crtr.posicao.y);
         }
       }
