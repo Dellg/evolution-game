@@ -2,8 +2,8 @@ var xGame = 1000;
 var yGame = 750;
 var menu = 0;
 var criaturas = [];
-var variacaoCriaturas = 6; // variável que controla a quantidade de tipo de criatura
-var quantiaEspecie = 6; // variável que controla quantas de cada criatura serão geradas
+var variacaoCriaturas = 2; // variável que controla a quantidade de tipo de criatura
+var quantiaEspecie = 16; // variável que controla quantas de cada criatura serão geradas
 var alimentosPlanta;
 var alimentosCarne;
 var alimentosVeneno;
@@ -253,7 +253,7 @@ function draw(){
         if (crtr.morreu()){
           criaturas.splice(i, 1);
           console.log(crtr.nome + " morreu.")
-          adicionaNovaComida(crtr.posicao.x, crtr.posicao.y);
+          adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true);
         }
       }
       for (var i = 0; i < alimentosPlanta.length; i++){
@@ -290,7 +290,7 @@ function iniciaGeracao(){
   alimentosVeneno = [];
   // cria alimentos usando os tipos pré-criados
   for (var i = 0; i < countAlimentos; i++){
-    adicionaNovaComida(null, null);
+    adicionaNovaComida(null, null, false);
   }
   // redesenha a tela com a nova geração
   redraw();
@@ -299,7 +299,7 @@ function iniciaGeracao(){
 //______________________________________________________________________________
 // método que adiciona novas comidas nas listas
 //______________________________________________________________________________
-function adicionaNovaComida(x, y){
+function adicionaNovaComida(x, y, morto){
   if (x == null || y == null){
     x = random(5, xGame-5);
     y = random(5, yGame-5);
@@ -307,18 +307,18 @@ function adicionaNovaComida(x, y){
   var r = round(random(tipoAlimentos.length - 1));
   switch (tipoAlimentos[r][0]) {
     case 0:
-      if (alimentosPlanta.length < (countAlimentos/2)){
+      if (morto || alimentosPlanta.length < (countAlimentos/2)){
         alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
         alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
       }
       break;
     case 1:
-      if (alimentosCarne.length < (countAlimentos/2)/2){
+      if (morto || alimentosCarne.length < (countAlimentos/2)/2){
         alimentosCarne.push(new Alimento(x, y, tipoAlimentos[r]));
       }
       break;
     case 2:
-      if (alimentosVeneno.length < (countAlimentos/2)/2){
+      if (morto || alimentosVeneno.length < (countAlimentos/2)/2){
         alimentosVeneno.push(new Alimento(x, y, tipoAlimentos[r]));
       }
       break;

@@ -133,12 +133,12 @@ Criatura.prototype.comportamentos = function(plantas, carnes, venenos, criaturas
   var predadorPresa = this.persegue(criaturas, this.codigoGenetico[8]);
 
   // só se importará com veneno se não houver carne ou planta no alcance
+  this.aplicaForca(predadorPresa);
   if (seguePlanta.x == 0 && seguePlanta.y == 0 && segueCarne.x == 0 && segueCarne.y == 0){
     this.aplicaForca(segueVeneno);
   }
   this.aplicaForca(seguePlanta);
   this.aplicaForca(segueCarne);
-  this.aplicaForca(predadorPresa);
 }
 
 //____________________________________________________________________________
@@ -213,7 +213,7 @@ Criatura.prototype.persegue = function(predadores, percepcao) {
 
           // verifica se tem o predador/presa na base de conhecimento para caçar/fugir 2 vezes mais rápido
           if (this.baseConhecimento[2].contains(maisProximo) && this.codigoGenetico[7] > 0){
-            direcao.mult(-2);
+            direcao.mult(-(this.codigoGenetico[7] * 2));
           } else {
             direcao.mult(this.codigoGenetico[7] * 2);
           }
