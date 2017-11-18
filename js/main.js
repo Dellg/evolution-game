@@ -316,7 +316,7 @@ function adicionaNovaComida(x, y){
 Array.prototype.contains = function(obj) {
     var i = this.length;
     while (i--) {
-        if (this[i].codigo === obj.codigo)
+        if (this[i].nome === obj.nome)
             return true;
     }
     return false;
