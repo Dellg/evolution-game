@@ -204,20 +204,21 @@ Criatura.prototype.persegue = function(predadores, percepcao) {
           }
         }
       } else {
-        if (maisProximo != null && this.fome <= this.maxFome/2){
+        if (maisProximo != null){
           var desejo = p5.Vector.sub(maisProximo.posicao, this.posicao);
           desejo.setMag(this.maxVelocidade);
 
           var direcao = p5.Vector.sub(desejo, this.velocidade);
           direcao.limit(this.maxForca);
 
-          // verifica se tem o predador/presa na base de conhecimento para caçar/fugir 2 vezes mais rápido
+          // verifica se tem o predador na base de conhecimento para caçar/fugir 2 vezes mais rápido
           if (this.baseConhecimento[2].contains(maisProximo) && this.codigoGenetico[7] > 0){
-            direcao.mult(-(this.codigoGenetico[7] * 2));
+            direcao.mult(-1);
+          } else if (this.baseConhecimento[2].contains(maixProximo) && this.codigoGenetico[7] <= 0) {
+            direcao.mult(-1);
           } else {
             direcao.mult(this.codigoGenetico[7] * 2);
           }
-
           return direcao;
         }
       }
@@ -261,7 +262,7 @@ Criatura.prototype.movimenta = function(obj) {
   if (obj.tipo == 1){
     if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[1] > 0){
       direcao.mult(-1);
-    } else if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[1] <= 0){
+    } else if (this.baseConhecimento[0].contains(obj) && this.codigoGenetico[1] <= 0){
       direcao.mult(-1);
     } else {
       direcao.mult(this.codigoGenetico[1]);
