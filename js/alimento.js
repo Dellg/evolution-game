@@ -1,6 +1,6 @@
 function Alimento(x, y, caracteristicas){
   // código gerado para a criatura lembrar desse alimento na base de conhecimento
-  this.nome = "" + caracteristicas[0] + caracteristicas[1] + caracteristicas[2] + caracteristicas[3];
+  this.codigo = "" + caracteristicas[0] + caracteristicas[1] + caracteristicas[2] + caracteristicas[3];
   // tipo do alimento: 0 = planta, 1 = carne, 2 = toxico
   this.tipo = caracteristicas[0];
   switch (this.tipo) {

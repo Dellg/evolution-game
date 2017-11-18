@@ -1,6 +1,7 @@
 function Criatura(x, y, caracteristicas, heranca, geracao){
   // nome da criatura para identificação
   this.nome = caracteristicas[0];
+  this.codigo = this.nome;
   // tipo de alimento que a criatura consome: 0 = planta, 1 = carne, 2 = ambos
   this.tipo = caracteristicas[1];
   // a criatura vai perdendo vida se estiver com fome
