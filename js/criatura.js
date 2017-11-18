@@ -133,12 +133,12 @@ Criatura.prototype.comportamentos = function(plantas, carnes, venenos, criaturas
   var predadorPresa = this.persegue(criaturas, this.codigoGenetico[8]);
 
   // só se importará com veneno se não houver carne ou planta no alcance
-  this.aplicaForca(predadorPresa);
   if (seguePlanta.x == 0 && seguePlanta.y == 0 && segueCarne.x == 0 && segueCarne.y == 0){
     this.aplicaForca(segueVeneno);
   }
   this.aplicaForca(seguePlanta);
   this.aplicaForca(segueCarne);
+  this.aplicaForca(predadorPresa);
 }
 
 //____________________________________________________________________________
