@@ -159,7 +159,7 @@ function setup(){
           break;
         // veneno
         case 2:
-        c = color(random(0, 50), random(0, 50), random(80, 255));
+        c = color(random(0, 80), random(0, 80), random(126, 255));
           break;
       }
       tipoAlimentos[i] = [t, v, f, c];

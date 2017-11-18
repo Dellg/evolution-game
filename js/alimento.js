@@ -18,17 +18,11 @@ function Alimento(x, y, caracteristicas){
   this.fome = random(caracteristicas[2] - 0.25, caracteristicas[2] + 0.25);
   this.cor = caracteristicas[3];
   this.posicao = createVector(x, y);
-  this.raio = (this.fome * 4);
+  this.raio = (this.fome * 3);
 }
 
 Alimento.prototype.show = function(){
   noStroke();
   fill(this.cor);
-  // if (this.tipo == 0){
   ellipse(this.posicao.x, this.posicao.y, this.raio);
-  // } else if (this.tipo == 1){
-  //   rect(this.posicao.x, this.posicao.y, this.raio - 1, this.raio - 1);
-  // } else if (this.tipo == 2){
-  //   triangle(this.posicao.x - this.raio/1.5, this.posicao.y - this.raio/1.5, this.posicao.x, this.posicao.y, this.posicao.x + this.raio/1.5, this.posicao.y - this.raio/1.5);
-  // }
 }
