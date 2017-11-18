@@ -147,7 +147,21 @@ function setup(){
       var t = i%3;
       var v = random(0.5, 1.5);
       var f = random(0.5, 3);
-      var c = color(random(255), random(255), random(255));
+      var c;
+      switch (t) {
+        // planta
+        case 0:
+        c = color(random(0, 126), random(177, 255), 0);
+          break;
+        // carne
+        case 1:
+        c = color(random(177, 255), random(0, 126), 0);
+          break;
+        // veneno
+        case 2:
+        c = color(random(0, 50), random(0, 50), random(80, 255));
+          break;
+      }
       tipoAlimentos[i] = [t, v, f, c];
     }
     iniciaGeracao();
@@ -193,9 +207,9 @@ function draw(){
     if (this.debug){
       text("  Legenda:", 10, 40);
       text("Alimentos:", 10, 60);
-      text("- com formato de círculo são plantas;", 10, 80);
-      text("- com formato de quadrado são carnes;", 10, 100);
-      text("- com formato de triângulo são venenos.", 10, 120);
+      text("- com cor em tom de verde/verde-limão são plantas;", 10, 80);
+      text("- com cor em tom de vermelho/laranja são carnes;", 10, 100);
+      text("- com cor em tom de azul/roxo são venenos.", 10, 120);
       text("Criaturas:", 10, 150);
       text("- com formato de losango são herbívoros;", 10, 170);
       text("- com formato de triângulo são onívoros;", 10, 190);
