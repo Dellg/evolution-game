@@ -225,10 +225,12 @@ Criatura.prototype.persegue = function(predadores, percepcao) {
 // método de movimento da criatura
 //____________________________________________________________________________
 Criatura.prototype.movimenta = function(obj) {
-
   var desejo = p5.Vector.sub(obj.posicao, this.posicao);
-  desejo.setMag(this.maxVelocidade);
-
+  if (this.fome <= this.maxFome/2){
+    desejo.setMag(this.maxVelocidade);
+  } else {
+    desejo.setMag(random(this.maxVelocidade/2 - 0.5, this.maxVelocidade/2 + 0.5));
+  }
   var direcao = p5.Vector.sub(desejo, this.velocidade);
   direcao.limit(this.maxForca);
 
