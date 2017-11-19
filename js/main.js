@@ -2,8 +2,8 @@ var xGame = 1000;
 var yGame = 750;
 var menu = 0;
 var criaturas = [];
-var variacaoCriaturas = 2; // variável que controla a quantidade de tipo de criatura
-var quantiaEspecie = 16; // variável que controla quantas de cada criatura serão geradas
+var variacaoCriaturas = 6; // variável que controla a quantidade de tipo de criatura
+var quantiaEspecie = 6; // variável que controla quantas de cada criatura serão geradas
 var alimentosPlanta;
 var alimentosCarne;
 var alimentosVeneno;
