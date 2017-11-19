@@ -417,11 +417,11 @@ Criatura.prototype.limites = function() {
 Criatura.prototype.matou = function(devorado){
   // predador ganha propriedades de vida e de fome por caçar
   this.vida += devorado.vida/3;
-  this.fome += devorado.maxFome/1.5;
+  this.fome += devorado.maxFome/1.75;
   if (this.tipo == 1){
-    this.fitness += 5;
-  } else if (this. tipo == 2){
     this.fitness += 3;
+  } else if (this. tipo == 2){
+    this.fitness += 1;
   }
   // chance de pequena melhora nas habilidades de caça do predador
   if (random(1) < taxaMutacao){
@@ -438,7 +438,7 @@ Criatura.prototype.matou = function(devorado){
       if (!criaturas[i].baseConhecimento[2].contains(this))
         criaturas[i].baseConhecimento[2].push(this);
 
-      // chance de pequena melhoria na capacidade de fuga de predadores com base na taxa de mutação
+      // chance de pequena melhoria na capacidade de fuga das presas com base na taxa de mutação
       if (random(1) < taxaMutacao){
         criaturas[i].codigoGenetico[7] -= random(0.1);
       }
@@ -473,7 +473,7 @@ Criatura.prototype.conhecer = function(devorado){
     // herbívoros ganham mais pontos por comer plantas, pois é a única coisa que comem
     if (this.tipo == 0){
       this.vida += devorado.vida/1.1;
-      this.fome += devorado.fome * 1.4;
+      this.fome += devorado.fome * 1.5;
       this.fitness += 3;
     } else {
       this.vida += devorado.vida/1.25;
