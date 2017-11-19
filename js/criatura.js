@@ -160,7 +160,6 @@ Criatura.prototype.alimenta = function(comidas, percepcao) {
         this.fome = this.maxFome;
       if (this.vida > this.maxVida)
         this.vida = this.maxVida;
-
     } else {
       if (distancia < lembranca && distancia < percepcao) {
         lembranca = distancia;
@@ -168,7 +167,6 @@ Criatura.prototype.alimenta = function(comidas, percepcao) {
       }
     }
   }
-
   // aqui define o comportamento da criatura, se irá perseguir ou se irá apenas até o local para comer
   if (maisProximo != null) {
     return this.movimenta(maisProximo);
@@ -186,6 +184,7 @@ Criatura.prototype.persegue = function(predadores, percepcao) {
   for (var i = predadores.length - 1; i >= 0; i--) {
     if (predadores[i] != this && predadores[i].nome != this.nome){
       var distancia = this.posicao.dist(predadores[i].posicao);
+      // se é caçador
       if (this.tipo > 0 && this.resistencia > predadores[i].resistencia){
         if (distancia < this.maxVelocidade + this.raio/2) {
           var devorado = predadores.splice(i, 1)[0];
@@ -204,25 +203,19 @@ Criatura.prototype.persegue = function(predadores, percepcao) {
           }
         }
       } else {
-        if (maisProximo != null){
-          var desejo = p5.Vector.sub(maisProximo.posicao, this.posicao);
-          desejo.setMag(this.maxVelocidade);
-
-          var direcao = p5.Vector.sub(desejo, this.velocidade);
-          direcao.limit(this.maxForca);
-
-          // verifica se tem o predador na base de conhecimento para caçar/fugir 2 vezes mais rápido
-          if (this.baseConhecimento[2].contains(maisProximo) && this.codigoGenetico[7] > 0){
-            direcao.mult(-1);
-          } else if (this.baseConhecimento[2].contains(maixProximo) && this.codigoGenetico[7] <= 0) {
-            direcao.mult(-1);
-          } else {
-            direcao.mult(this.codigoGenetico[7] * 2);
+        // se está sendo caçado
+        if (predadores[i].tipo > 0 && this.resistencia < predadores[i].resistencia){
+          if (distancia < lembranca && distancia < percepcao) {
+            lembranca = distancia;
+            maisProximo = predadores[i];
           }
-          return direcao;
         }
       }
     }
+  }
+  // aqui define o comportamento da criatura, se irá perseguir ou se irá apenas até o local para comer
+  if (maisProximo != null){
+    return this.movimenta(maisProximo);
   }
   return createVector(0, 0);
 }
@@ -240,35 +233,44 @@ Criatura.prototype.movimenta = function(obj) {
   var direcao = p5.Vector.sub(desejo, this.velocidade);
   direcao.limit(this.maxForca);
 
-  // verificação da base de conhecimento sobre o veneno
-  if (obj.tipo == 2){
-    if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[2] > 0){
+  // verifica se é uma criatura ou um alimento
+  if (typeof obj.codigoGenetico !== "undefined"){
+    // verificação da base de conhecimento sobre a criatura
+    if (this.baseConhecimento[2].contains(obj) && this.codigoGenetico[7] > 0){
       direcao.mult(-1);
     } else {
-      direcao.mult(this.codigoGenetico[2]);
+      direcao.mult(this.codigoGenetico[7]);
+    }
+  } else {
+    // verificação da base de conhecimento sobre o veneno
+    if (obj.tipo == 2){
+      if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[2] > 0){
+        direcao.mult(-1);
+      } else {
+        direcao.mult(this.codigoGenetico[2]);
+      }
+    }
+    // verificação da base de conhecimento sobre a planta
+    if (obj.tipo == 0){
+      if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[0] > 0){
+        direcao.mult(-1);
+      } else if (this.baseConhecimento[0].contains(obj) && this.codigoGenetico[0] <= 0){
+        direcao.mult(-1);
+      } else {
+        direcao.mult(this.codigoGenetico[0]);
+      }
+    }
+    // verificação da base de conhecimento sobre a carne
+    if (obj.tipo == 1){
+      if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[1] > 0){
+        direcao.mult(-1);
+      } else if (this.baseConhecimento[0].contains(obj) && this.codigoGenetico[1] <= 0){
+        direcao.mult(-1);
+      } else {
+        direcao.mult(this.codigoGenetico[1]);
+      }
     }
   }
-  // verificação da base de conhecimento sobre a planta
-  if (obj.tipo == 0){
-    if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[0] > 0){
-      direcao.mult(-1);
-    } else if (this.baseConhecimento[0].contains(obj) && this.codigoGenetico[0] <= 0){
-      direcao.mult(-1);
-    } else {
-      direcao.mult(this.codigoGenetico[0]);
-    }
-  }
-  // verificação da base de conhecimento sobre a carne
-  if (obj.tipo == 1){
-    if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[1] > 0){
-      direcao.mult(-1);
-    } else if (this.baseConhecimento[0].contains(obj) && this.codigoGenetico[1] <= 0){
-      direcao.mult(-1);
-    } else {
-      direcao.mult(this.codigoGenetico[1]);
-    }
-  }
-
   return direcao;
 }
 
