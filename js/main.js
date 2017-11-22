@@ -2,8 +2,8 @@ var xGame = 1000;
 var yGame = 750;
 var menu = 0;
 var criaturas = [];
-var variacaoCriaturas = 6; // variável que controla a quantidade de tipo de criatura
-var quantiaEspecie = 6; // variável que controla quantas de cada criatura serão geradas
+var variacaoCriaturas = 1; // variável que controla a quantidade de tipo de criatura
+var quantiaEspecie = 2; // variável que controla quantas de cada criatura serão geradas
 var alimentosPlanta;
 var alimentosCarne;
 var alimentosVeneno;
@@ -243,7 +243,7 @@ function draw(){
           adicionaNovaComida(null, null);
         }
       }
-      for (var i = criaturas.length - 1; i > 0; i--){
+      for (var i = criaturas.length - 1; i >= 0; i--){
         var crtr = criaturas[i];
         crtr.comportamentos(alimentosPlanta, alimentosCarne, alimentosVeneno, criaturas);
         crtr.limites();
