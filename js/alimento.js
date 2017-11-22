@@ -16,13 +16,21 @@ function Alimento(x, y, caracteristicas){
   }
   this.vida = random(caracteristicas[1] - 0.25, caracteristicas[1] + 0.25);
   this.fome = random(caracteristicas[2] - 0.25, caracteristicas[2] + 0.25);
-  this.cor = caracteristicas[3];
+  this.alfa = 0;
+  this.r = caracteristicas[3];
+  this.g = caracteristicas[4];
+  this.b = caracteristicas[5];
+  this.cor = color(this.r, this.g, this.b, this.alfa);
   this.posicao = createVector(x, y);
   this.raio = (this.fome * 3);
 }
 
 Alimento.prototype.show = function(){
   noStroke();
+  if (this.alfa < 255){
+    this.alfa += 5;
+    this.cor = color(this.r, this.g, this.b, this.alfa);
+  }
   fill(this.cor);
   ellipse(this.posicao.x, this.posicao.y, this.raio);
 }

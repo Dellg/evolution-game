@@ -147,22 +147,30 @@ function setup(){
       var t = i%3;
       var v = random(0.5, 1.5);
       var f = random(0.5, 3);
-      var c;
+      var r;
+      var g;
+      var b;
       switch (t) {
         // planta
         case 0:
-        c = color(random(0, 126), random(177, 255), 0);
+          r = random(0, 126);
+          g = random(177, 255);
+          b = 0;
           break;
         // carne
         case 1:
-        c = color(random(177, 255), random(0, 126), 0);
+          r = random(177, 255);
+          g = random(0, 126);
+          b = 0;
           break;
         // veneno
         case 2:
-        c = color(random(0, 80), random(0, 80), random(126, 255));
+          r = random(0, 80);
+          g = random(0, 80);
+          b = random(126, 255);
           break;
       }
-      tipoAlimentos[i] = [t, v, f, c];
+      tipoAlimentos[i] = [t, v, f, r, g, b];
     }
     iniciaGeracao();
     // remove elementos de entrada de dado
