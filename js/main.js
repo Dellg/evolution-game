@@ -14,6 +14,7 @@ var tipoAlimentos = [];
 var geracao = 0;
 var taxaMutacao = 0.01;
 var debug = false;
+var tempoJogo = 0;
 
 //______________________________________________________________________________
 // preparação do jogo e recebimento de dados do usuário
@@ -212,8 +213,9 @@ function draw(){
     background(15);
     fill(255);
     text("Geração " + geracao, 10, 20);
+    this.tempoJogo += 0.01;
+    text("Tempo de jogo: " + int(this.tempoJogo), 10, 40);
     if (this.debug){
-      text("  Legenda:", 10, 40);
       text("Alimentos:", 10, 60);
       text("- com cor em tom de verde/verde-limão são plantas;", 10, 80);
       text("- com cor em tom de vermelho/laranja são carnes;", 10, 100);

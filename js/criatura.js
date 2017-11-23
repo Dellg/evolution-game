@@ -1,4 +1,6 @@
 function Criatura(x, y, caracteristicas, heranca, geracao){
+  // variável que determina quanto tempo a criatura ficará viva
+  this.tempo = 5000
   // nome da criatura para identificação
   this.nome = caracteristicas[0];
   this.codigo = this.nome;
@@ -95,6 +97,14 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
 // método de atualização
 //____________________________________________________________________________
 Criatura.prototype.update = function() {
+  // verifica se ainda está com tempo de vida
+  if (this.tempo > 0){
+    this.tempo--;
+  } else {
+    this.vida = -10;
+    console.log(this.nome + " morreu de velhice.");
+  }
+
   // capacidade de reprodução só aumenta se a criatura estiver bem alimentada
   if (this.fome > (this.maxFome - this.maxFome/4)){
     this.reproducao += this.codigoGenetico[6];
@@ -110,6 +120,9 @@ Criatura.prototype.update = function() {
     this.fome -= 0.001;
   }
   this.velocidade.add(this.aceleracao);
+  if (this.velocidade > this.maxVelocidade){
+    this.velocidade--;
+  }
   this.velocidade.limit(this.maxVelocidade);
   this.posicao.add(this.velocidade);
   this.aceleracao.mult(0);
@@ -136,9 +149,9 @@ Criatura.prototype.comportamentos = function(plantas, carnes, venenos, criaturas
   if (seguePlanta.x == 0 && seguePlanta.y == 0 && segueCarne.x == 0 && segueCarne.y == 0){
     this.aplicaForca(segueVeneno);
   }
+  this.aplicaForca(predadorPresa);
   this.aplicaForca(seguePlanta);
   this.aplicaForca(segueCarne);
-  this.aplicaForca(predadorPresa);
 }
 
 //____________________________________________________________________________
@@ -237,7 +250,7 @@ Criatura.prototype.movimenta = function(obj) {
   if (typeof obj.codigoGenetico !== "undefined"){
     // verificação da base de conhecimento sobre a criatura
     if (this.baseConhecimento[2].contains(obj) && this.codigoGenetico[7] > 0){
-      direcao.mult(-1);
+      direcao.mult(-2);
     } else {
       direcao.mult(this.codigoGenetico[7]);
     }
