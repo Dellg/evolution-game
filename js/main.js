@@ -2,8 +2,8 @@ var xGame = 1000;
 var yGame = 750;
 var menu = 0;
 var criaturas = [];
-var variacaoCriaturas = 1; // variável que controla a quantidade de tipo de criatura
-var quantiaEspecie = 2; // variável que controla quantas de cada criatura serão geradas
+var variacaoCriaturas = 6; // variável que controla a quantidade de tipo de criatura
+var quantiaEspecie = 8; // variável que controla quantas de cada criatura serão geradas
 var alimentosPlanta;
 var alimentosCarne;
 var alimentosVeneno;
@@ -224,13 +224,13 @@ function draw(){
       text("- com formato de seta são carnívoros.", 10, 210);
       text("Aura das criaturas:", 10, 240);
       text("- verde é a área de percepção para plantas;", 10, 260);
-      text("- azul é a área de percepção para carnes;", 10, 280);
-      text("- vermelho é a área de percepção para venenos;", 10, 300);
+      text("- vermelho é a área de percepção para carnes;", 10, 280);
+      text("- azul é a área de percepção para venenos;", 10, 300);
       text("- amarelo é a área de percepção para predadores/presas.", 10, 320);
       text("Linhas que saem pela frente e por trás das criaturas são forças de atração e repulsão, respectivamente:", 10, 350);
       text("- verde é a força de atração/repulsão por plantas;", 10, 370);
-      text("- azul é a força de atração/repulsão por carnes;", 10, 390);
-      text("- vermelho é a força de atração/repulsão por venenos;", 10, 410);
+      text("- vermelho é a força de atração/repulsão por carnes;", 10, 390);
+      text("- azul é a força de atração/repulsão por venenos;", 10, 410);
       text("- amarelo é a força de atração/repulsão por predadores/presas.", 10, 430);
     }
     if (criaturas.length <= 0){

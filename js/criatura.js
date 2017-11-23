@@ -352,10 +352,10 @@ Criatura.prototype.show = function(){
     stroke(0, 255, 0);
     ellipse(0, 0, this.codigoGenetico[3] * 2); // aura para comida planta
     line(0, 0, 0, -this.codigoGenetico[0] * 50);
-    stroke(0, 0, 255);
+    stroke(255, 0, 0);
     ellipse(0, 0, this.codigoGenetico[4] * 2); // aura para comida carne
     line(0, 0, 0, -this.codigoGenetico[1] * 50);
-    stroke(255, 0, 0);
+    stroke(0, 0, 255);
     ellipse(0, 0, this.codigoGenetico[5] * 2); // aura para perigo
     line(0, 0, 0, -this.codigoGenetico[2] * 50);
     stroke(255, 255, 0);
