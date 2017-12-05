@@ -15,6 +15,7 @@ var geracao = 0;
 var taxaMutacao = 0.01;
 var debug = false;
 var tempoJogo = 0;
+var jogador;
 
 //______________________________________________________________________________
 // preparação do jogo e recebimento de dados do usuário
@@ -246,6 +247,9 @@ function draw(){
         }
       }
       for (var i = criaturas.length - 1; i >= 0; i--){
+        this.jogador.update();
+        this.jogador.show();
+
         var crtr = criaturas[i];
         crtr.comportamentos(alimentosPlanta, alimentosCarne, alimentosVeneno, criaturas);
         crtr.limites();
@@ -286,6 +290,7 @@ function draw(){
 // aqui reinicia o jogo com uma nova geração
 //______________________________________________________________________________
 function iniciaGeracao(){
+  this.jogador = new Jogador(width/2, height/2, tipoCriaturas[0], null, 0);
   // cria quantidades das criaturas pré-definidas
   for (var i = 0; i < tipoCriaturas.length; i++){
     for (var j = 0; j < quantiaEspecie; j++){

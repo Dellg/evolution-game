@@ -250,7 +250,7 @@ Criatura.prototype.movimenta = function(obj) {
   if (typeof obj.codigoGenetico !== "undefined"){
     // verificação da base de conhecimento sobre a criatura
     if (this.baseConhecimento[2].contains(obj) && this.codigoGenetico[7] > 0){
-      direcao.mult(-2);
+      direcao.mult(-1.5);
     } else {
       direcao.mult(this.codigoGenetico[7]);
     }
