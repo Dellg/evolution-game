@@ -14,6 +14,9 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   this.maxFome = parseFloat(caracteristicas[3]);
   this.velocidade = p5.Vector.random2D(caracteristicas[4]);
   this.maxVelocidade = parseFloat(caracteristicas[4]);
+  // stamina servirá para as criaturas dar um boost na velocidade ao caçar
+  this.boostAtivo = false;
+  this.stamina = parseFloat(caracteristicas[5]);
   // carnívoros só irão atacar outras criaturas que tem resistência menor que a deles
   this.resistencia = parseFloat(caracteristicas[5]);
   this.cor = caracteristicas[6];
@@ -117,13 +120,30 @@ Criatura.prototype.update = function() {
     this.vida -= 0.001;
   } else {
     this.vida -= 0.00025;
-    this.fome -= 0.001;
+    this.fome -= 0.0001;
   }
+
   this.velocidade.add(this.aceleracao);
-  if (this.velocidade > this.maxVelocidade){
-    this.velocidade--;
+  // verifica se o boost está ativo para aumentar velocidade
+  if (this.boostAtivo){
+    if (this.velocidade > (this.maxVelocidade * 2)){
+      this.velocidade--;
+    }
+    this.velocidade.limit(this.maxVelocidade * 2);
+    this.stamina -= 0.1;
+    if (this.stamina <= 0){
+      this.boostAtivo = false;
+    }
+  } else {
+    if (this.velocidade > this.maxVelocidade){
+      this.velocidade--;
+    }
+    this.velocidade.limit(this.maxVelocidade);
+    // recuperação da stamina, resistência é o máximo da stamina
+    if (this.stamina < this.resistencia){
+      this.stamina += 0.001;
+    }
   }
-  this.velocidade.limit(this.maxVelocidade);
   this.posicao.add(this.velocidade);
   this.aceleracao.mult(0);
 }
@@ -248,17 +268,25 @@ Criatura.prototype.movimenta = function(obj) {
 
   // verifica se é uma criatura ou um alimento
   if (typeof obj.codigoGenetico !== "undefined"){
+    // se a stamina estiver cheia, ativará o boost para caça ou fuga
+    if (this.stamina == this.resistencia){
+      this.boostAtivo = true;
+    }
     // verificação da base de conhecimento sobre a criatura
     if (this.baseConhecimento[2].contains(obj) && this.codigoGenetico[7] > 0){
-      direcao.mult(-1.5);
+      direcao.mult(-this.codigoGenetico[7]);
     } else {
       direcao.mult(this.codigoGenetico[7]);
     }
   } else {
+    // desativa o boost para pegar alimentos
+    if (this.boostAtivo){
+      this.boostAtivo = false;
+    }
     // verificação da base de conhecimento sobre o veneno
     if (obj.tipo == 2){
       if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[2] > 0){
-        direcao.mult(-1);
+        direcao.mult(-this.codigoGenetico[2]);
       } else {
         direcao.mult(this.codigoGenetico[2]);
       }
@@ -266,9 +294,9 @@ Criatura.prototype.movimenta = function(obj) {
     // verificação da base de conhecimento sobre a planta
     if (obj.tipo == 0){
       if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[0] > 0){
-        direcao.mult(-1);
+        direcao.mult(-this.codigoGenetico[0]);
       } else if (this.baseConhecimento[0].contains(obj) && this.codigoGenetico[0] <= 0){
-        direcao.mult(-1);
+        direcao.mult(-this.codigoGenetico[0]);
       } else {
         direcao.mult(this.codigoGenetico[0]);
       }
@@ -276,9 +304,9 @@ Criatura.prototype.movimenta = function(obj) {
     // verificação da base de conhecimento sobre a carne
     if (obj.tipo == 1){
       if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[1] > 0){
-        direcao.mult(-1);
+        direcao.mult(-this.codigoGenetico[1]);
       } else if (this.baseConhecimento[0].contains(obj) && this.codigoGenetico[1] <= 0){
-        direcao.mult(-1);
+        direcao.mult(-this.codigoGenetico[1]);
       } else {
         direcao.mult(this.codigoGenetico[1]);
       }
@@ -401,7 +429,7 @@ Criatura.prototype.show = function(){
 // método que faz a criatura dar volta ao mundo quando chega ao limite da tela
 //____________________________________________________________________________
 Criatura.prototype.limites = function() {
-  //
+
   if (this.posicao.x < -this.raio) {
     this.posicao.x = width + this.raio;
   } else if (this.posicao.x > width + this.raio) {
