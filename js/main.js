@@ -1,5 +1,5 @@
-var xGame = 1000;
-var yGame = 750;
+var xGame = window.innerWidth-20;
+var yGame = window.innerHeight-20;
 var menu = 0;
 var criaturas = [];
 var variacaoCriaturas = 6; // variável que controla a quantidade de tipo de criatura

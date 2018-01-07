@@ -398,29 +398,20 @@ Criatura.prototype.show = function(){
 }
 
 //____________________________________________________________________________
-// método que impede a criatura de sair da tela (comidas não são geradas fora da tela)
+// método que faz a criatura dar volta ao mundo quando chega ao limite da tela
 //____________________________________________________________________________
 Criatura.prototype.limites = function() {
-  var desejo = null;
-
-  if (this.posicao.x < 10) {
-    desejo = createVector(this.maxVelocidade, this.velocidade.y);
-  } else if (this.posicao.x > width - 10) {
-    desejo = createVector(-this.maxVelocidade, this.velocidade.y);
+  //
+  if (this.posicao.x < -this.raio) {
+    this.posicao.x = width + this.raio;
+  } else if (this.posicao.x > width + this.raio) {
+    this.posicao.x = -this.raio;
   }
 
-  if (this.posicao.y < 10) {
-    desejo = createVector(this.velocidade.x, this.maxVelocidade);
-  } else if (this.posicao.y > height - 10) {
-    desejo = createVector(this.velocidade.x, -this.maxVelocidade);
-  }
-
-  if (desejo !== null) {
-    desejo.normalize();
-    desejo.mult(this.maxVelocidade);
-    var direcao = p5.Vector.sub(desejo, this.velocidade);
-    direcao.limit(this.maxForca);
-    this.aplicaForca(direcao);
+  if (this.posicao.y < -this.raio) {
+    this.posicao.y = height + this.raio;
+  } else if (this.posicao.y > height + this.raio) {
+    this.posicao.y = this.raio;
   }
 }
 
