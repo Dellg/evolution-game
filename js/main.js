@@ -5,8 +5,9 @@ var criaturas = [];
 var variacaoCriaturas = 6; // variável que controla a quantidade de tipo de criatura
 var quantiaEspecie = 8; // variável que controla quantas de cada criatura serão geradas
 var alimentosPlanta;
-var alimentosCarne;
+var alimentosInseto;
 var alimentosVeneno;
+var alimentosCarne; // apenas quando uma criatura morre
 var variacaoAlimentos = 20; // variável que controla quantos tipos de alimentos serão criados
 var countAlimentos = 80; // será para cada tipo de alimento
 var tipoCriaturas = [];
@@ -163,7 +164,7 @@ function setup(){
           g = random(177, 255);
           b = 0;
           break;
-        // carne
+        // inseto
         case 1:
           r = random(177, 255);
           g = random(0, 126);
@@ -178,6 +179,8 @@ function setup(){
       }
       tipoAlimentos[i] = [t, v, f, r, g, b];
     }
+    // criatura que morreu
+    tipoAlimentos.push([3, random(0.5, 1.5), random(0.5, 3), 255, 255, 255]);
     iniciaGeracao();
     // remove elementos de entrada de dado
     nome.remove();
@@ -245,14 +248,14 @@ function draw(){
       iniciaGeracao();
     } else {
       // gera novas comidas se tiver menos da quantidade definida comidas no canvas
-      if ((alimentosPlanta.length + alimentosCarne.length + alimentosVeneno.length) < countAlimentos){
+      if ((alimentosPlanta.length + alimentosInseto.length + alimentosVeneno.length) < countAlimentos){
         if (random(1) < 0.2) {
           adicionaNovaComida(null, null);
         }
       }
       for (var i = criaturas.length - 1; i >= 0; i--){
         var crtr = criaturas[i];
-        crtr.comportamentos(alimentosPlanta, alimentosCarne, alimentosVeneno, criaturas);
+        crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas);
         crtr.limites();
         crtr.update();
         crtr.show();
@@ -275,12 +278,16 @@ function draw(){
         var almt = alimentosPlanta[i];
         almt.show();
       }
-      for (var i = 0; i < alimentosCarne.length; i++){
-        var almt = alimentosCarne[i];
+      for (var i = 0; i < alimentosInseto.length; i++){
+        var almt = alimentosInseto[i];
         almt.show();
       }
       for (var i = 0; i < alimentosVeneno.length; i++){
         var almt = alimentosVeneno[i];
+        almt.show();
+      }
+      for (var i = 0; i < alimentosCarne.length; i++){
+        var almt = alimentosCarne[i];
         almt.show();
       }
     }
@@ -301,8 +308,9 @@ function iniciaGeracao(){
     }
   }
   alimentosPlanta = [];
-  alimentosCarne = [];
+  alimentosInseto = [];
   alimentosVeneno = [];
+  alimentosCarne = [];
   // cria alimentos usando os tipos pré-criados
   for (var i = 0; i < countAlimentos; i++){
     adicionaNovaComida(null, null, false);
@@ -319,24 +327,30 @@ function adicionaNovaComida(x, y, morto){
     x = random(5, xGame-5);
     y = random(5, yGame-5);
   }
-  var r = round(random(tipoAlimentos.length - 1));
-  switch (tipoAlimentos[r][0]) {
-    case 0:
-      if (morto || alimentosPlanta.length < (countAlimentos/2)){
-        alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
-        alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
-      }
-      break;
-    case 1:
-      if (morto || alimentosCarne.length < (countAlimentos/2)/2){
-        alimentosCarne.push(new Alimento(x, y, tipoAlimentos[r]));
-      }
-      break;
-    case 2:
-      if (morto || alimentosVeneno.length < (countAlimentos/2)/2){
-        alimentosVeneno.push(new Alimento(x, y, tipoAlimentos[r]));
-      }
-      break;
+  // se foi morto, adiciona uma carne de criatura (último índice)
+  if (morto){
+    alimentosCarne.push(new Alimento(x, y, tipoAlimentos[tipoAlimentos.length-1]));
+  // se não foi, adiciona um alimento inseto, planta ou tóxico
+  } else {
+    var r = round(random(tipoAlimentos.length - 1));
+    switch (tipoAlimentos[r][0]) {
+      case 0:
+        if (morto || alimentosPlanta.length < (countAlimentos/2)){
+          alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
+          alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
+        }
+        break;
+      case 1:
+        if (morto || alimentosInseto.length < (countAlimentos/2)/2){
+          alimentosInseto.push(new Alimento(x, y, tipoAlimentos[r]));
+        }
+        break;
+      case 2:
+        if (morto || alimentosVeneno.length < (countAlimentos/2)/2){
+          alimentosVeneno.push(new Alimento(x, y, tipoAlimentos[r]));
+        }
+        break;
+    }
   }
 }
 

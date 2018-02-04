@@ -2,7 +2,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   // nome da criatura para identificação
   this.nome = caracteristicas[0];
   this.codigo = this.nome;
-  // tipo de alimento que a criatura consome: 0 = planta, 1 = carne, 2 = ambos
+  // tipo de alimento que a criatura consome: 0 = planta, 1 = inseto, 2 = ambos
   this.tipo = caracteristicas[1];
   // a criatura vai perdendo vida se estiver com fome
   this.vida = random(caracteristicas[2]/3, caracteristicas[2]);
@@ -36,14 +36,16 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
     this.reproducao = random(0, this.intervaloReproducao);
     // código genético
     this.codigoGenetico[0] = random(-0.5, 1); // peso comida planta
-    this.codigoGenetico[1] = random(-0.5, 1); // peso comida carne
+    this.codigoGenetico[1] = random(-0.5, 1); // peso comida inseto
     this.codigoGenetico[2] = random(-0.5, 1); // peso perigo
     this.codigoGenetico[3] = random(20, 100); // raio de percepção para detectar planta
-    this.codigoGenetico[4] = random(20, 100); // raio de percepção para detectar carne
+    this.codigoGenetico[4] = random(20, 100); // raio de percepção para detectar inseto
     this.codigoGenetico[5] = random(20, 100); // raio de percepção para detectar veneno
     this.codigoGenetico[6] = random(0.005, 0.01); // taxa de reprodução
     this.codigoGenetico[7] = random(-0.5, 1); // peso predador/presa
     this.codigoGenetico[8] = random(20, 100); // raio de percepção para detectar predadores/presa
+    this.codigoGenetico[9] = random(-0.5, 1); // peso comida carne (criatura)
+    this.codigoGenetico[10] = random(20, 100); // raio de percepção para detectar carne (criatura)
   // filho de alguma criatura - chances de mutação
   } else {
     for (var i = 0; i < heranca.length; i++){
@@ -53,6 +55,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
         case 1:
         case 2:
         case 7:
+        case 9:
           if (random(1) < taxaMutacao){
             this.codigoGenetico[i] += random(-0.1, 0.1);
             console.log("... e seu filho sofreu mutação.")
@@ -62,6 +65,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
         case 4:
         case 5:
         case 8:
+        case 10:
           if (random(1) < taxaMutacao){
             this.codigoGenetico[i] += random(-5, 5);
             console.log("... e seu filho sofreu mutação.")
@@ -95,10 +99,14 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
 //____________________________________________________________________________
 //  método que define qual comportamento a criatura irá realizar
 //____________________________________________________________________________
-Criatura.prototype.comportamentos = function(plantas, carnes, venenos, criaturas) {
+Criatura.prototype.comportamentos = function(plantas, insetos, venenos, carnes, criaturas) {
   var separacao, alinhado, coeso;
-  var segueVeneno, seguePlanta, seguePlanta, predadorPresa;
+  var segueVeneno, seguePlanta, segueInseto, predadorPresa, segueCarne;
 
+  // limita a fome à fome máxima
+  if (this.fome > this.maxFome){
+    this.fome = this.maxFome;
+  }
   // verifica se está faminto ou não
   if (this.fome < (this.maxFome/3)){
     this.faminto = true;
@@ -114,24 +122,28 @@ Criatura.prototype.comportamentos = function(plantas, carnes, venenos, criaturas
 
     segueVeneno = this.alimenta(venenos, this.codigoGenetico[5]);
     seguePlanta = this.alimenta(plantas, this.codigoGenetico[3]);
-    segueCarne = this.alimenta(carnes, this.codigoGenetico[4]);
+    segueInseto = this.alimenta(insetos, this.codigoGenetico[4]);
+    segueCarne = this.alimenta(carnes, this.codigoGenetico[10]);
     predadorPresa = this.persegue(criaturas, this.codigoGenetico[8]);
 
     segueVeneno.mult(this.codigoGenetico[2]);
     seguePlanta.mult(this.codigoGenetico[0]);
-    segueCarne.mult(this.codigoGenetico[1]);
+    segueInseto.mult(this.codigoGenetico[1]);
     predadorPresa.mult(this.codigoGenetico[7]);
+    segueCarne.mult(this.codigoGenetico[9]);
 
     this.aplicaForca(segueVeneno);
+    this.aplicaForca(segueCarne);
     this.aplicaForca(predadorPresa);
     this.aplicaForca(seguePlanta);
-    this.aplicaForca(segueCarne);
+    this.aplicaForca(segueInseto);
 
   // se estiver sem fome, vai andar em grupo
   } else {
     segueVeneno = null;
     seguePlanta = null;
-    seguePlanta = null;
+    segueInseto = null;
+    segueCarne = null;
     predadorPresa = null;
 
     separacao = this.separar(criaturas);
@@ -278,45 +290,6 @@ Criatura.prototype.movimenta = function(obj) {
   var direcao = p5.Vector.sub(desejo, this.velocidade);
   direcao.limit(this.maxForca);
 
-  // // verifica se é uma criatura ou um alimento
-  // if (typeof obj.codigoGenetico !== "undefined"){
-  //   // verificação da base de conhecimento sobre a criatura
-  //   if (this.baseConhecimento[2].contains(obj) && this.codigoGenetico[7] > 0){
-  //     direcao.mult(-this.codigoGenetico[7]);
-  //   } else {
-  //     direcao.mult(this.codigoGenetico[7]);
-  //   }
-  // } else {
-  //   // verificação da base de conhecimento sobre o veneno
-  //   if (obj.tipo == 2){
-  //     if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[2] > 0){
-  //       direcao.mult(-this.codigoGenetico[2]);
-  //     } else {
-  //       direcao.mult(this.codigoGenetico[2]);
-  //     }
-  //   }
-  //   // verificação da base de conhecimento sobre a planta
-  //   if (obj.tipo == 0){
-  //     if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[0] > 0){
-  //       direcao.mult(-this.codigoGenetico[0]);
-  //     } else if (this.baseConhecimento[0].contains(obj) && this.codigoGenetico[0] <= 0){
-  //       direcao.mult(-this.codigoGenetico[0]);
-  //     } else {
-  //       direcao.mult(this.codigoGenetico[0]);
-  //     }
-  //   }
-  //   // verificação da base de conhecimento sobre a carne
-  //   if (obj.tipo == 1){
-  //     if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[1] > 0){
-  //       direcao.mult(-this.codigoGenetico[1]);
-  //     } else if (this.baseConhecimento[0].contains(obj) && this.codigoGenetico[1] <= 0){
-  //       direcao.mult(-this.codigoGenetico[1]);
-  //     } else {
-  //       direcao.mult(this.codigoGenetico[1]);
-  //     }
-  //   }
-  // }
-
   return direcao;
 }
 
@@ -399,7 +372,7 @@ Criatura.prototype.show = function(){
     ellipse(0, 0, this.codigoGenetico[3] * 2); // aura para comida planta
     line(0, 0, 0, -this.codigoGenetico[0] * 50);
     stroke(255, 0, 0);
-    ellipse(0, 0, this.codigoGenetico[4] * 2); // aura para comida carne
+    ellipse(0, 0, this.codigoGenetico[4] * 2); // aura para comida inseto
     line(0, 0, 0, -this.codigoGenetico[1] * 50);
     stroke(0, 0, 255);
     ellipse(0, 0, this.codigoGenetico[5] * 2); // aura para perigo
@@ -407,6 +380,9 @@ Criatura.prototype.show = function(){
     stroke(255, 255, 0);
     ellipse(0, 0, this.codigoGenetico[8] * 2); // aura para predador/presa
     line(0, 0, 0, -this.codigoGenetico[7] * 50);
+    stroke(255);
+    ellipse(0, 0, this.codigoGenetico[10] * 2); // aura para comida carne (criatura)
+    line(0, 0, 0, -this.codigoGenetico[9] * 50);
     // aqui mostra um contorno na criatura significando sua fome
     strokeWeight(2);
     stroke(lerpColor(color(255,0,0), color(0,255,0), this.fome));
@@ -457,8 +433,8 @@ Criatura.prototype.matou = function(devorado){
   this.fome += devorado.maxFome/1.75;
   if (this.tipo == 1){
     this.fitness += 3;
-  } else if (this. tipo == 2){
-    this.fitness += 1;
+  } else {
+    this.fitness -= 3;
   }
   // chance de pequena melhora nas habilidades de caça do predador
   if (random(1) < taxaMutacao){
@@ -493,32 +469,19 @@ Criatura.prototype.matou = function(devorado){
 Criatura.prototype.conhecer = function(devorado){
   var base = null;
   // se for comida ruim, perde vida e adiciona aquele tipo à base de conhecimento
-  if (devorado.tipo == 2){
+  // se for carnívoro e comer algo diferente de carne de criatura, também perde vida
+  // se for onívoro e comer carne de criatura, também perde vida
+  if ((devorado.tipo == 2) || (this.tipo == 1 && devorado.tipo != 3) || (this.tipo == 2 && devorado.tipo == 3)){
     this.vida -= devorado.vida;
     this.fitness -= 5;
     base = this.baseConhecimento[1];
-
-  // onívoros comem dos dois tipos de alimento, por isso saciam pouca fome com cada alimento
-  } else if (this.tipo == 2){
-    this.vida += devorado.vida/1.5;
-    this.fome += devorado.fome - (devorado.fome/4);
+  // se for onívoro, se for carnívoro e comer carne de criatura, ou se for herbívoro e comer planta
+  // adiciona vida e sacia fome, e adiciona o tipo à base de conhecimento
+  } else if ((this.tipo == 2) || (this.tipo == 1 && devorado.tipo == 3) || (this.tipo == 0 && devorado.tipo == 0)){
+    this.vida += devorado.vida/1.25;
+    this.fome += devorado.fome * 1.25;
     this.fitness += 1;
     base = this.baseConhecimento[0];
-
-  // criaturas que comem alimento do seu tipo apenas, saciam mais a fome com cada alimento
-  } else if (this.tipo == devorado.tipo){
-    // herbívoros ganham mais pontos por comer plantas, pois é a única coisa que comem
-    if (this.tipo == 0){
-      this.vida += devorado.vida/1.1;
-      this.fome += devorado.fome * 1.5;
-      this.fitness += 3;
-    } else {
-      this.vida += devorado.vida/1.25;
-      this.fome += devorado.fome * 1.25;
-      this.fitness += 1;
-    }
-    base = this.baseConhecimento[0];
-
   // se comer um alimento de um tipo diferente perde vida e fica com um pouco mais de fome
   } else {
     this.fome -= devorado.fome/2;
