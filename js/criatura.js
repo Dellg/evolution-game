@@ -1,6 +1,4 @@
 function Criatura(x, y, caracteristicas, heranca, geracao){
-  // variável que determina quanto tempo a criatura ficará viva
-  this.tempo = 5000
   // nome da criatura para identificação
   this.nome = caracteristicas[0];
   this.codigo = this.nome;
@@ -12,11 +10,9 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   // fome define de quanto em quanto tempo a criatura precisa estar se alimento
   this.fome = random(caracteristicas[3]/3, caracteristicas[3]);
   this.maxFome = parseFloat(caracteristicas[3]);
+  this.faminto = false;
   this.velocidade = p5.Vector.random2D(caracteristicas[4]);
   this.maxVelocidade = parseFloat(caracteristicas[4]);
-  // stamina servirá para as criaturas dar um boost na velocidade ao caçar
-  this.boostAtivo = false;
-  this.stamina = parseFloat(caracteristicas[5]);
   // carnívoros só irão atacar outras criaturas que tem resistência menor que a deles
   this.resistencia = parseFloat(caracteristicas[5]);
   this.cor = caracteristicas[6];
@@ -24,7 +20,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   // dados da criatura
   this.posicao = createVector(x, y);
   this.aceleracao = createVector();
-  this.maxForca = random(0.01, 0.25);
+  this.maxForca = random(0.01, 0.05);
   this.raio = 5;
 
   // características da IA
@@ -97,17 +93,65 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
 }
 
 //____________________________________________________________________________
+//  método que define qual comportamento a criatura irá realizar
+//____________________________________________________________________________
+Criatura.prototype.comportamentos = function(plantas, carnes, venenos, criaturas) {
+  var separacao, alinhado, coeso;
+  var segueVeneno, seguePlanta, seguePlanta, predadorPresa;
+
+  // verifica se está faminto ou não
+  if (this.fome < (this.maxFome/3)){
+    this.faminto = true;
+  } else {
+    this.faminto = false;
+  }
+
+  // se estiver com fome, vai procurar alimento
+  if (this.faminto){
+    separacao = null;
+    alinhado = null;
+    coeso = null;
+
+    segueVeneno = this.alimenta(venenos, this.codigoGenetico[5]);
+    seguePlanta = this.alimenta(plantas, this.codigoGenetico[3]);
+    segueCarne = this.alimenta(carnes, this.codigoGenetico[4]);
+    predadorPresa = this.persegue(criaturas, this.codigoGenetico[8]);
+
+    segueVeneno.mult(this.codigoGenetico[2]);
+    seguePlanta.mult(this.codigoGenetico[0]);
+    segueCarne.mult(this.codigoGenetico[1]);
+    predadorPresa.mult(this.codigoGenetico[7]);
+
+    this.aplicaForca(segueVeneno);
+    this.aplicaForca(predadorPresa);
+    this.aplicaForca(seguePlanta);
+    this.aplicaForca(segueCarne);
+
+  // se estiver sem fome, vai andar em grupo
+  } else {
+    segueVeneno = null;
+    seguePlanta = null;
+    seguePlanta = null;
+    predadorPresa = null;
+
+    separacao = this.separar(criaturas);
+    alinhado = this.alinhar(criaturas);
+    coeso = this.coesao(criaturas);
+
+    separacao.mult(1.5);
+    alinhado.mult(1.0);
+    coeso.mult(1.0);
+
+    this.aplicaForca(separacao);
+    this.aplicaForca(alinhado);
+    this.aplicaForca(coeso);
+  }
+}
+
+//____________________________________________________________________________
 // método de atualização
 //____________________________________________________________________________
 Criatura.prototype.update = function() {
-  // verifica se ainda está com tempo de vida
-  if (this.tempo > 0){
-    this.tempo--;
-  } else {
-    this.vida = -10;
-    console.log(this.nome + " morreu de velhice.");
-  }
-
   // capacidade de reprodução só aumenta se a criatura estiver bem alimentada
   if (this.fome > (this.maxFome - this.maxFome/4)){
     this.reproducao += this.codigoGenetico[6];
@@ -124,26 +168,7 @@ Criatura.prototype.update = function() {
   }
 
   this.velocidade.add(this.aceleracao);
-  // verifica se o boost está ativo para aumentar velocidade
-  if (this.boostAtivo){
-    if (this.velocidade > (this.maxVelocidade * 2)){
-      this.velocidade--;
-    }
-    this.velocidade.limit(this.maxVelocidade * 2);
-    this.stamina -= 0.1;
-    if (this.stamina <= 0){
-      this.boostAtivo = false;
-    }
-  } else {
-    if (this.velocidade > this.maxVelocidade){
-      this.velocidade--;
-    }
-    this.velocidade.limit(this.maxVelocidade);
-    // recuperação da stamina, resistência é o máximo da stamina
-    if (this.stamina < this.resistencia){
-      this.stamina += 0.001;
-    }
-  }
+  this.velocidade.limit(this.maxVelocidade);
   this.posicao.add(this.velocidade);
   this.aceleracao.mult(0);
 }
@@ -153,25 +178,6 @@ Criatura.prototype.update = function() {
 //____________________________________________________________________________
 Criatura.prototype.aplicaForca = function(forca) {
   this.aceleracao.add(forca);
-}
-
-//____________________________________________________________________________
-//  método que define qual comportamento a criatura irá realizar
-//____________________________________________________________________________
-Criatura.prototype.comportamentos = function(plantas, carnes, venenos, criaturas) {
-
-  var segueVeneno = this.alimenta(venenos, this.codigoGenetico[5]);
-  var seguePlanta = this.alimenta(plantas, this.codigoGenetico[3]);
-  var segueCarne = this.alimenta(carnes, this.codigoGenetico[4]);
-  var predadorPresa = this.persegue(criaturas, this.codigoGenetico[8]);
-
-  // só se importará com veneno se não houver carne ou planta no alcance
-  if (seguePlanta.x == 0 && seguePlanta.y == 0 && segueCarne.x == 0 && segueCarne.y == 0){
-    this.aplicaForca(segueVeneno);
-  }
-  this.aplicaForca(predadorPresa);
-  this.aplicaForca(seguePlanta);
-  this.aplicaForca(segueCarne);
 }
 
 //____________________________________________________________________________
@@ -215,10 +221,10 @@ Criatura.prototype.persegue = function(predadores, percepcao) {
   var maisProximo = null;
 
   for (var i = predadores.length - 1; i >= 0; i--) {
-    if (predadores[i] != this && predadores[i].nome != this.nome){
+    if (predadores[i].tipo != this.tipo){
       var distancia = this.posicao.dist(predadores[i].posicao);
-      // se é caçador
-      if (this.tipo > 0 && this.resistencia > predadores[i].resistencia){
+      // se é caçador e pode caçar
+      if (this.tipo == 1 && this.resistencia > predadores[i].resistencia){
         if (distancia < this.maxVelocidade + this.raio/2) {
           var devorado = predadores.splice(i, 1)[0];
           this.matou(devorado);
@@ -235,20 +241,20 @@ Criatura.prototype.persegue = function(predadores, percepcao) {
             maisProximo = predadores[i];
           }
         }
-      } else {
-        // se está sendo caçado
-        if (predadores[i].tipo > 0 && this.resistencia < predadores[i].resistencia){
-          if (distancia < lembranca && distancia < percepcao) {
-            lembranca = distancia;
-            maisProximo = predadores[i];
-          }
+      // se é caçador mas não pode caçar
+      } else if (this.tipo == 1 && this.resistencia <= predadores[i].resistencia){
+        if (distancia < lembranca && distancia < percepcao) {
+          lembranca = distancia;
+          maisProximo = predadores[i];
         }
       }
     }
   }
-  // aqui define o comportamento da criatura, se irá perseguir ou se irá apenas até o local para comer
+  // aqui define o comportamento da criatura, só irá perseguir se for caçador
   if (maisProximo != null){
-    return this.movimenta(maisProximo);
+    if (this.tipo == 1){
+      return this.movimenta(maisProximo);
+    }
   }
   return createVector(0, 0);
 }
@@ -257,7 +263,13 @@ Criatura.prototype.persegue = function(predadores, percepcao) {
 // método de movimento da criatura
 //____________________________________________________________________________
 Criatura.prototype.movimenta = function(obj) {
-  var desejo = p5.Vector.sub(obj.posicao, this.posicao);
+  var desejo;
+  // verifica se o objeto recebido é um vetor ou uma criatura
+  if (obj.name == "p5.Vector"){
+    desejo = p5.Vector.sub(obj, this.posicao);
+  } else {
+    desejo = p5.Vector.sub(obj.posicao, this.posicao);
+  }
   if (this.fome <= this.maxFome/2){
     desejo.setMag(this.maxVelocidade);
   } else {
@@ -266,52 +278,45 @@ Criatura.prototype.movimenta = function(obj) {
   var direcao = p5.Vector.sub(desejo, this.velocidade);
   direcao.limit(this.maxForca);
 
-  // verifica se é uma criatura ou um alimento
-  if (typeof obj.codigoGenetico !== "undefined"){
-    // se a stamina estiver cheia, ativará o boost para caça ou fuga
-    if (this.stamina == this.resistencia){
-      this.boostAtivo = true;
-    }
-    // verificação da base de conhecimento sobre a criatura
-    if (this.baseConhecimento[2].contains(obj) && this.codigoGenetico[7] > 0){
-      direcao.mult(-this.codigoGenetico[7]);
-    } else {
-      direcao.mult(this.codigoGenetico[7]);
-    }
-  } else {
-    // desativa o boost para pegar alimentos
-    if (this.boostAtivo){
-      this.boostAtivo = false;
-    }
-    // verificação da base de conhecimento sobre o veneno
-    if (obj.tipo == 2){
-      if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[2] > 0){
-        direcao.mult(-this.codigoGenetico[2]);
-      } else {
-        direcao.mult(this.codigoGenetico[2]);
-      }
-    }
-    // verificação da base de conhecimento sobre a planta
-    if (obj.tipo == 0){
-      if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[0] > 0){
-        direcao.mult(-this.codigoGenetico[0]);
-      } else if (this.baseConhecimento[0].contains(obj) && this.codigoGenetico[0] <= 0){
-        direcao.mult(-this.codigoGenetico[0]);
-      } else {
-        direcao.mult(this.codigoGenetico[0]);
-      }
-    }
-    // verificação da base de conhecimento sobre a carne
-    if (obj.tipo == 1){
-      if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[1] > 0){
-        direcao.mult(-this.codigoGenetico[1]);
-      } else if (this.baseConhecimento[0].contains(obj) && this.codigoGenetico[1] <= 0){
-        direcao.mult(-this.codigoGenetico[1]);
-      } else {
-        direcao.mult(this.codigoGenetico[1]);
-      }
-    }
-  }
+  // // verifica se é uma criatura ou um alimento
+  // if (typeof obj.codigoGenetico !== "undefined"){
+  //   // verificação da base de conhecimento sobre a criatura
+  //   if (this.baseConhecimento[2].contains(obj) && this.codigoGenetico[7] > 0){
+  //     direcao.mult(-this.codigoGenetico[7]);
+  //   } else {
+  //     direcao.mult(this.codigoGenetico[7]);
+  //   }
+  // } else {
+  //   // verificação da base de conhecimento sobre o veneno
+  //   if (obj.tipo == 2){
+  //     if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[2] > 0){
+  //       direcao.mult(-this.codigoGenetico[2]);
+  //     } else {
+  //       direcao.mult(this.codigoGenetico[2]);
+  //     }
+  //   }
+  //   // verificação da base de conhecimento sobre a planta
+  //   if (obj.tipo == 0){
+  //     if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[0] > 0){
+  //       direcao.mult(-this.codigoGenetico[0]);
+  //     } else if (this.baseConhecimento[0].contains(obj) && this.codigoGenetico[0] <= 0){
+  //       direcao.mult(-this.codigoGenetico[0]);
+  //     } else {
+  //       direcao.mult(this.codigoGenetico[0]);
+  //     }
+  //   }
+  //   // verificação da base de conhecimento sobre a carne
+  //   if (obj.tipo == 1){
+  //     if (this.baseConhecimento[1].contains(obj) && this.codigoGenetico[1] > 0){
+  //       direcao.mult(-this.codigoGenetico[1]);
+  //     } else if (this.baseConhecimento[0].contains(obj) && this.codigoGenetico[1] <= 0){
+  //       direcao.mult(-this.codigoGenetico[1]);
+  //     } else {
+  //       direcao.mult(this.codigoGenetico[1]);
+  //     }
+  //   }
+  // }
+
   return direcao;
 }
 
@@ -338,7 +343,7 @@ Criatura.prototype.reproduz = function() {
           }
         }
       }
-      if (melhorParceiro == null){
+      if (melhorParceiro == null || melhorParceiro.reproducao < melhorParceiro.intervaloReproducao){
         return null;
       } else {
         // aqui cruza o código genético dos pais para criar o do filho
@@ -535,4 +540,90 @@ Criatura.prototype.conhecer = function(devorado){
   // após selecionar a base de conhecimento apropriada, adiciona o alimento se ainda não estiver lá
   if (!base.contains(devorado))
     base.push(devorado);
+}
+
+//____________________________________________________________________________
+// função para manter distância entre as  criaturas quando estiverem andando em bando
+//____________________________________________________________________________
+Criatura.prototype.separar = function(criaturas){
+  var distanciaDesejada = 25;
+  var direcao = createVector(0,0);
+  var contador = 0;
+  // para cada criatura, verifica se é da mesma espécie
+  for (var i = 0; i < criaturas.length; i++){
+    if (criaturas[i].nome == this.nome && criaturas[i].fome > criaturas[i].maxFome/3){
+      var distancia = p5.Vector.dist(this.posicao, criaturas[i].posicao);
+      if ((distancia > 0) && (distancia < distanciaDesejada)){
+        var diferenca = p5.Vector.sub(this.posicao, criaturas[i].posicao);
+        diferenca.normalize();
+        diferenca.div(distancia);
+        direcao.add(diferenca);
+        contador++;
+      }
+    }
+  }
+  if (contador > 0){
+    direcao.div(contador);
+  }
+  if (direcao.mag() > 0) {
+    direcao.normalize();
+    direcao.mult(this.maxVelocidade);
+    direcao.sub(this.velocidade);
+    direcao.limit(this.maxForca);
+  }
+  return direcao;
+}
+
+//____________________________________________________________________________
+// função para alinhar as criaturas de um mesmo bando, para andar numa velocidade média
+//____________________________________________________________________________
+Criatura.prototype.alinhar = function(criaturas){
+  var distanciaVizinho = 50;
+  var soma = createVector(0,0);
+  var contador = 0;
+  // para cada criatura, verifica se é da mesma espécie
+  for (var i = 0; i < criaturas.length; i++){
+    if (criaturas[i].nome == this.nome && criaturas[i].fome > criaturas[i].maxFome/3){
+      var distancia = p5.Vector.dist(this.posicao, criaturas[i].posicao);
+      if ((distancia > 0) && (distancia < distanciaVizinho)){
+        soma.add(criaturas[i].velocidade);
+        contador++;
+      }
+    }
+  }
+  if (contador > 0){
+    soma.div(contador);
+    soma.normalize();
+    soma.mult(this.maxVelocidade);
+    var direcao = p5.Vector.sub(soma, this.velocidade);
+    direcao.limit(this.maxForca);
+    return direcao;
+  } else {
+    return createVector(0,0);
+  }
+}
+
+//____________________________________________________________________________
+// função que define um local médio para onde o bando vai se mover
+//____________________________________________________________________________
+Criatura.prototype.coesao = function(criaturas){
+  var distanciaVizinho = 50;
+  var soma = createVector(0,0);
+  var contador = 0;
+  // para cada criatura, verifica se é da mesma espécie
+  for (var i = 0; i < criaturas.length; i++){
+    if (criaturas[i].nome == this.nome && criaturas[i].fome > criaturas[i].maxFome/3){
+      var distancia = p5.Vector.dist(this.posicao, criaturas[i].posicao);
+      if ((distancia > 0) && (distancia < distanciaVizinho)){
+        soma.add(criaturas[i].posicao);
+        contador++;
+      }
+    }
+  }
+  if (contador > 0){
+    soma.div(contador);
+    return this.movimenta(soma);
+  } else {
+    return createVector(0,0);
+  }
 }

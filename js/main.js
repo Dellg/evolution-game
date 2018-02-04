@@ -109,12 +109,17 @@ function setup(){
   // adicionar criaturas aleatoriamente
   //______________________________________________________________________________
   function adicionarAleatorios() {
+    // Nalulóbulis herb 0, Kunglob carn 1, Cacoglobius oni 2
+    // nome, tipo, vida, fome, velocidade, resistência, cor
     for (var i = 0; i < variacaoCriaturas; i++){
       var t = i%3;
-      var temp1 = random(1, 3);
-      var temp2 = random(1, 3);
-      tipoCriaturas.push(["Criatura" + i, t, temp1, (4 - temp1), temp2, (4 - temp2),
-                          color(random(255), random(255), random(255))]);
+      if (t == 0){
+        tipoCriaturas.push(["Nalulóbulis" + i, t, 2, 1.5,   1,   2 + random(0.5), color(random(255), random(255), random(255))]);
+      } else if (t == 1){
+        tipoCriaturas.push(["Kunglob"     + i, t, 2,   5, 1.2, 2.4 + random(0.5), color(random(255), random(255), random(255))]);
+      } else if (t == 2){
+        tipoCriaturas.push(["Cacoglobius" + i, t, 2,   4, 1.1, 1.5 + random(0.5), color(random(255), random(255), random(255))]);
+      }
     }
     alert("Criaturas adicionadas! Aperte em Iniciar Jogo para começar.")
     limparCampos();
