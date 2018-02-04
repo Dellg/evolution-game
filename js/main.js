@@ -119,7 +119,7 @@ function setup(){
       } else if (t == 1){
         tipoCriaturas.push(["Kunglob"     + i, t, 2,   5, 1.2, 2.4 + random(0.5), color(random(255), random(255), random(255))]);
       } else if (t == 2){
-        tipoCriaturas.push(["Cacoglobius" + i, t, 2,   4, 1.1, 1.5 + random(0.5), color(random(255), random(255), random(255))]);
+        tipoCriaturas.push(["Cacoglobius" + i, t, 2,   3, 1.1, 1.5 + random(0.5), color(random(255), random(255), random(255))]);
       }
     }
     alert("Criaturas adicionadas! Aperte em Iniciar Jogo para começar.")

@@ -175,8 +175,8 @@ Criatura.prototype.update = function() {
   if (this.fome <= 0) {
     this.vida -= 0.001;
   } else {
-    this.vida -= 0.0001;
-    this.fome -= 0.0005;
+    this.vida -= 0.00001;
+    this.fome -= 0.00075;
   }
 
   this.velocidade.add(this.aceleracao);
