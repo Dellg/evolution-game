@@ -34,18 +34,40 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   if (heranca === null){
     // não faz parte do código genético, criatura sem parente terá reprodução aleatória
     this.reproducao = random(0, this.intervaloReproducao);
-    // código genético
-    this.codigoGenetico[0] = random(-0.5, 1); // peso comida planta
-    this.codigoGenetico[1] = random(-0.5, 1); // peso comida inseto
+    // código genético herbívoro
+    if (this.tipo == 0){
+      this.codigoGenetico[0] = random(-0.1, 1.5); // peso comida planta
+      this.codigoGenetico[1] = random(-1.5, 0.1); // peso comida inseto
+      this.codigoGenetico[3] = random(70, 120); // raio de percepção para detectar planta
+      this.codigoGenetico[4] = random(20, 70); // raio de percepção para detectar inseto
+      this.codigoGenetico[7] = random(-1.5, 0.1); // peso predador/presa
+      this.codigoGenetico[8] = random(20, 70); // raio de percepção para detectar predadores/presa
+      this.codigoGenetico[9] = random(-1.5, 0.1); // peso comida carne (criatura)
+      this.codigoGenetico[10] = random(20, 70); // raio de percepção para detectar carne (criatura)
+    // código genético carnívoro
+    } else if (this.tipo == 1){
+      this.codigoGenetico[0] = random(-1.5, 0.1); // peso comida planta
+      this.codigoGenetico[1] = random(-1.5, 0.1); // peso comida inseto
+      this.codigoGenetico[3] = random(20, 70); // raio de percepção para detectar planta
+      this.codigoGenetico[4] = random(20, 70); // raio de percepção para detectar inseto
+      this.codigoGenetico[7] = random(-0.1, 1.5); // peso predador/presa
+      this.codigoGenetico[8] = random(70, 120); // raio de percepção para detectar predadores/presa
+      this.codigoGenetico[9] = random(-0.1, 1.5); // peso comida carne (criatura)
+      this.codigoGenetico[10] = random(70, 120); // raio de percepção para detectar carne (criatura)
+    // código genético onívoro
+    } else if (this.tipo == 2){
+      this.codigoGenetico[0] = random(-1.5, 0.1); // peso comida planta
+      this.codigoGenetico[1] = random(-0.1, 1.5); // peso comida inseto
+      this.codigoGenetico[3] = random(20, 70); // raio de percepção para detectar planta
+      this.codigoGenetico[4] = random(70, 120); // raio de percepção para detectar inseto
+      this.codigoGenetico[7] = random(-1.5, 0.1); // peso predador/presa
+      this.codigoGenetico[8] = random(20, 70); // raio de percepção para detectar predadores/presa
+      this.codigoGenetico[9] = random(-1.5, 0.1); // peso comida carne (criatura)
+      this.codigoGenetico[10] = random(20, 70); // raio de percepção para detectar carne (criatura)
+    }
     this.codigoGenetico[2] = random(-0.5, 1); // peso perigo
-    this.codigoGenetico[3] = random(20, 100); // raio de percepção para detectar planta
-    this.codigoGenetico[4] = random(20, 100); // raio de percepção para detectar inseto
     this.codigoGenetico[5] = random(20, 100); // raio de percepção para detectar veneno
     this.codigoGenetico[6] = random(0.005, 0.01); // taxa de reprodução
-    this.codigoGenetico[7] = random(-0.5, 1); // peso predador/presa
-    this.codigoGenetico[8] = random(20, 100); // raio de percepção para detectar predadores/presa
-    this.codigoGenetico[9] = random(-0.5, 1); // peso comida carne (criatura)
-    this.codigoGenetico[10] = random(20, 100); // raio de percepção para detectar carne (criatura)
   // filho de alguma criatura - chances de mutação
   } else {
     for (var i = 0; i < heranca.length; i++){

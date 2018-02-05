@@ -335,18 +335,18 @@ function adicionaNovaComida(x, y, morto){
     var r = round(random(tipoAlimentos.length - 1));
     switch (tipoAlimentos[r][0]) {
       case 0:
-        if (morto || alimentosPlanta.length < (countAlimentos/2)){
+        if (alimentosPlanta.length < (countAlimentos - countAlimentos/3)){
           alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
           alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
         }
         break;
       case 1:
-        if (morto || alimentosInseto.length < (countAlimentos/2)/2){
+        if (alimentosInseto.length < (countAlimentos/2)/1.5){
           alimentosInseto.push(new Alimento(x, y, tipoAlimentos[r]));
         }
         break;
       case 2:
-        if (morto || alimentosVeneno.length < (countAlimentos/2)/2){
+        if (alimentosVeneno.length < (countAlimentos/2)/1.5){
           alimentosVeneno.push(new Alimento(x, y, tipoAlimentos[r]));
         }
         break;
