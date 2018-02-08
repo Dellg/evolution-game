@@ -118,6 +118,7 @@ Level.prototype.adicionaNovaComida = function(x, y, morto){
         if (alimentosPlanta.length < (countAlimentos - countAlimentos/3)){
           alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
           alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
+          alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
         }
         break;
       case 1:

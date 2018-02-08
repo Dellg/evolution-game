@@ -2,6 +2,7 @@ var xGame = window.innerWidth-20;
 var yGame = window.innerHeight-20;
 var menu = 0;
 var criatura = null;
+var levelnum = 1;
 var level = null;
 
 //______________________________________________________________________________
