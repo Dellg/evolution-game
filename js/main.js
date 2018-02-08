@@ -1,21 +1,8 @@
 var xGame = window.innerWidth-20;
 var yGame = window.innerHeight-20;
 var menu = 0;
-var criaturas = [];
-var variacaoCriaturas = 6; // variável que controla a quantidade de tipo de criatura
-var quantiaEspecie = 8; // variável que controla quantas de cada criatura serão geradas
-var alimentosPlanta;
-var alimentosInseto;
-var alimentosVeneno;
-var alimentosCarne; // apenas quando uma criatura morre
-var variacaoAlimentos = 20; // variável que controla quantos tipos de alimentos serão criados
-var countAlimentos = 80; // será para cada tipo de alimento
-var tipoCriaturas = [];
-var tipoAlimentos = [];
-var geracao = 0;
-var taxaMutacao = 0.01;
-var debug = false;
-var tempoJogo = 0;
+var criatura = null;
+var level = null;
 
 //______________________________________________________________________________
 // preparação do jogo e recebimento de dados do usuário
@@ -74,18 +61,6 @@ function setup(){
   botaoAdcCrt.position(50, 550);
   botaoAdcCrt.mousePressed(adicionarCriatura);
 
-  var botaoLimpar = createButton('Limpar');
-  botaoLimpar.position(217, 550);
-  botaoLimpar.mousePressed(limparCampos);
-
-  var botaoAdcRnd = createButton('Adicionar 5 criaturas aleatórias');
-  botaoAdcRnd.position(50,580);
-  botaoAdcRnd.mousePressed(adicionarAleatorios);
-
-  var botaoIniciar = createButton('Iniciar Jogo');
-  botaoIniciar.position(50, 700);
-  botaoIniciar.mousePressed(carregarDados);
-
   //______________________________________________________________________________
   // adicionar uma criatura definida pelo usuário
   //______________________________________________________________________________
@@ -101,28 +76,9 @@ function setup(){
       return false;
     }
     alert("Criatura adicionada! Continue adicionado ou aperte em Iniciar Jogo.")
-    tipoCriaturas.push([nome.value(), tipo.value(), vida.value(), fome.value(), velocidade.value(),
-                        resistencia.value(), color(corR.value(), corG.value(), corB.value())]);
-    limparCampos();
-  }
-
-  //______________________________________________________________________________
-  // adicionar criaturas aleatoriamente
-  //______________________________________________________________________________
-  function adicionarAleatorios() {
-    // Nalulóbulis herb 0, Kunglob carn 1, Cacoglobius oni 2
-    // nome, tipo, vida, fome, velocidade, resistência, cor
-    for (var i = 0; i < variacaoCriaturas; i++){
-      var t = i%3;
-      if (t == 0){
-        tipoCriaturas.push(["Nalulóbulis" + i, t, 2, 1.5,   1,   2 + random(0.5), color(random(255), random(255), random(255))]);
-      } else if (t == 1){
-        tipoCriaturas.push(["Kunglob"     + i, t, 2,   5, 1.2, 2.4 + random(0.5), color(random(255), random(255), random(255))]);
-      } else if (t == 2){
-        tipoCriaturas.push(["Cacoglobius" + i, t, 2,   3, 1.1, 1.5 + random(0.5), color(random(255), random(255), random(255))]);
-      }
-    }
-    alert("Criaturas adicionadas! Aperte em Iniciar Jogo para começar.")
+    this.criatura = [nome.value(), tipo.value(), vida.value(), fome.value(), velocidade.value(),
+                        resistencia.value(), color(corR.value(), corG.value(), corB.value())];
+    level = new Level(this.criatura);
     limparCampos();
   }
 
@@ -130,58 +86,6 @@ function setup(){
   // limpar os campos de entrada de dados
   //______________________________________________________________________________
   function limparCampos(){
-    nome.value("");
-    tipo.value(false);
-    vida.value("");
-    fome.value("");
-    velocidade.value("");
-    resistencia.value("");
-    corR.value(0);
-    corG.value(0);
-    corB.value(0);
-  }
-
-  //______________________________________________________________________________
-  // carrega os dados dos alimentos e inicia o jogo com uma geração
-  //______________________________________________________________________________
-  function carregarDados(){
-    if (tipoCriaturas.length <= 0){
-      alert("Adicione algumas criaturas para poder iniciar o jogo.")
-      return false;
-    }
-    // cria tipos de alimentos diferentes
-    for (var i = 0; i < variacaoAlimentos; i++){
-      var t = i%3;
-      var v = random(0.5, 1.5);
-      var f = random(0.5, 3);
-      var r;
-      var g;
-      var b;
-      switch (t) {
-        // planta
-        case 0:
-          r = random(0, 126);
-          g = random(177, 255);
-          b = 0;
-          break;
-        // inseto
-        case 1:
-          r = random(177, 255);
-          g = random(0, 126);
-          b = 0;
-          break;
-        // veneno
-        case 2:
-          r = random(0, 80);
-          g = random(0, 80);
-          b = random(126, 255);
-          break;
-      }
-      tipoAlimentos[i] = [t, v, f, r, g, b];
-    }
-    // criatura que morreu
-    tipoAlimentos.push([3, random(0.5, 1.5), random(0.5, 3), 255, 255, 255]);
-    iniciaGeracao();
     // remove elementos de entrada de dado
     nome.remove();
     tipo.remove();
@@ -193,164 +97,21 @@ function setup(){
     corG.remove();
     corB.remove();
     botaoAdcCrt.remove();
-    botaoAdcRnd.remove();
-    botaoLimpar.remove();
-    botaoIniciar.remove();
     menu = 1;
   }
-}
-
-//______________________________________________________________________________
-// método que ativa o modo debug com o botão do mouse
-//______________________________________________________________________________
-function mousePressed(){
-  this.debug = !this.debug;
 }
 
 //______________________________________________________________________________
 // onde o jogo acontece, de fato
 //______________________________________________________________________________
 function draw(){
-  // menu principal de entrada de dados
   if (menu == 0){
     col = color(corR.value(), corG.value(), corB.value());
     fill(col);
     rect(195,362,58,58);
   // interface do jogo
   } else if (menu == 1){
-    background(15);
-    fill(255);
-    text("Geração " + geracao, 10, 20);
-    this.tempoJogo += 0.01;
-    text("Tempo de jogo: " + int(this.tempoJogo), 10, 40);
-    if (this.debug){
-      text("Alimentos:", 10, 60);
-      text("- com cor em tom de verde/verde-limão são plantas;", 10, 80);
-      text("- com cor em tom de vermelho/laranja são carnes;", 10, 100);
-      text("- com cor em tom de azul/roxo são venenos.", 10, 120);
-      text("Criaturas:", 10, 150);
-      text("- com formato de losango são herbívoros;", 10, 170);
-      text("- com formato de triângulo são onívoros;", 10, 190);
-      text("- com formato de seta são carnívoros.", 10, 210);
-      text("Aura das criaturas:", 10, 240);
-      text("- verde é a área de percepção para plantas;", 10, 260);
-      text("- vermelho é a área de percepção para carnes;", 10, 280);
-      text("- azul é a área de percepção para venenos;", 10, 300);
-      text("- amarelo é a área de percepção para predadores/presas.", 10, 320);
-      text("Linhas que saem pela frente e por trás das criaturas são forças de atração e repulsão, respectivamente:", 10, 350);
-      text("- verde é a força de atração/repulsão por plantas;", 10, 370);
-      text("- vermelho é a força de atração/repulsão por carnes;", 10, 390);
-      text("- azul é a força de atração/repulsão por venenos;", 10, 410);
-      text("- amarelo é a força de atração/repulsão por predadores/presas.", 10, 430);
-    }
-    if (criaturas.length <= 0){
-      geracao += 1;
-      iniciaGeracao();
-    } else {
-      // gera novas comidas se tiver menos da quantidade definida comidas no canvas
-      if ((alimentosPlanta.length + alimentosInseto.length + alimentosVeneno.length) < countAlimentos){
-        if (random(1) < 0.2) {
-          adicionaNovaComida(null, null);
-        }
-      }
-      for (var i = criaturas.length - 1; i >= 0; i--){
-        var crtr = criaturas[i];
-        crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas);
-        crtr.limites();
-        crtr.update();
-        crtr.show();
-
-        // aqui verifica se foi feita reprodução, para adicionar os filhos à população
-        if (crtr != undefined){
-          var filho = crtr.reproduz();
-          if (filho != null) {
-            criaturas.push(filho);
-          }
-        }
-        // aqui verifica se a criatura morreu, para retirá-la da população
-        if (crtr.morreu()){
-          criaturas.splice(i, 1);
-          console.log(crtr.nome + " morreu.")
-          adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true);
-        }
-      }
-      for (var i = 0; i < alimentosPlanta.length; i++){
-        var almt = alimentosPlanta[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosInseto.length; i++){
-        var almt = alimentosInseto[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosVeneno.length; i++){
-        var almt = alimentosVeneno[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosCarne.length; i++){
-        var almt = alimentosCarne[i];
-        almt.show();
-      }
-    }
-  }
-}
-
-//______________________________________________________________________________
-// aqui reinicia o jogo com uma nova geração
-//______________________________________________________________________________
-function iniciaGeracao(){
-  // cria quantidades das criaturas pré-definidas
-  for (var i = 0; i < tipoCriaturas.length; i++){
-    for (var j = 0; j < quantiaEspecie; j++){
-      var x = random(xGame);
-      var y = random(yGame);
-      var criatura = new Criatura(x, y, tipoCriaturas[i], null, geracao);
-      criaturas.push(criatura);
-    }
-  }
-  alimentosPlanta = [];
-  alimentosInseto = [];
-  alimentosVeneno = [];
-  alimentosCarne = [];
-  // cria alimentos usando os tipos pré-criados
-  for (var i = 0; i < countAlimentos; i++){
-    adicionaNovaComida(null, null, false);
-  }
-  // redesenha a tela com a nova geração
-  redraw();
-}
-
-//______________________________________________________________________________
-// método que adiciona novas comidas nas listas
-//______________________________________________________________________________
-function adicionaNovaComida(x, y, morto){
-  if (x == null || y == null){
-    x = random(5, xGame-5);
-    y = random(5, yGame-5);
-  }
-  // se foi morto, adiciona uma carne de criatura (último índice)
-  if (morto){
-    alimentosCarne.push(new Alimento(x, y, tipoAlimentos[tipoAlimentos.length-1]));
-  // se não foi, adiciona um alimento inseto, planta ou tóxico
-  } else {
-    var r = round(random(tipoAlimentos.length - 1));
-    switch (tipoAlimentos[r][0]) {
-      case 0:
-        if (alimentosPlanta.length < (countAlimentos - countAlimentos/3)){
-          alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
-          alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
-        }
-        break;
-      case 1:
-        if (alimentosInseto.length < (countAlimentos/2)/1.5){
-          alimentosInseto.push(new Alimento(x, y, tipoAlimentos[r]));
-        }
-        break;
-      case 2:
-        if (alimentosVeneno.length < (countAlimentos/2)/1.5){
-          alimentosVeneno.push(new Alimento(x, y, tipoAlimentos[r]));
-        }
-        break;
-    }
+    level.rodar();
   }
 }
 
