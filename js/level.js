@@ -1,6 +1,6 @@
 var criaturas = [];
-var variacaoCriaturas = 6; // variável que controla a quantidade de tipo de criatura
-var quantiaEspecie = 8; // variável que controla quantas de cada criatura serão geradas
+var variacaoCriaturas = 3; // variável que controla a quantidade de tipo de criatura
+var quantiaEspecie = 15; // variável que controla quantas de cada criatura serão geradas
 var alimentosPlanta;
 var alimentosInseto;
 var alimentosVeneno;
@@ -24,16 +24,25 @@ function Level(criatura){
 Level.prototype.adicionarAleatorios = function() {
   // Nalulóbulis herb 0, Kunglob carn 1, Cacoglobius oni 2
   // nome, tipo, vida, fome, velocidade, resistência, cor
-  for (var i = 0; i < variacaoCriaturas; i++){
-    var t = i%3;
-    if (t == 0){
-      tipoCriaturas.push(["Nalulóbulis" + i, t, 2, 1.5,   1,   2 + random(0.5), color(random(255), random(255), random(255))]);
-    } else if (t == 1){
-      tipoCriaturas.push(["Kunglob"     + i, t, 2,   5, 1.2, 2.4 + random(0.5), color(random(255), random(255), random(255))]);
-    } else if (t == 2){
-      tipoCriaturas.push(["Cacoglobius" + i, t, 2,   3, 1.1, 1.5 + random(0.5), color(random(255), random(255), random(255))]);
-    }
-  }
+  var tipoJogador = tipoCriaturas[0][1];
+  if (tipoJogador != 0)
+    tipoCriaturas.push(["Nalulóbulis", 0, 2, 1.5,   1,   2 + random(0.5), color(random(255), random(255), random(255))]);
+  if (tipoJogador != 1)
+    tipoCriaturas.push(["Kunglob"    , 1, 2,   5, 1.2, 2.4 + random(0.5), color(random(255), random(255), random(255))]);
+  if (tipoJogador != 2)
+    tipoCriaturas.push(["Cacoglobius", 2, 2,   3, 1.1, 1.5 + random(0.5), color(random(255), random(255), random(255))]);
+
+  // código antigo para quando o jogo tiver mais de 3 tipos de criaturas
+  // for (var i = 0; i < variacaoCriaturas; i++){
+  //   var t = i%3;
+  //   if (t == 0){
+  //     tipoCriaturas.push(["Nalulóbulis" + i, t, 2, 1.5,   1,   2 + random(0.5), color(random(255), random(255), random(255))]);
+  //   } else if (t == 1){
+  //     tipoCriaturas.push(["Kunglob"     + i, t, 2,   5, 1.2, 2.4 + random(0.5), color(random(255), random(255), random(255))]);
+  //   } else if (t == 2){
+  //     tipoCriaturas.push(["Cacoglobius" + i, t, 2,   3, 1.1, 1.5 + random(0.5), color(random(255), random(255), random(255))]);
+  //   }
+  // }
 }
 
 //______________________________________________________________________________
