@@ -10,9 +10,9 @@ var imagens = [];
 // carregando imagens no projeto
 //______________________________________________________________________________
 function preload(){
-  imagens.push(loadImage("img/nalulóbulis.png"));
-  imagens.push(loadImage("img/kunglob.png"));
-  imagens.push(loadImage("img/cacoglobius.png"));
+  // imagens.push(loadImage("img/nalulobulis.png"));
+  // imagens.push(loadImage("img/kunglob.png"));
+  // imagens.push(loadImage("img/cacoglobius.png"));
 }
 
 //______________________________________________________________________________
@@ -114,14 +114,14 @@ function draw(){
   if (menu == 0){
     fill(0);
     rect(195,362,34,34);
-    if (tipo.value() == 0){
-      img = imagens[0].get(32, 64, 32, 32);
-    } else if (tipo.value() == 1){
-      img = imagens[1].get(32, 64, 32, 32);
-    } else if (tipo.value() == 2){
-      img = imagens[2].get(32, 64, 32, 32);
-    }
-    image(img, 196, 363);
+    // if (tipo.value() == 0){
+    //   img = imagens[0].get(32, 64, 32, 32);
+    // } else if (tipo.value() == 1){
+    //   img = imagens[1].get(32, 64, 32, 32);
+    // } else if (tipo.value() == 2){
+    //   img = imagens[2].get(32, 64, 32, 32);
+    // }
+    // image(img, 196, 363);
   // interface do jogo
   } else if (menu == 1){
     level.rodar();
