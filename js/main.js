@@ -85,7 +85,7 @@ function setup(){
     }
     alert("Criatura adicionada! Continue adicionado ou aperte em Iniciar Jogo.")
     this.criatura = [nome.value(), tipo.value(), vida.value(), fome.value(), velocidade.value(),
-                        resistencia.value(), null]; //color(corR.value(), corG.value(), corB.value())];
+                        resistencia.value(), color(random(255), random(255), random(255))];
     level = new Level(this.criatura);
     limparCampos();
   }
