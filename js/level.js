@@ -131,8 +131,8 @@ Level.prototype.adicionaNovaComida = function(x, y, morto){
       case 0:
         if (alimentosPlanta.length < (countAlimentos - countAlimentos/3)){
           alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
-          alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
-          alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
+          alimentosPlanta.push(new Alimento(random(5, xGame-5), random(5, yGame-5), tipoAlimentos[r]));
+          alimentosPlanta.push(new Alimento(random(5, xGame-5), random(5, yGame-5), tipoAlimentos[r]));
         }
         break;
       case 1:
