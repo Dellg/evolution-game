@@ -25,7 +25,9 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
 
   // características da IA
   this.geracao = geracao;
-  if (this.tipo != 1){
+  if (this.tipo == 0){
+    this.intervaloReproducao = random(5, 15);
+  } else if (this.tipo == 2) {
     this.intervaloReproducao = random(10, 20);
   } else {
     this.intervaloReproducao = random(15, 25);
