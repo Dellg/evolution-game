@@ -65,9 +65,21 @@ function setup(){
   hueColor = createSlider(0, 255, 0);
   hueColor.position(50, 362);
 
+  var botaoNoPlayer = createButton('Testar Sem Jogador');
+  botaoNoPlayer.position(50, 450);
+  botaoNoPlayer.mousePressed(testar);
+
   var botaoAdcCrt = createButton('Adicionar Criatura');
   botaoAdcCrt.position(50, 550);
   botaoAdcCrt.mousePressed(adicionarCriatura);
+
+  //______________________________________________________________________________
+  // adicionar uma criatura definida pelo usuário
+  //______________________________________________________________________________
+  function testar() {
+    level = new Level(null);
+    limparCampos();
+  }
 
   //______________________________________________________________________________
   // adicionar uma criatura definida pelo usuário
@@ -103,6 +115,7 @@ function setup(){
     resistencia.remove();
     hueColor.remove();
     botaoAdcCrt.remove();
+    botaoNoPlayer.remove();
     menu = 1;
   }
 }

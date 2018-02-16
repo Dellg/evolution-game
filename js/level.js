@@ -13,7 +13,9 @@ var geracao = 0;
 var taxaMutacao = 0.01;
 
 function Level(criatura){
-  tipoCriaturas.push(criatura);
+  if (criatura != null){
+    tipoCriaturas.push(criatura);
+  }
   this.adicionarAleatorios();
   this.carregarDados();
 }
@@ -24,7 +26,10 @@ function Level(criatura){
 Level.prototype.adicionarAleatorios = function() {
   // Nalulóbulis herb 0, Kunglob carn 1, Cacoglobius oni 2
   // nome, tipo, vida, fome, velocidade, resistência, cor
-  var tipoJogador = tipoCriaturas[0][1];
+  var tipoJogador = -1;
+  if (tipoCriaturas.length > 0) {
+    tipoJogador = tipoCriaturas[0][1];
+  }
   if (tipoJogador != 0)
     tipoCriaturas.push(["Nalulóbulis", 0, 2, 1.5,   1, 1.8 + random(0.5), color(random(255), random(255), random(255))]);
   if (tipoJogador != 1)
