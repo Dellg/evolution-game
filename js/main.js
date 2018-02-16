@@ -4,6 +4,16 @@ var menu = 0;
 var criatura = null;
 var levelnum = 1;
 var level = null;
+var imagens = [];
+
+//______________________________________________________________________________
+// carregando imagens no projeto
+//______________________________________________________________________________
+function preload(){
+  imagens.push(loadImage("img/nalulóbulis.png"));
+  imagens.push(loadImage("img/kunglob.png"));
+  imagens.push(loadImage("img/cacoglobius.png"));
+}
 
 //______________________________________________________________________________
 // preparação do jogo e recebimento de dados do usuário
@@ -21,13 +31,14 @@ function setup(){
   nome.position(50, 65);
 
   text("Tipo:", 45, 100);
-  var tipo = createRadio();
+  tipo = createRadio();
   tipo.style("color", "#FFFFFF");
   tipo.style("font-family", "Times New Roman");
   tipo.style("font-size", "10pt");
   tipo.option('Herbívoro',0);
   tipo.option('Carnívoro',1);
   tipo.option('Onívoro',2);
+  tipo.value(0);
   tipo.position(50, 115);
 
   text("Vida:", 45, 150);
@@ -51,12 +62,8 @@ function setup(){
   resistencia.position(50, 315);
 
   text("Cor:", 45, 350);
-  corR = createSlider(0, 255, 0);
-  corR.position(50, 362);
-  corG = createSlider(0, 255, 0);
-  corG.position(50, 387);
-  corB = createSlider(0, 255, 0);
-  corB.position(50, 412);
+  hueColor = createSlider(0, 255, 0);
+  hueColor.position(50, 362);
 
   var botaoAdcCrt = createButton('Adicionar Criatura');
   botaoAdcCrt.position(50, 550);
@@ -78,7 +85,7 @@ function setup(){
     }
     alert("Criatura adicionada! Continue adicionado ou aperte em Iniciar Jogo.")
     this.criatura = [nome.value(), tipo.value(), vida.value(), fome.value(), velocidade.value(),
-                        resistencia.value(), color(corR.value(), corG.value(), corB.value())];
+                        resistencia.value(), null]; //color(corR.value(), corG.value(), corB.value())];
     level = new Level(this.criatura);
     limparCampos();
   }
@@ -94,9 +101,7 @@ function setup(){
     fome.remove();
     velocidade.remove();
     resistencia.remove();
-    corR.remove();
-    corG.remove();
-    corB.remove();
+    hueColor.remove();
     botaoAdcCrt.remove();
     menu = 1;
   }
@@ -107,9 +112,16 @@ function setup(){
 //______________________________________________________________________________
 function draw(){
   if (menu == 0){
-    col = color(corR.value(), corG.value(), corB.value());
-    fill(col);
-    rect(195,362,58,58);
+    fill(0);
+    rect(195,362,34,34);
+    if (tipo.value() == 0){
+      img = imagens[0].get(32, 64, 32, 32);
+    } else if (tipo.value() == 1){
+      img = imagens[1].get(32, 64, 32, 32);
+    } else if (tipo.value() == 2){
+      img = imagens[2].get(32, 64, 32, 32);
+    }
+    image(img, 196, 363);
   // interface do jogo
   } else if (menu == 1){
     level.rodar();
