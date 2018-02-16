@@ -25,7 +25,11 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
 
   // características da IA
   this.geracao = geracao;
-  this.intervaloReproducao = random(15, 25);
+  if (this.tipo == 0){
+    this.intervaloReproducao = random(10, 20);
+  } else {
+    this.intervaloReproducao = random(15, 25);
+  }
   this.reproducao = 0;
   this.fitness = 0;
 
@@ -475,7 +479,7 @@ Criatura.prototype.limites = function() {
   if (this.posicao.y < -this.raio) {
     this.posicao.y = height + this.raio;
   } else if (this.posicao.y > height + this.raio) {
-    this.posicao.y = this.raio;
+    this.posicao.y = -this.raio;
   }
 }
 
