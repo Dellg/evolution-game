@@ -1,6 +1,6 @@
 var criaturas = [];
 var variacaoCriaturas = 3; // variável que controla a quantidade de tipo de criatura
-var quantiaEspecie = 20; // variável que controla quantas de cada criatura serão geradas
+var quantiaEspecie = 25; // variável que controla quantas de cada criatura serão geradas
 var alimentosPlanta;
 var alimentosInseto;
 var alimentosVeneno;
@@ -31,11 +31,11 @@ Level.prototype.adicionarAleatorios = function() {
     tipoJogador = tipoCriaturas[0][1];
   }
   if (tipoJogador != 0)
-    tipoCriaturas.push(["Nalulóbulis", 0, 2, 1.5,   1, 1.8 + random(0.5), color(random(255), random(255), random(255))]);
+    tipoCriaturas.push(["Nalulóbulis", 0, 2, 1.5,   1, 1.9, color(random(255), random(255), random(255))]);
   if (tipoJogador != 1)
-    tipoCriaturas.push(["Kunglob"    , 1, 2,   4, 1.2, 2.1 + random(0.5), color(random(255), random(255), random(255))]);
+    tipoCriaturas.push(["Kunglob"    , 1, 2,   6, 1.2, 2.3, color(random(255), random(255), random(255))]);
   if (tipoJogador != 2)
-    tipoCriaturas.push(["Cacoglobius", 2, 2,   2, 1.1, 1.5 + random(0.5), color(random(255), random(255), random(255))]);
+    tipoCriaturas.push(["Cacoglobius", 2, 2,   3, 1.1, 1.5, color(random(255), random(255), random(255))]);
 
   // código antigo para quando o jogo tiver mais de 3 tipos de criaturas
   // for (var i = 0; i < variacaoCriaturas; i++){

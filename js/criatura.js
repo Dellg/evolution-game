@@ -14,7 +14,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   this.velocidade = p5.Vector.random2D(caracteristicas[4]);
   this.maxVelocidade = parseFloat(caracteristicas[4]);
   // carnívoros só irão atacar outras criaturas que tem resistência menor que a deles
-  this.resistencia = parseFloat(caracteristicas[5]);
+  this.resistencia = parseFloat(caracteristicas[5]) + random(0.5);
   this.cor = caracteristicas[6];
 
   // dados da criatura
@@ -485,7 +485,7 @@ Criatura.prototype.limites = function() {
 Criatura.prototype.matou = function(devorado){
   // predador ganha propriedades de vida e de fome por caçar
   this.vida += devorado.vida/3;
-  this.fome += devorado.maxFome/1.75;
+  this.fome += this.maxFome;
   if (this.tipo == 1){
     this.fitness += 3;
   } else {
