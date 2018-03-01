@@ -5,7 +5,7 @@ var criatura = null;
 var levelnum = 1;
 var level = null;
 var imagens = [];
-var debug = false;
+var debug = true;
 
 //______________________________________________________________________________
 // carregando imagens no projeto
@@ -140,7 +140,7 @@ function draw(){
   } else if (menu == 1){
     level.rodar();
     fill(255);
-    if (this.debug){
+    if (debug){
       text("Alimentos:", 10, 60);
       text("- com cor em tom de verde/verde-limão são plantas;", 10, 80);
       text("- com cor em tom de vermelho/laranja são insetos;", 10, 100);
@@ -170,7 +170,8 @@ function draw(){
 // método que ativa o modo debug com o botão do mouse
 //______________________________________________________________________________
 function mousePressed(){
-  this.debug = !this.debug;
+  if (menu == 1)
+    debug = !debug;
 }
 
 //______________________________________________________________________________
