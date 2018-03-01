@@ -2,7 +2,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   // nome da criatura para identificação
   this.nome = caracteristicas[0];
   this.codigo = this.nome;
-  // tipo de alimento que a criatura consome: 0 = planta, 1 = inseto, 2 = ambos
+  // tipo de alimento que a criatura consome: 0 = planta, 1 = carne e criatura, 2 = inseto e planta
   this.tipo = caracteristicas[1];
   // a criatura vai perdendo vida se estiver com fome
   this.vida = random(caracteristicas[2]/3, caracteristicas[2]);

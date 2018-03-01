@@ -116,14 +116,18 @@ Level.prototype.iniciaGeracao = function(){
 //______________________________________________________________________________
 // método que adiciona novas comidas nas listas
 //______________________________________________________________________________
-Level.prototype.adicionaNovaComida = function(x, y, morto){
+Level.prototype.adicionaNovaComida = function(x, y, morto, eraCarn){
   if (x == null || y == null){
     x = random(5, xGame-5);
     y = random(5, yGame-5);
   }
-  // se foi morto, adiciona uma carne de criatura (último índice)
+  // se foi morto, adiciona uma carne de criatura (último índice), ou um veneno se era carnívoro
   if (morto){
-    alimentosCarne.push(new Alimento(x, y, tipoAlimentos[tipoAlimentos.length-1]));
+    if (eraCarn){
+      alimentosCarne.push(new Alimento(x, y, tipoAlimentos[2]));
+    } else {
+      alimentosCarne.push(new Alimento(x, y, tipoAlimentos[tipoAlimentos.length-1]));
+    }
   // se não foi, adiciona um alimento inseto, planta ou tóxico
   } else {
     var r = round(random(tipoAlimentos.length - 1));
@@ -190,7 +194,12 @@ Level.prototype.rodar = function(){
         if (crtr.morreu()){
           criaturas.splice(i, 1);
           console.log(crtr.nome + " morreu.")
-          this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true);
+          // se a criatura morta era um carnívoro, aparece um veneno (evitar canibalismo)
+          if (crtr.tipo != 1){
+            this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, false);
+          } else {
+            this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, true);
+          }
         }
       }
       for (var i = 0; i < alimentosPlanta.length; i++){
