@@ -30,12 +30,13 @@ Level.prototype.adicionarAleatorios = function() {
   if (tipoCriaturas.length > 0) {
     tipoJogador = tipoCriaturas[0][1];
   }
+  // rebalanceado usando fórmula (prévia para jogador)
   if (tipoJogador != 0)
-    tipoCriaturas.push(["Nalulóbulis", 0, 2, 1.5,   1, 1.9, color(random(255), random(255), random(255))]);
+    tipoCriaturas.push([["Nalulóbulis", "Casco", "Grande", "Chifre"],       0, 2, 1.5,    1, 1.5, color(random(255), random(255), random(255))]);
   if (tipoJogador != 1)
-    tipoCriaturas.push(["Kunglob"    , 1, 2,   6, 1.2, 2.3, color(random(255), random(255), random(255))]);
+    tipoCriaturas.push([["Kunglob", "Garra", "Pequeno", "Orelhas Grandes"], 1, 2,   6, 1.25, 2.5, color(random(255), random(255), random(255))]);
   if (tipoJogador != 2)
-    tipoCriaturas.push(["Cacoglobius", 2, 2,   3, 1.1, 1.5, color(random(255), random(255), random(255))]);
+    tipoCriaturas.push([["Cacoglobius", "Mão", "Médio", "Duas Caudas"], 2, 2,   3,  1.1, 1.9, color(random(255), random(255), random(255))]);
 
   // código antigo para quando o jogo tiver mais de 3 tipos de criaturas
   // for (var i = 0; i < variacaoCriaturas; i++){

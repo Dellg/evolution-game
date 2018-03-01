@@ -42,25 +42,44 @@ function setup(){
   tipo.value(0);
   tipo.position(50, 115);
 
-  text("Vida:", 45, 150);
-  var vida = createInput(0,"number",0,5);
-  vida.style("width", "220px");
-  vida.position(50, 165);
+  text("Pata:", 45, 150);
+  pata = createRadio();
+  pata.style("color", "#FFFFFF");
+  pata.style("font-family", "Times New Roman");
+  pata.style("font-size", "10pt");
+  pata.option('Casco',0);
+  pata.option('Garra',1);
+  pata.option('Mão',2);
+  pata.value(0);
+  pata.position(50, 165);
 
-  text("Fome:", 45, 200);
-  var fome = createInput(0,"number");
-  fome.style("width", "220px");
-  fome.position(50, 215);
+  text("Tamanho:", 45, 200);
+  tamanho = createRadio();
+  tamanho.style("color", "#FFFFFF");
+  tamanho.style("font-family", "Times New Roman");
+  tamanho.style("font-size", "10pt");
+  tamanho.option('Grande',0);
+  tamanho.option('Pequeno',1);
+  tamanho.option('Médio',2);
+  tamanho.value(0);
+  tamanho.position(50, 215);
 
-  text("Velocidade:", 45, 250);
-  var velocidade = createInput(0,"number");
-  velocidade.style("width", "220px");
-  velocidade.position(50, 265);
-
-  text("Resistência:", 45, 300);
-  var resistencia = createInput(0,"number");
-  resistencia.style("width", "220px");
-  resistencia.position(50, 315);
+  text("Característica especial:", 45, 250);
+  caract = createRadio();
+  caract.style("color", "#FFFFFF");
+  caract.style("font-family", "Times New Roman");
+  caract.style("font-size", "10pt");
+  caract.option('Chifre',0);
+  caract.option('Orelhas grandes',1);
+  caract.option('Duas caudas',2);
+  caract.option('Escala Árvores',3);
+  caract.option('Peçonha',4);
+  caract.option('Carapaça',5);
+  caract.option('Pele Camufla',6);
+  caract.option('Asas',7);
+  caract.option('Espinhos',8);
+  caract.value(0);
+  caract.position(50, 265);
 
   text("Cor:", 45, 350);
   hueColor = createSlider(0, 255, 0);
@@ -86,19 +105,122 @@ function setup(){
   // adicionar uma criatura definida pelo usuário
   //______________________________________________________________________________
   function adicionarCriatura() {
-    var somatorio = parseInt(vida.value()) + parseInt(fome.value()) + parseInt(velocidade.value()) + parseInt(resistencia.value());
-
-    if (nome.value() == "" || tipo.value() == "" || vida.value() == "" || fome.value() == "" ||
-        velocidade.value() == "" || resistencia.value() == ""){
-      alert("Preencha todos os campos!")
-      return false;
-    } else if (somatorio != 10){
-      alert("Você deve distribuir 10 pontos em Vida, Fome, Velocidade e Resistência.")
+    if (nome.value() == ""){
+      alert("Você deve dar um nome a sua criatura!");
       return false;
     }
-    alert("Criatura adicionada! Continue adicionado ou aperte em Iniciar Jogo.")
-    this.criatura = [nome.value(), tipo.value(), vida.value(), fome.value(), velocidade.value(),
-                        resistencia.value(), color(random(255), random(255), random(255))];
+    // valores padrão
+    vida = 2;
+    fome = 0;
+    velocidade = 1;
+    resistencia = 1;
+    infor = [];
+    infor.push(nome.value());
+
+    // valores adicionais do tipo de pata
+    switch (pata.value()) {
+      case "0":
+        velocidade += 0.3;
+        resistencia += 0.1;
+        fome -= 0.5;
+        infor.push("Casco");
+        break;
+      case "1":
+        velocidade += 0.1;
+        resistencia += 0.5;
+        fome += 4.5;
+        infor.push("Garra");
+        break;
+      case "2":
+        velocidade -= 0.1;
+        resistencia += 0.2;
+        fome += 0.5;
+        infor.push("Mão");
+        break;
+    }
+    // valores adicionais do tamanho
+    switch (tamanho.value()) {
+      case "0":
+        velocidade -= 0.2;
+        resistencia += 0.3;
+        fome += 3;
+        infor.push("Grande");
+        break;
+      case "1":
+        velocidade += 0.2;
+        resistencia += 0.2;
+        fome += 1.5;
+        infor.push("Pequeno");
+        break;
+      case "2":
+        resistencia += 0.2;
+        fome += 2;
+        infor.push("Médio");
+        break;
+    }
+    // valores adicionais da característica especial
+    switch (caract.value()) {
+      case "0":
+        resistencia += 0.5;
+        fome -= 1;
+        infor.push("Chifre");
+        break;
+      case "1":
+        velocidade -= 0.1;
+        resistencia += 0.6;
+        fome += 1;
+        infor.push("Orelhas grandes");
+        break;
+      case "2":
+        velocidade += 0.2;
+        resistencia += 0.1;
+        fome += 0.5;
+        infor.push("Duas caudas");
+        break;
+      case "3":
+        velocidade += 0.1;
+        resistencia += 0.3;
+        fome += 1;
+        infor.push("Escala Árvores");
+        break;
+      case "4":
+        velocidade += 0.1;
+        resistencia += 0.1;
+        fome += 2;
+        infor.push("Peçonha");
+        break;
+      case "5":
+        velocidade -= 0.2;
+        resistencia += 0.8;
+        fome -= 1.5;
+        infor.push("Carapaça");
+        break;
+      case "6":
+        resistencia += 0.4;
+        fome += 3;
+        infor.push("Pele Camufla");
+        break;
+      case "7":
+        velocidade += 0.1;
+        resistencia += 0.4;
+        fome += 2;
+        infor.push("Asas");
+        break;
+      case "8":
+        velocidade += 0.1;
+        resistencia += 0.4;
+        fome += 2;
+        infor.push("Espinhos");
+        break;
+    }
+
+    alert("A criatura " + nome.value() + " foi criada com sucesso!")
+    cor = color(random(255), random(255), random(255));
+    console.log("vida: " + vida);
+    console.log("fome: " + fome);
+    console.log("vlcd: " + velocidade);
+    console.log("rsts: " + resistencia);
+    this.criatura = [infor, tipo.value(), vida, fome, velocidade, resistencia, cor];
     level = new Level(this.criatura);
     limparCampos();
   }
@@ -110,10 +232,9 @@ function setup(){
     // remove elementos de entrada de dado
     nome.remove();
     tipo.remove();
-    vida.remove();
-    fome.remove();
-    velocidade.remove();
-    resistencia.remove();
+    pata.remove();
+    tamanho.remove();
+    caract.remove();
     hueColor.remove();
     botaoAdcCrt.remove();
     botaoNoPlayer.remove();
