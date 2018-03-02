@@ -143,7 +143,7 @@ function setup(){
       case "0":
         velocidade -= 0.2;
         resistencia += 0.3;
-        fome += 3;
+        fome += 2.5;
         infor.push("Grande");
         break;
       case "1":
@@ -162,7 +162,7 @@ function setup(){
     switch (caract.value()) {
       case "0":
         resistencia += 0.5;
-        fome -= 1;
+        fome -= 0.5;
         infor.push("Chifre");
         break;
       case "1":
@@ -192,7 +192,7 @@ function setup(){
       case "5":
         velocidade -= 0.2;
         resistencia += 0.8;
-        fome -= 1.5;
+        fome -= 0.5;
         infor.push("Carapaça");
         break;
       case "6":
@@ -216,10 +216,6 @@ function setup(){
 
     alert("A criatura " + nome.value() + " foi criada com sucesso!")
     cor = color(random(255), random(255), random(255));
-    console.log("vida: " + vida);
-    console.log("fome: " + fome);
-    console.log("vlcd: " + velocidade);
-    console.log("rsts: " + resistencia);
     this.criatura = [infor, tipo.value(), vida, fome, velocidade, resistencia, cor];
     level = new Level(this.criatura);
     limparCampos();
