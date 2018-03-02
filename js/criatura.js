@@ -1,7 +1,7 @@
 function Criatura(x, y, caracteristicas, heranca, geracao){
   // nome da criatura para identificação
   this.nome = caracteristicas[0][0];
-  // informações sobre as características do animal
+  // informações sobre as características da criatura
   this.codigo = caracteristicas[0];
   // tipo de alimento que a criatura consome: 0 = planta, 1 = carne e criatura, 2 = inseto e planta
   this.tipo = caracteristicas[1];
@@ -394,7 +394,7 @@ Criatura.prototype.reproduz = function() {
         melhorParceiro.reproducao = 0;
         var novasCaracteristicas = [];
         // pegando características da espécie para passar para o filho
-        novasCaracteristicas.push(this.nome);
+        novasCaracteristicas.push(this.codigo);
         novasCaracteristicas.push(this.tipo);
         novasCaracteristicas.push(this.maxVida);
         novasCaracteristicas.push(this.maxFome);

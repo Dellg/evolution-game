@@ -94,7 +94,7 @@ function setup(){
   botaoAdcCrt.mousePressed(adicionarCriatura);
 
   //______________________________________________________________________________
-  // adicionar uma criatura definida pelo usuário
+  // iniciar um jogo apenas com as criaturas pré-definidas do level
   //______________________________________________________________________________
   function testar() {
     level = new Level(null);
@@ -216,6 +216,10 @@ function setup(){
 
     alert("A criatura " + nome.value() + " foi criada com sucesso!")
     cor = color(random(255), random(255), random(255));
+    console.log("vida: " + vida);
+    console.log("fome: " + fome);
+    console.log("vlcd: " + velocidade);
+    console.log("rsts: " + resistencia);
     this.criatura = [infor, tipo.value(), vida, fome, velocidade, resistencia, cor];
     level = new Level(this.criatura);
     limparCampos();

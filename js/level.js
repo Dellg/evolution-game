@@ -171,7 +171,7 @@ Level.prototype.rodar = function(){
       geracao += 1;
       this.iniciaGeracao();
     } else {
-      // gera novas comidas se tiver menos da quantidade definida comidas no canvas
+      // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
       if ((alimentosPlanta.length + alimentosInseto.length + alimentosVeneno.length) < countAlimentos){
         if (random(1) < 0.2) {
           this.adicionaNovaComida(null, null);
