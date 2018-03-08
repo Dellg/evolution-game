@@ -11,9 +11,9 @@ var debug = true;
 // carregando imagens no projeto
 //______________________________________________________________________________
 function preload(){
-  // imagens.push(loadImage("img/nalulobulis.png"));
-  // imagens.push(loadImage("img/kunglob.png"));
-  // imagens.push(loadImage("img/cacoglobius.png"));
+  imagens.push(loadImage('https://i.imgur.com/bs9SHmS.png'));
+  imagens.push(loadImage('https://i.imgur.com/hueK35C.png'));
+  imagens.push(loadImage('https://i.imgur.com/e9D3pRo.png'));
 }
 
 //______________________________________________________________________________
@@ -214,8 +214,21 @@ function setup(){
         break;
     }
 
+    var cor;
+    switch (tipo.value()){
+      case "0":
+        cor = imagens[0];
+        break;
+      case "1":
+        cor = imagens[1];
+        break;
+      case "2":
+        cor = imagens[2];
+        break;
+    }
+
     alert("A criatura " + nome.value() + " foi criada com sucesso!")
-    cor = color(random(255), random(255), random(255));
+    //cor = color(random(255), random(255), random(255));
     console.log("vida: " + vida);
     console.log("fome: " + fome);
     console.log("vlcd: " + velocidade);

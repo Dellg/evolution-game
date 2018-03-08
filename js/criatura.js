@@ -16,7 +16,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   this.maxVelocidade = parseFloat(caracteristicas[4]);
   // carnívoros só irão atacar outras criaturas que tem resistência menor que a deles
   this.resistencia = parseFloat(caracteristicas[5]) + random(0.5);
-  this.cor = caracteristicas[6];
+  this.imagem = caracteristicas[6];
 
   // dados da criatura
   this.posicao = createVector(x, y);
@@ -400,7 +400,7 @@ Criatura.prototype.reproduz = function() {
         novasCaracteristicas.push(this.maxFome);
         novasCaracteristicas.push(this.maxVelocidade);
         novasCaracteristicas.push(this.resistencia);
-        novasCaracteristicas.push(this.cor);
+        novasCaracteristicas.push(this.imagem);
         novasCaracteristicas.push(this.baseConhecimento);
         console.log(this.nome + " reproduziu...");
         // criando nova criatura com novas características e código genético herdado dos pais
@@ -421,8 +421,11 @@ Criatura.prototype.morreu = function() {
 // método que desenha a criatura no canvas na direção da velocidade
 //____________________________________________________________________________
 Criatura.prototype.show = function(){
-  var angulo = this.velocidade.heading() + PI / 2;
 
+  imgp = this.imagem.get(32, 32, 32, 32); // pegar pedaço da imagem
+  image(imgp, this.posicao.x - 16, this.posicao.y - 16); // desenhar a imagem no canvas
+
+  var angulo = this.velocidade.heading() + PI / 2;
   push();
   translate(this.posicao.x, this.posicao.y);
   rotate(angulo);
@@ -449,22 +452,6 @@ Criatura.prototype.show = function(){
     strokeWeight(2);
     stroke(lerpColor(color(255,0,0), color(0,255,0), this.fome));
   }
-
-  // cor da criatura vai desaparecendo dependendo da vida
-  fill(lerpColor(color(0,0,0), this.cor, this.vida));
-
-  // desenha a forma da criatura no canvas
-  beginShape();
-  vertex(0, -this.raio * 2);
-  vertex(-this.raio, this.raio);
-  if (this.tipo == 0){
-    vertex(0, this.raio + this.raio);
-  } else if (this.tipo == 1){
-    vertex(0, this.raio - this.raio);
-  }
-  vertex(this.raio, this.raio);
-  endShape(CLOSE);
-
   pop();
 }
 
