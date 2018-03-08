@@ -1,3 +1,6 @@
+var frame = 0;
+var fps = 0.03;
+
 function Criatura(x, y, caracteristicas, heranca, geracao){
   // nome da criatura para identificação
   this.nome = caracteristicas[0][0];
@@ -422,7 +425,18 @@ Criatura.prototype.morreu = function() {
 //____________________________________________________________________________
 Criatura.prototype.show = function(){
 
-  imgp = this.imagem.get(32, 32, 32, 32); // pegar pedaço da imagem
+  if (frame >= 0 && frame < 10 || frame >= 20 && frame < 30){
+    imgp = this.imagem.get(32, 32, 32, 32); // pegar pedaço da imagem
+    frame += fps;
+  } else if (frame >= 10 && frame < 20){
+    imgp = this.imagem.get(0, 32, 32, 32); // pegar pedaço da imagem
+    frame += fps;
+  } else if (frame >= 30 && frame < 40){
+    imgp = this.imagem.get(64, 32, 32, 32); // pegar pedaço da imagem
+    frame += fps;
+  } else {
+    frame = 0;
+  }
   image(imgp, this.posicao.x - 16, this.posicao.y - 16); // desenhar a imagem no canvas
 
   var angulo = this.velocidade.heading() + PI / 2;
