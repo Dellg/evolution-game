@@ -424,22 +424,41 @@ Criatura.prototype.morreu = function() {
 // método que desenha a criatura no canvas na direção da velocidade
 //____________________________________________________________________________
 Criatura.prototype.show = function(){
+  var direcao = this.velocidade.heading();
+  var angulo = direcao + PI / 2;
+  var animFrame = 0;
+  var animDirecao = 0;
 
+  // pegar linha do gráfico para a animação dependendo da direção
+  if (direcao >= -0.775 && direcao < 0.775){
+    animDirecao = 96; // direita
+  } else if (direcao >= 0.775 && direcao < 2.325){
+    animDirecao = 64; // baixo
+  } else if (direcao >= -2.325 && direcao < -0.775){
+    animDirecao = 0;  // cima
+  } else {
+    animDirecao = 32; // esquerda
+  }
+
+  // pegar coluna do gráfico para a animação dependendo do frame
   if (frame >= 0 && frame < 10 || frame >= 20 && frame < 30){
-    imgp = this.imagem.get(32, 32, 32, 32); // pegar pedaço da imagem
+    animFrame = 32;
+    //imgp = this.imagem.get(32, 32, 32, 32);
     frame += fps;
   } else if (frame >= 10 && frame < 20){
-    imgp = this.imagem.get(0, 32, 32, 32); // pegar pedaço da imagem
+    animFrame = 0;
+    //imgp = this.imagem.get(0, 32, 32, 32);
     frame += fps;
   } else if (frame >= 30 && frame < 40){
-    imgp = this.imagem.get(64, 32, 32, 32); // pegar pedaço da imagem
+    animFrame = 64;
+    //imgp = this.imagem.get(64, 32, 32, 32);
     frame += fps;
   } else {
     frame = 0;
   }
+  imgp = this.imagem.get(animFrame, animDirecao, 32, 32);
   image(imgp, this.posicao.x - 16, this.posicao.y - 16); // desenhar a imagem no canvas
 
-  var angulo = this.velocidade.heading() + PI / 2;
   push();
   translate(this.posicao.x, this.posicao.y);
   rotate(angulo);
