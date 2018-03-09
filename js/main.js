@@ -11,9 +11,9 @@ var debug = true;
 // carregando imagens no projeto
 //______________________________________________________________________________
 function preload(){
-  imagens.push(loadImage('https://i.imgur.com/bs9SHmS.png'));
-  imagens.push(loadImage('https://i.imgur.com/hueK35C.png'));
-  imagens.push(loadImage('https://i.imgur.com/e9D3pRo.png'));
+  imagens.push(loadImage('https://i.imgur.com/5RFi96h.png'));
+  imagens.push(loadImage('https://i.imgur.com/uOG6hKE.png'));
+  imagens.push(loadImage('https://i.imgur.com/qNy2Os7.png'));
 }
 
 //______________________________________________________________________________

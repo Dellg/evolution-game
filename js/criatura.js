@@ -430,12 +430,20 @@ Criatura.prototype.show = function(){
   var animDirecao = 0;
 
   // pegar linha do gráfico para a animação dependendo da direção
-  if (direcao >= -0.775 && direcao < 0.775){
+  if (direcao >= -0.3875 && direcao < 0.3875){
     animDirecao = 96; // direita
-  } else if (direcao >= 0.775 && direcao < 2.325){
+  } else if (direcao >= 1.1625 && direcao < 1.9375){
     animDirecao = 64; // baixo
-  } else if (direcao >= -2.325 && direcao < -0.775){
+  } else if (direcao >= -1.9375 && direcao < -1.1625){
     animDirecao = 0;  // cima
+  } else if (direcao >= -2.7125 && direcao < -1.9375){
+    animDirecao = 128; // esquerda-cima
+  } else if (direcao >= -1.1625 && direcao < -0.3875){
+    animDirecao = 160; // direita-cima
+  } else if (direcao >= 1.9375 && direcao < 2.7125){
+    animDirecao = 192; // esquerda-baixo
+  } else if (direcao >= 0.3875 && direcao < 1.1625){
+    animDirecao = 224; // direita-baixo
   } else {
     animDirecao = 32; // esquerda
   }
@@ -443,15 +451,12 @@ Criatura.prototype.show = function(){
   // pegar coluna do gráfico para a animação dependendo do frame
   if (frame >= 0 && frame < 10 || frame >= 20 && frame < 30){
     animFrame = 32;
-    //imgp = this.imagem.get(32, 32, 32, 32);
     frame += fps;
   } else if (frame >= 10 && frame < 20){
     animFrame = 0;
-    //imgp = this.imagem.get(0, 32, 32, 32);
     frame += fps;
   } else if (frame >= 30 && frame < 40){
     animFrame = 64;
-    //imgp = this.imagem.get(64, 32, 32, 32);
     frame += fps;
   } else {
     frame = 0;
