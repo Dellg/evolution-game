@@ -135,7 +135,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
 //____________________________________________________________________________
 Criatura.prototype.comportamentos = function(plantas, insetos, venenos, carnes, criaturas) {
   var separacao, alinhado, coeso;
-  var segueVeneno, seguePlanta, segueInseto, predadorPresa, segueCarne;
+  var segueVeneno, seguePlanta, segueInseto, predador, presa, segueCarne;
 
   // limita a fome à fome máxima
   if (this.fome > this.maxFome){
@@ -158,19 +158,26 @@ Criatura.prototype.comportamentos = function(plantas, insetos, venenos, carnes, 
     seguePlanta = this.alimenta(plantas, this.codigoGenetico[3]);
     segueInseto = this.alimenta(insetos, this.codigoGenetico[4]);
     segueCarne = this.alimenta(carnes, this.codigoGenetico[10]);
-    predadorPresa = this.persegue(criaturas, this.codigoGenetico[8]);
+    predador = this.persegue(criaturas, this.codigoGenetico[8]);
+    presa = this.fugir(criaturas, this.codigoGenetico[8]);
 
+    if (this.codigoGenetico[7] > 0){
+      presa.mult(this.codigoGenetico[7] * -3.5);
+    } else {
+      presa.mult(this.codigoGenetico[7] * 3.5);
+    }
     segueVeneno.mult(this.codigoGenetico[2]);
     seguePlanta.mult(this.codigoGenetico[0]);
     segueInseto.mult(this.codigoGenetico[1]);
-    predadorPresa.mult(this.codigoGenetico[7]);
+    predador.mult(this.codigoGenetico[7]);
     segueCarne.mult(this.codigoGenetico[9]);
 
     this.aplicaForca(segueVeneno);
     this.aplicaForca(segueCarne);
-    this.aplicaForca(predadorPresa);
+    this.aplicaForca(predador);
     this.aplicaForca(seguePlanta);
     this.aplicaForca(segueInseto);
+    this.aplicaForca(presa);
 
   // se estiver sem fome, vai andar em grupo
   } else {
@@ -178,16 +185,17 @@ Criatura.prototype.comportamentos = function(plantas, insetos, venenos, carnes, 
     seguePlanta = null;
     segueInseto = null;
     segueCarne = null;
+    predador = null;
 
-    predadorPresa = this.fugir(criaturas, this.codigoGenetico[8]);
+    presa = this.fugir(criaturas, this.codigoGenetico[8]);
     separacao = this.separar(criaturas);
     alinhado = this.alinhar(criaturas);
     coeso = this.coesao(criaturas);
 
     if (this.codigoGenetico[7] > 0){
-      predadorPresa.mult(this.codigoGenetico[7] * -2);
+      presa.mult(this.codigoGenetico[7] * -2);
     } else {
-      predadorPresa.mult(this.codigoGenetico[7] * 2);
+      presa.mult(this.codigoGenetico[7] * 2);
     }
     separacao.mult(1.5);
     alinhado.mult(1.0);
@@ -196,7 +204,7 @@ Criatura.prototype.comportamentos = function(plantas, insetos, venenos, carnes, 
     this.aplicaForca(separacao);
     this.aplicaForca(alinhado);
     this.aplicaForca(coeso);
-    this.aplicaForca(predadorPresa);
+    this.aplicaForca(presa);
   }
 }
 
@@ -352,7 +360,7 @@ Criatura.prototype.movimenta = function(obj, fugindo) {
   }
   var direcao = p5.Vector.sub(desejo, this.velocidade);
   if (fugindo){
-    direcao.limit(this.maxForca * 2);
+    direcao.limit(this.maxForca * 3);
   } else {
     direcao.limit(this.maxForca);
   }
