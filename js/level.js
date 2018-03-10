@@ -146,70 +146,62 @@ Level.prototype.adicionaNovaComida = function(x, y, morto, eraCarn){
 // onde o jogo acontece, de fato
 //______________________________________________________________________________
 Level.prototype.rodar = function(){
-  // menu principal de entrada de dados
-  if (menu == 0){
-    col = color(corR.value(), corG.value(), corB.value());
-    fill(col);
-    rect(195,362,58,58);
-  // interface do jogo
-  } else if (menu == 1){
-    background(15);
-    fill(255);
-    if (criaturas.length <= 0){
-      geracao += 1;
-      this.iniciaGeracao();
-    } else {
-      // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
-      if ((alimentosPlanta.length + alimentosInseto.length + alimentosVeneno.length) < countAlimentos){
-        if (random(1) < 0.2) {
-          this.adicionaNovaComida(null, null);
-        }
+  background(15);
+  fill(255);
+  if (criaturas.length <= 0){
+    geracao += 1;
+    this.iniciaGeracao();
+  } else {
+    // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
+    if ((alimentosPlanta.length + alimentosInseto.length + alimentosVeneno.length) < countAlimentos){
+      if (random(1) < 0.2) {
+        this.adicionaNovaComida(null, null);
       }
-      for (var i = criaturas.length - 1; i >= 0; i--){
-        var crtr = criaturas[i];
-        crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas);
-        crtr.limites();
-        crtr.update();
-        crtr.show();
+    }
+    for (var i = criaturas.length - 1; i >= 0; i--){
+      var crtr = criaturas[i];
+      crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas);
+      crtr.limites();
+      crtr.update();
+      crtr.show();
 
-        // aqui verifica se foi feita reprodução, para adicionar os filhos à população
-        if (crtr != undefined){
-          // criatura só reproduzirá se for fêmea
-          if (crtr.genero == 1){
-            var filho = crtr.reproduz();
-            if (filho != null) {
-              criaturas.push(filho);
-            }
-          }
-        }
-        // aqui verifica se a criatura morreu, para retirá-la da população
-        if (crtr.morreu()){
-          criaturas.splice(i, 1);
-          console.log(crtr.nome + " morreu.")
-          // se a criatura morta era um carnívoro, aparece um veneno (evitar canibalismo)
-          if (crtr.tipo != 1){
-            this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, false);
-          } else {
-            this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, true);
+      // aqui verifica se foi feita reprodução, para adicionar os filhos à população
+      if (crtr != undefined){
+        // criatura só reproduzirá se for fêmea
+        if (crtr.genero == 1){
+          var filho = crtr.reproduz();
+          if (filho != null) {
+            criaturas.push(filho);
           }
         }
       }
-      for (var i = 0; i < alimentosPlanta.length; i++){
-        var almt = alimentosPlanta[i];
-        almt.show();
+      // aqui verifica se a criatura morreu, para retirá-la da população
+      if (crtr.morreu()){
+        criaturas.splice(i, 1);
+        console.log(crtr.nome + " morreu.")
+        // se a criatura morta era um carnívoro, aparece um veneno (evitar canibalismo)
+        if (crtr.tipo != 1){
+          this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, false);
+        } else {
+          this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, true);
+        }
       }
-      for (var i = 0; i < alimentosInseto.length; i++){
-        var almt = alimentosInseto[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosVeneno.length; i++){
-        var almt = alimentosVeneno[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosCarne.length; i++){
-        var almt = alimentosCarne[i];
-        almt.show();
-      }
+    }
+    for (var i = 0; i < alimentosPlanta.length; i++){
+      var almt = alimentosPlanta[i];
+      almt.show();
+    }
+    for (var i = 0; i < alimentosInseto.length; i++){
+      var almt = alimentosInseto[i];
+      almt.show();
+    }
+    for (var i = 0; i < alimentosVeneno.length; i++){
+      var almt = alimentosVeneno[i];
+      almt.show();
+    }
+    for (var i = 0; i < alimentosCarne.length; i++){
+      var almt = alimentosCarne[i];
+      almt.show();
     }
   }
 }
