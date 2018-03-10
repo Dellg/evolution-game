@@ -1,7 +1,16 @@
 var xGame = window.innerWidth-20;
 var yGame = window.innerHeight-20;
 var menu = 0;
+// -5 = minigame reprodução
+// -4 = video da intro
+// -3 = loja
+// -2 = dados
+// -1 = roleta
+// 0 = menu principal
+// 1 = level1
+// 2 = level2
 var criatura = null;
+var pontuacao = 0; // pontuação do jogador, contará como "moeda" do jogo
 var levelnum = 1;
 var level = null;
 var imagens = [];
@@ -80,10 +89,6 @@ function setup(){
   caract.option('Espinhos',8);
   caract.value(0);
   caract.position(50, 265);
-
-  text("Cor:", 45, 350);
-  hueColor = createSlider(0, 255, 0);
-  hueColor.position(50, 362);
 
   var botaoNoPlayer = createButton('Testar Sem Jogador');
   botaoNoPlayer.position(50, 450);
@@ -214,26 +219,25 @@ function setup(){
         break;
     }
 
-    var cor;
+    var aparencia;
     switch (tipo.value()){
       case "0":
-        cor = imagens[0];
+        aparencia = imagens[0];
         break;
       case "1":
-        cor = imagens[1];
+        aparencia = imagens[1];
         break;
       case "2":
-        cor = imagens[2];
+        aparencia = imagens[2];
         break;
     }
 
     alert("A criatura " + nome.value() + " foi criada com sucesso!")
-    //cor = color(random(255), random(255), random(255));
     console.log("vida: " + vida);
     console.log("fome: " + fome);
     console.log("vlcd: " + velocidade);
     console.log("rsts: " + resistencia);
-    this.criatura = [infor, tipo.value(), vida, fome, velocidade, resistencia, cor];
+    this.criatura = [infor, tipo.value(), vida, fome, velocidade, resistencia, aparencia];
     level = new Level(this.criatura);
     limparCampos();
   }
@@ -248,7 +252,6 @@ function setup(){
     pata.remove();
     tamanho.remove();
     caract.remove();
-    hueColor.remove();
     botaoAdcCrt.remove();
     botaoNoPlayer.remove();
     menu = 1;
@@ -259,19 +262,26 @@ function setup(){
 // onde o jogo acontece, de fato
 //______________________________________________________________________________
 function draw(){
-  if (menu == 0){
+  if (menu == -4){ // intro
+
+  } else if (menu == -3){ // loja
+
+  } else if (menu == -2){ // dado
+
+  } else if (menu == -1){ // roleta
+
+  } else if (menu == 0){ // principal
     fill(0);
     rect(195,362,34,34);
-    // if (tipo.value() == 0){
-    //   img = imagens[0].get(32, 64, 32, 32);
-    // } else if (tipo.value() == 1){
-    //   img = imagens[1].get(32, 64, 32, 32);
-    // } else if (tipo.value() == 2){
-    //   img = imagens[2].get(32, 64, 32, 32);
-    // }
-    // image(img, 196, 363);
-  // interface do jogo
-  } else if (menu == 1){
+    if (tipo.value() == 0){
+      img = imagens[0].get(32, 64, 32, 32);
+    } else if (tipo.value() == 1){
+      img = imagens[1].get(32, 64, 32, 32);
+    } else if (tipo.value() == 2){
+      img = imagens[2].get(32, 64, 32, 32);
+    }
+    image(img, 196, 363);
+  } else if (menu == 1){ // lvl 1
     level.rodar();
     fill(255);
     if (debug){
@@ -297,6 +307,10 @@ function draw(){
       text("- amarelo é a força de atração/repulsão por predadores/presas.", 10, 470);
       text("- branco é a força de atração/repulsão por carnes.", 10, 490);
     }
+  } else if (menu == 2){ // lvl 2
+
+  } else if (menu == -5){ // minigame reprodução
+
   }
 }
 

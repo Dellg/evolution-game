@@ -6,6 +6,8 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   this.nome = caracteristicas[0][0];
   // informações sobre as características da criatura
   this.codigo = caracteristicas[0];
+  // gênero da criatura: 0= macho, 1= fêmea
+  this.genero = round(random(1));
   // tipo de alimento que a criatura consome: 0 = planta, 1 = carne e criatura, 2 = inseto e planta
   this.tipo = caracteristicas[1];
   // a criatura vai perdendo vida se estiver com fome
@@ -368,7 +370,7 @@ Criatura.prototype.reproduz = function() {
       var melhorParceiro = null;
       // vai procurar o melhor parceiro para gerar um filho
       for (var i = criaturas.length - 1; i >= 0; i--){
-        if ((criaturas[i] === undefined) || (criaturas[i].vida < criaturas[i].maxVida/2)){
+        if ((criaturas[i] === undefined) || (criaturas[i].vida < criaturas[i].maxVida/2) || criaturas[i].genero == 1){
           continue;
         }
         if ((criaturas[i] != this) && (criaturas[i].nome == this.nome)){

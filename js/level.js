@@ -37,18 +37,6 @@ Level.prototype.adicionarAleatorios = function() {
     tipoCriaturas.push([["Kunglob", "Garra", "Pequeno", "Orelhas Grandes"], 1, 2,   6, 1.25, 2.5, imagens[1]]);
   if (tipoJogador != 2)
     tipoCriaturas.push([["Cacoglobius", "Mão", "Médio", "Duas Caudas"],     2, 2,   3,  1.1, 1.9, imagens[2]]);
-
-  // código antigo para quando o jogo tiver mais de 3 tipos de criaturas
-  // for (var i = 0; i < variacaoCriaturas; i++){
-  //   var t = i%3;
-  //   if (t == 0){
-  //     tipoCriaturas.push(["Nalulóbulis" + i, t, 2, 1.5,   1,   2 + random(0.5), color(random(255), random(255), random(255))]);
-  //   } else if (t == 1){
-  //     tipoCriaturas.push(["Kunglob"     + i, t, 2,   5, 1.2, 2.4 + random(0.5), color(random(255), random(255), random(255))]);
-  //   } else if (t == 2){
-  //     tipoCriaturas.push(["Cacoglobius" + i, t, 2,   3, 1.1, 1.5 + random(0.5), color(random(255), random(255), random(255))]);
-  //   }
-  // }
 }
 
 //______________________________________________________________________________
@@ -186,9 +174,12 @@ Level.prototype.rodar = function(){
 
         // aqui verifica se foi feita reprodução, para adicionar os filhos à população
         if (crtr != undefined){
-          var filho = crtr.reproduz();
-          if (filho != null) {
-            criaturas.push(filho);
+          // criatura só reproduzirá se for fêmea
+          if (crtr.genero == 1){
+            var filho = crtr.reproduz();
+            if (filho != null) {
+              criaturas.push(filho);
+            }
           }
         }
         // aqui verifica se a criatura morreu, para retirá-la da população
