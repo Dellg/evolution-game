@@ -33,14 +33,9 @@ function setup(){
   background(15);
 
   fill(255);
-  textFont("Times New Roman", 16);
+  textFont("Times New Roman", 32);
+  text("Escolha uma das criaturas existentes e modifique-a ao longo do jogo:", 60, 60);
 
-  text("Nome da criatura:", 45, 50);
-  var nome = createInput();
-  nome.style("width", "220px");
-  nome.position(50, 65);
-
-  text("Tipo:", 45, 100);
   tipo = createRadio();
   tipo.style("color", "#FFFFFF");
   tipo.style("font-family", "Times New Roman");
@@ -51,52 +46,19 @@ function setup(){
   tipo.value(0);
   tipo.position(50, 115);
 
-  text("Pata:", 45, 150);
-  pata = createRadio();
-  pata.style("color", "#FFFFFF");
-  pata.style("font-family", "Times New Roman");
-  pata.style("font-size", "10pt");
-  pata.option('Casco',0);
-  pata.option('Garra',1);
-  pata.option('Mão',2);
-  pata.value(0);
-  pata.position(50, 165);
+  textFont("Times New Roman", 16);
+  text("Nomeie a sua criatura:", 45, 300);
+  var nome = createInput();
+  nome.style("width", "220px");
+  nome.position(50, 315);
 
-  text("Tamanho:", 45, 200);
-  tamanho = createRadio();
-  tamanho.style("color", "#FFFFFF");
-  tamanho.style("font-family", "Times New Roman");
-  tamanho.style("font-size", "10pt");
-  tamanho.option('Grande',0);
-  tamanho.option('Pequeno',1);
-  tamanho.option('Médio',2);
-  tamanho.value(0);
-  tamanho.position(50, 215);
+  var botaoAdcCrt = createButton('Iniciar Jogo');
+  botaoAdcCrt.position(50, 360);
+  botaoAdcCrt.mousePressed(adicionarCriatura);
 
-  text("Característica especial:", 45, 250);
-  caract = createRadio();
-  caract.style("color", "#FFFFFF");
-  caract.style("font-family", "Times New Roman");
-  caract.style("font-size", "10pt");
-  caract.option('Chifre',0);
-  caract.option('Orelhas grandes',1);
-  caract.option('Duas caudas',2);
-  caract.option('Escala Árvores',3);
-  caract.option('Peçonha',4);
-  caract.option('Carapaça',5);
-  caract.option('Pele Camufla',6);
-  caract.option('Asas',7);
-  caract.option('Espinhos',8);
-  caract.value(0);
-  caract.position(50, 265);
-
-  var botaoNoPlayer = createButton('Testar Sem Jogador');
+  var botaoNoPlayer = createButton('Testar Sem Jogador (opção de desenvolvedor)');
   botaoNoPlayer.position(50, 450);
   botaoNoPlayer.mousePressed(testar);
-
-  var botaoAdcCrt = createButton('Adicionar Criatura');
-  botaoAdcCrt.position(50, 550);
-  botaoAdcCrt.mousePressed(adicionarCriatura);
 
   //______________________________________________________________________________
   // iniciar um jogo apenas com as criaturas pré-definidas do level
@@ -114,120 +76,40 @@ function setup(){
       alert("Você deve dar um nome a sua criatura!");
       return false;
     }
-    // valores padrão
-    vida = 2;
-    fome = 0;
-    velocidade = 1;
-    resistencia = 1;
-    infor = [];
+
+    var vida = 2, fome, velocidade, resistencia, aparencia;
+    var infor = [];
     infor.push(nome.value());
 
-    // valores adicionais do tipo de pata
-    switch (pata.value()) {
-      case "0":
-        velocidade += 0.3;
-        resistencia += 0.1;
-        fome -= 0.5;
-        infor.push("Casco");
-        break;
-      case "1":
-        velocidade += 0.1;
-        resistencia += 0.5;
-        fome += 4.5;
-        infor.push("Garra");
-        break;
-      case "2":
-        velocidade -= 0.1;
-        resistencia += 0.2;
-        fome += 0.5;
-        infor.push("Mão");
-        break;
-    }
-    // valores adicionais do tamanho
-    switch (tamanho.value()) {
-      case "0":
-        velocidade -= 0.2;
-        resistencia += 0.3;
-        fome += 2.5;
-        infor.push("Grande");
-        break;
-      case "1":
-        velocidade += 0.2;
-        resistencia += 0.2;
-        fome += 1.5;
-        infor.push("Pequeno");
-        break;
-      case "2":
-        resistencia += 0.2;
-        fome += 2;
-        infor.push("Médio");
-        break;
-    }
-    // valores adicionais da característica especial
-    switch (caract.value()) {
-      case "0":
-        resistencia += 0.5;
-        fome -= 0.5;
-        infor.push("Chifre");
-        break;
-      case "1":
-        velocidade -= 0.1;
-        resistencia += 0.6;
-        fome += 1;
-        infor.push("Orelhas grandes");
-        break;
-      case "2":
-        velocidade += 0.2;
-        resistencia += 0.1;
-        fome += 0.5;
-        infor.push("Duas caudas");
-        break;
-      case "3":
-        velocidade += 0.1;
-        resistencia += 0.3;
-        fome += 1;
-        infor.push("Escala Árvores");
-        break;
-      case "4":
-        velocidade += 0.1;
-        resistencia += 0.1;
-        fome += 2;
-        infor.push("Peçonha");
-        break;
-      case "5":
-        velocidade -= 0.2;
-        resistencia += 0.8;
-        fome -= 0.5;
-        infor.push("Carapaça");
-        break;
-      case "6":
-        resistencia += 0.4;
-        fome += 3;
-        infor.push("Pele Camufla");
-        break;
-      case "7":
-        velocidade += 0.1;
-        resistencia += 0.4;
-        fome += 2;
-        infor.push("Asas");
-        break;
-      case "8":
-        velocidade += 0.1;
-        resistencia += 0.4;
-        fome += 2;
-        infor.push("Espinhos");
-        break;
-    }
-
-    var aparencia;
     switch (tipo.value()){
+      // herbívoro
       case "0":
+        fome = 1.5;
+        velocidade = 1;
+        resistencia = 1.5;
+        infor.push("Casco");
+        infor.push("Grande");
+        infor.push("Chifre");
         aparencia = imagens[0];
         break;
+      // carnívoro
       case "1":
+        fome = 6;
+        velocidade = 1.25;
+        resistencia = 2.5;
+        infor.push("Garra");
+        infor.push("Pequeno");
+        infor.push("Orelhas grandes");
         aparencia = imagens[1];
         break;
+      // onívoro
       case "2":
+        fome = 3;
+        velocidade = 1.1;
+        resistencia = 1.9;
+        infor.push("Mão");
+        infor.push("Médio");
+        infor.push("Duas caudas");
         aparencia = imagens[2];
         break;
     }
@@ -245,9 +127,6 @@ function setup(){
     // remove elementos de entrada de dado
     nome.remove();
     tipo.remove();
-    pata.remove();
-    tamanho.remove();
-    caract.remove();
     botaoAdcCrt.remove();
     botaoNoPlayer.remove();
     menu = 1;
@@ -265,21 +144,33 @@ function draw(){
   } else if (menu == -2){ // dado
 
   } else if (menu == 0){ // principal
-    fill(0);
-    rect(195,362,34,34);
+    rect(70,140,34,34);
+    fill(15);
+    noStroke();
+    rect(300,130,800,100);
+    fill(255);
     if (tipo.value() == 0){
       img = imagens[0].get(32, 64, 32, 32);
+      text("Os herbívoros se alimentam de plantas, eles possuem baixa velocidade devido ao seu tamanho, se", 330, 150);
+      text("alimentam com mais frequência, possuem um chifre que usam apenas para intimidar alguns predadores.", 330, 165);
+      text("Herbívoros tem uma alta taxa de reprodução.", 330, 180);
     } else if (tipo.value() == 1){
       img = imagens[1].get(32, 64, 32, 32);
+      text("Os carnívoros se alimentam de outras criaturas ou de carnes, são pequenos e, por isso, são velozes,", 330, 150);
+      text("possuem orelhas grandes para ficar atentos às presas. Eles saciam sua fome muito rápido, precisando", 330, 165);
+      text("se alimentar poucas vezes. Carnívoros tem uma baixa taxa de reprodução.", 330, 180);
     } else if (tipo.value() == 2){
+      text("Os onívoros se alimentam de plantas e alguns insetos, tem uma velocidade média devido ao seu tamanho,", 330, 150);
+      text("possuem duas caudas que ajudam na sua locomoção. Se alimentam com uma frequência regular.", 330, 165);
+      text("Onívoros tem uma taxa de reprodução balanceada.", 330, 180);
       img = imagens[2].get(32, 64, 32, 32);
     }
-    image(img, 196, 363);
+    image(img, 72, 142);
   } else if (menu == 1){ // levels
     if (levelnum == 1){
       level.rodar();
       fill(255);
-      text("Pontuação: " + pontuacao, 10, 20);
+      text("Pontos de Modificação: " + pontuacao, 10, 20);
       if (debug){
         text("Alimentos:", 10, 60);
         text("- com cor em tom de verde/verde-limão são plantas;", 10, 80);
