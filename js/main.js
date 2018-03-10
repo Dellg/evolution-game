@@ -280,7 +280,6 @@ function draw(){
       level.rodar();
       fill(255);
       text("Pontuação: " + pontuacao, 10, 20);
-      minigame1.position(xGame - 70, 20);
       if (debug){
         text("Alimentos:", 10, 60);
         text("- com cor em tom de verde/verde-limão são plantas;", 10, 80);
