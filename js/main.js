@@ -7,6 +7,7 @@ var menu = 0;
 // 2 = fim do jogo
 var criatura = null;
 var pontuacao = 0; // pontuação do jogador, contará como "moeda" do jogo
+var tempoJogo = 0; // quantidade de anos que se passaram
 var levelnum = 1;
 var level = null;
 var imagens = [];
@@ -162,6 +163,8 @@ function draw(){
       level.rodar();
       fill(255);
       text("Pontos de Modificação: " + pontuacao, 10, 20);
+      tempoJogo += 0.01;
+      text(parseInt(tempoJogo) + " anos", 10, 40);
     } else if (levelnum == 2){
 
     }

@@ -33,11 +33,11 @@ Level.prototype.adicionarAleatorios = function() {
   }
   // rebalanceado usando fórmula (prévia para jogador)
   if (tipoJogador != 0)
-    tipoCriaturas.push([["Nalulóbulis", "Casco", "Grande", "Chifre"],       0, 2, 1.5,    1, 1.5, imagens[0]]);
+    tipoCriaturas.push([["Nalulóbulis", "Casco", "Grande", "Chifre"],       0,   2, 1.5,    1, 1.5, imagens[0]]);
   if (tipoJogador != 1)
-    tipoCriaturas.push([["Kunglob", "Garra", "Pequeno", "Orelhas Grandes"], 1, 2,   6, 1.25, 2.5, imagens[1]]);
+    tipoCriaturas.push([["Kunglob", "Garra", "Pequeno", "Orelhas Grandes"], 1,   1,   6, 1.25, 2.5, imagens[1]]);
   if (tipoJogador != 2)
-    tipoCriaturas.push([["Cacoglobius", "Mão", "Médio", "Duas Caudas"],     2, 2,   3,  1.1, 1.9, imagens[2]]);
+    tipoCriaturas.push([["Cacoglobius", "Mão", "Médio", "Duas Caudas"],     2, 1.5,   3,  1.1, 1.9, imagens[2]]);
 }
 
 //______________________________________________________________________________

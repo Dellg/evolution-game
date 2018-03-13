@@ -32,11 +32,11 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   // características da IA
   this.geracao = geracao;
   if (this.tipo == 0){
-    this.intervaloReproducao = random(5, 12);
+    this.intervaloReproducao = random(4, 9);
   } else if (this.tipo == 2) {
-    this.intervaloReproducao = random(10, 17);
+    this.intervaloReproducao = random(8, 13);
   } else {
-    this.intervaloReproducao = random(15, 25);
+    this.intervaloReproducao = random(12, 22);
   }
   this.reproducao = 0;
   this.fitness = 0;
