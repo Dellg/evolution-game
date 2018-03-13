@@ -53,7 +53,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
       this.codigoGenetico[3] = random(70, 120); // raio de percepção para detectar planta
       this.codigoGenetico[4] = random(20, 70); // raio de percepção para detectar inseto
       this.codigoGenetico[7] = random(-1.5, 0.1); // peso predador/presa
-      this.codigoGenetico[8] = random(20, 70); // raio de percepção para detectar predadores/presa
+      this.codigoGenetico[8] = random(20, 100); // raio de percepção para detectar predadores/presa
       this.codigoGenetico[9] = random(-1.5, 0.1); // peso comida carne (criatura)
       this.codigoGenetico[10] = random(20, 70); // raio de percepção para detectar carne (criatura)
     // código genético carnívoro
@@ -73,7 +73,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
       this.codigoGenetico[3] = random(20, 70); // raio de percepção para detectar planta
       this.codigoGenetico[4] = random(70, 120); // raio de percepção para detectar inseto
       this.codigoGenetico[7] = random(-1.5, 0.1); // peso predador/presa
-      this.codigoGenetico[8] = random(20, 70); // raio de percepção para detectar predadores/presa
+      this.codigoGenetico[8] = random(20, 100); // raio de percepção para detectar predadores/presa
       this.codigoGenetico[9] = random(-1.5, 0.1); // peso comida carne (criatura)
       this.codigoGenetico[10] = random(20, 70); // raio de percepção para detectar carne (criatura)
     }
