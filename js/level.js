@@ -12,6 +12,7 @@ var tipoAlimentos = [];
 var geracao = 0;
 var taxaMutacao = 0.01;
 var minigame = 0;
+var minig1 = false, minig2 = false, minig3 = false; // flag que verifica completude dos minigames
 
 function Level(criatura){
   if (criatura != null){
@@ -144,74 +145,101 @@ Level.prototype.adicionaNovaComida = function(x, y, morto, eraCarn){
 }
 
 //______________________________________________________________________________
-// onde o jogo acontece, de fato
+// método que roda o jogo ou os minigames do level
 //______________________________________________________________________________
 Level.prototype.rodar = function(){
   background(15);
   fill(255);
 
   if (minigame == 1){ // minigame reprodução
+    text("MiniGame Reprodução:", xGame/2, 30);
     // O primeiro minigame se chama "reprodução sexuada" nele o bixin vai aprender a fazer a dança do acasalamento pra atrair macho, ou femea dependendo do sexo (por isso q eu perguntei se tinha como colocar)... aí podia fazer aquelas coisinha de repetir sequencia, sabe? vai uma sequencia, aí vc repete, na proxima a sequencia ja aumenta, e vc repete... aí faz uma dancinha engraçadinha qualquer...
   } else if (minigame == 2){ // minigame arena
+    console.log("minigame 2");
     // Tipo, dois macaco contra dois bode.. um macaco ataca, outro macaco foge.. um bode ataca, outro bode foge.. o macaco q ataca tem q matar o bode q foge.. antes q o bode q ataca mate o macaco q foge..
   } else if (minigame == 3){ // roleta sorte
+    console.log("minigame 3");
     // O último é uma roleta da sorte, de 4 partes, uma parte ganha poucos pontos, outra ganha mais pontos, e outra ainda mais pontos, outra ganha nada..
-  }
-
-  if (criaturas.length <= 0){
-    geracao += 1;
-    this.iniciaGeracao();
   } else {
-    // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
-    if ((alimentosPlanta.length + alimentosInseto.length + alimentosVeneno.length) < countAlimentos){
-      if (random(1) < 0.2) {
-        this.adicionaNovaComida(null, null);
+    // verifica se não há criaturas vivas para poder iniciar a geração
+    if (criaturas.length <= 0){
+      geracao += 1;
+      this.iniciaGeracao();
+    } else {
+      // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
+      if ((alimentosPlanta.length + alimentosInseto.length + alimentosVeneno.length) < countAlimentos){
+        if (random(1) < 0.2) {
+          this.adicionaNovaComida(null, null);
+        }
       }
-    }
-    for (var i = criaturas.length - 1; i >= 0; i--){
-      var crtr = criaturas[i];
-      crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas);
-      crtr.limites();
-      crtr.update();
-      crtr.show();
+      for (var i = criaturas.length - 1; i >= 0; i--){
+        var crtr = criaturas[i];
+        crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas);
+        crtr.limites();
+        crtr.update();
+        crtr.show();
 
-      // aqui verifica se foi feita reprodução, para adicionar os filhos à população
-      if (crtr != undefined){
-        // criatura só reproduzirá se for fêmea
-        if (crtr.genero == 1){
-          var filho = crtr.reproduz();
-          if (filho != null) {
-            criaturas.push(filho);
+        // aqui verifica se foi feita reprodução, para adicionar os filhos à população
+        if (crtr != undefined){
+          // criatura só reproduzirá se for fêmea
+          if (crtr.genero == 1){
+            var filho = crtr.reproduz();
+            if (filho != null) {
+              criaturas.push(filho);
+            }
+          }
+        }
+        // aqui verifica se a criatura morreu, para retirá-la da população
+        if (crtr.morreu()){
+          criaturas.splice(i, 1);
+          console.log(crtr.nome + " morreu.")
+          // se a criatura morta era um carnívoro, aparece um veneno (evitar canibalismo)
+          if (crtr.tipo != 1){
+            this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, false);
+          } else {
+            this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, true);
           }
         }
       }
-      // aqui verifica se a criatura morreu, para retirá-la da população
-      if (crtr.morreu()){
-        criaturas.splice(i, 1);
-        console.log(crtr.nome + " morreu.")
-        // se a criatura morta era um carnívoro, aparece um veneno (evitar canibalismo)
-        if (crtr.tipo != 1){
-          this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, false);
-        } else {
-          this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, true);
-        }
+      for (var i = 0; i < alimentosPlanta.length; i++){
+        var almt = alimentosPlanta[i];
+        almt.show();
+      }
+      for (var i = 0; i < alimentosInseto.length; i++){
+        var almt = alimentosInseto[i];
+        almt.show();
+      }
+      for (var i = 0; i < alimentosVeneno.length; i++){
+        var almt = alimentosVeneno[i];
+        almt.show();
+      }
+      for (var i = 0; i < alimentosCarne.length; i++){
+        var almt = alimentosCarne[i];
+        almt.show();
       }
     }
-    for (var i = 0; i < alimentosPlanta.length; i++){
-      var almt = alimentosPlanta[i];
-      almt.show();
+  }
+}
+
+//______________________________________________________________________________
+// função que interpreta o valor do botão pressionado
+//______________________________________________________________________________
+function keyPressed() {
+  // botões que acessam os minigames
+  if (keyCode === LEFT_ARROW) {
+    if (!minig1){
+      minigame = 1;
+      minig1 = true;
     }
-    for (var i = 0; i < alimentosInseto.length; i++){
-      var almt = alimentosInseto[i];
-      almt.show();
+  } else if (keyCode === RIGHT_ARROW) {
+    if (!minig2){
+      minigame = 2;
+      minig2 = true;
     }
-    for (var i = 0; i < alimentosVeneno.length; i++){
-      var almt = alimentosVeneno[i];
-      almt.show();
-    }
-    for (var i = 0; i < alimentosCarne.length; i++){
-      var almt = alimentosCarne[i];
-      almt.show();
+  } else if (keyCode === UP_ARROW) {
+    if (!minig3){
+      minigame = 3;
+      minig3 = true;
     }
   }
 }
