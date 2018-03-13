@@ -478,28 +478,6 @@ Criatura.prototype.show = function(){
   translate(this.posicao.x, this.posicao.y);
   rotate(angulo);
 
-  // se debug estiver ativo, desenha percepções
-  if (debug){
-    noFill();
-    stroke(0, 255, 0);
-    ellipse(0, 0, this.codigoGenetico[3] * 2); // aura para comida planta
-    line(0, 0, 0, -this.codigoGenetico[0] * 50);
-    stroke(255, 0, 0);
-    ellipse(0, 0, this.codigoGenetico[4] * 2); // aura para comida inseto
-    line(0, 0, 0, -this.codigoGenetico[1] * 50);
-    stroke(0, 0, 255);
-    ellipse(0, 0, this.codigoGenetico[5] * 2); // aura para perigo
-    line(0, 0, 0, -this.codigoGenetico[2] * 50);
-    stroke(255, 255, 0);
-    ellipse(0, 0, this.codigoGenetico[8] * 2); // aura para predador/presa
-    line(0, 0, 0, -this.codigoGenetico[7] * 50);
-    stroke(255);
-    ellipse(0, 0, this.codigoGenetico[10] * 2); // aura para comida carne (criatura)
-    line(0, 0, 0, -this.codigoGenetico[9] * 50);
-    // aqui mostra um contorno na criatura significando sua fome
-    strokeWeight(2);
-    stroke(lerpColor(color(255,0,0), color(0,255,0), this.fome));
-  }
   pop();
 }
 
