@@ -1,14 +1,10 @@
 var xGame = window.innerWidth-20;
 var yGame = window.innerHeight-20;
 var menu = 0;
-// -4 = video da intro
-// -3 = loja
-// -2 = dados
+// -1 = video da intro
 // 0 = menu principal
 // 1 = levels
-// 2 = minigame reprodução
-// 3 = minigame arena
-// 4 = minigame roleta
+// 2 = fim do jogo
 var criatura = null;
 var pontuacao = 0; // pontuação do jogador, contará como "moeda" do jogo
 var levelnum = 1;
@@ -137,11 +133,7 @@ function setup(){
 // onde o jogo acontece, de fato
 //______________________________________________________________________________
 function draw(){
-  if (menu == -4){ // intro
-
-  } else if (menu == -3){ // loja
-
-  } else if (menu == -2){ // dado
+  if (menu == -1){ // intro
 
   } else if (menu == 0){ // principal
     rect(70,140,34,34);
@@ -197,12 +189,8 @@ function draw(){
     } else if (levelnum == 2){
 
     }
-  } else if (menu == 2){ // minigame reprodução
-    //O primeiro minigame se chama "reprodução sexuada" nele o bixin vai aprender a fazer a dança do acasalamento pra atrair macho, ou femea dependendo do sexo (por isso q eu perguntei se tinha como colocar)... aí podia fazer aquelas coisinha de repetir sequencia, sabe? vai uma sequencia, aí vc repete, na proxima a sequencia ja aumenta, e vc repete... aí faz uma dancinha engraçadinha qualquer...
-  } else if (menu == 3){ // minigame arena
-    //tipo, dois macaco contra dois bode.. um macaco ataca, outro macaco foge.. um bode ataca, outro bode foge.. o macaco q ataca tem q matar o bode q foge.. antes q o bode q ataca mate o macaco q foge..
-  } else if (menu == 4){ // minigame roleta sorte
-    //o último é uma roleta da sorte, de 4 partes, uma parte ganha poucos pontos, outra ganha mais pontos, e outra ainda mais pontos, outra ganha nada...
+  } else if (menu == 2){ // fim do jogo
+
   }
 }
 

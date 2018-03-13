@@ -11,6 +11,7 @@ var tipoCriaturas = [];
 var tipoAlimentos = [];
 var geracao = 0;
 var taxaMutacao = 0.01;
+var minigame = 0;
 
 function Level(criatura){
   if (criatura != null){
@@ -148,6 +149,15 @@ Level.prototype.adicionaNovaComida = function(x, y, morto, eraCarn){
 Level.prototype.rodar = function(){
   background(15);
   fill(255);
+
+  if (minigame == 1){ // minigame reprodução
+    // O primeiro minigame se chama "reprodução sexuada" nele o bixin vai aprender a fazer a dança do acasalamento pra atrair macho, ou femea dependendo do sexo (por isso q eu perguntei se tinha como colocar)... aí podia fazer aquelas coisinha de repetir sequencia, sabe? vai uma sequencia, aí vc repete, na proxima a sequencia ja aumenta, e vc repete... aí faz uma dancinha engraçadinha qualquer...
+  } else if (minigame == 2){ // minigame arena
+    // Tipo, dois macaco contra dois bode.. um macaco ataca, outro macaco foge.. um bode ataca, outro bode foge.. o macaco q ataca tem q matar o bode q foge.. antes q o bode q ataca mate o macaco q foge..
+  } else if (minigame == 3){ // roleta sorte
+    // O último é uma roleta da sorte, de 4 partes, uma parte ganha poucos pontos, outra ganha mais pontos, e outra ainda mais pontos, outra ganha nada..
+  }
+
   if (criaturas.length <= 0){
     geracao += 1;
     this.iniciaGeracao();
