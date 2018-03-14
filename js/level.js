@@ -13,6 +13,9 @@ var geracao = 0;
 var taxaMutacao = 0.01;
 var minigame = 0;
 var minig1 = false, minig2 = false, minig3 = false; // flag que verifica completude dos minigames
+var esperando = false; // flag para o jogador não poder pressionar
+var ordem = [], ordemAux = [];
+var contador = 0; // contador usando no minigame 1
 
 function Level(criatura){
   if (criatura != null){
@@ -152,13 +155,60 @@ Level.prototype.rodar = function(){
   fill(255);
 
   if (minigame == 1){ // minigame reprodução
-    text("MiniGame Reprodução:", xGame/2, 30);
+    if (contador == 4){
+      var perdeu = false;
+      for (var i = 0; i < 4; i++){
+        if (ordem[i] != ordemAux[i]){
+          alert("Que pena! Você não conseguiu acertar.");
+          minigame = 0;
+          perdeu = true;
+          break;
+        }
+      }
+      if (!perdeu){
+        alert("Muito bem! Você conseguiu realizar a dança do acasalamento! Você recebeu 150 pontos.");
+        pontuacao += 150;
+        minigame = 0;
+      }
+    }
+    if (esperando){
+      text("Decore a ordem:", xGame/2 - 100, 30);
+    } else {
+      text("Aperte na ordem:", xGame/2 - 100, 30);
+      text("Valendo...", xGame/2 - 100, 60);
+    }
+    if (esperando){
+      if (contador < 1){
+        switch (ordem[0]) {
+          case 37:
+            text("Esquerda", xGame/2 - 100, 60);
+            break;
+          case 38:
+            text("Cima", xGame/2 - 100, 60);
+            break;
+          case 39:
+            text("Direita", xGame/2 - 100, 60);
+            break;
+          case 40:
+            text("Baixo", xGame/2 - 100, 60);
+            break;
+        }
+        contador += 0.03;
+      } else if (contador < 1.4){
+        contador += 0.03;
+      } else {
+        contador = 0;
+        if (ordem.length){
+          ordem.splice(0, 1);
+        } else {
+          esperando = false;
+        }
+      }
+    }
     // O primeiro minigame se chama "reprodução sexuada" nele o bixin vai aprender a fazer a dança do acasalamento pra atrair macho, ou femea dependendo do sexo (por isso q eu perguntei se tinha como colocar)... aí podia fazer aquelas coisinha de repetir sequencia, sabe? vai uma sequencia, aí vc repete, na proxima a sequencia ja aumenta, e vc repete... aí faz uma dancinha engraçadinha qualquer...
   } else if (minigame == 2){ // minigame arena
-    console.log("minigame 2");
     // Tipo, dois macaco contra dois bode.. um macaco ataca, outro macaco foge.. um bode ataca, outro bode foge.. o macaco q ataca tem q matar o bode q foge.. antes q o bode q ataca mate o macaco q foge..
   } else if (minigame == 3){ // roleta sorte
-    console.log("minigame 3");
     // O último é uma roleta da sorte, de 4 partes, uma parte ganha poucos pontos, outra ganha mais pontos, e outra ainda mais pontos, outra ganha nada..
   } else {
     // verifica se não há criaturas vivas para poder iniciar a geração
@@ -225,21 +275,35 @@ Level.prototype.rodar = function(){
 // função que interpreta o valor do botão pressionado
 //______________________________________________________________________________
 function keyPressed() {
-  // botões que acessam os minigames
-  if (keyCode === LEFT_ARROW) {
-    if (!minig1){
-      minigame = 1;
-      minig1 = true;
+  if (!esperando){
+    // minigame 1 ativo
+    if (minig1){
+      if (keyCode === UP_ARROW || keyCode === DOWN_ARROW || keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW){
+        ordem.push(keyCode);
+        contador += 1;
+      }
     }
-  } else if (keyCode === RIGHT_ARROW) {
-    if (!minig2){
-      minigame = 2;
-      minig2 = true;
-    }
-  } else if (keyCode === UP_ARROW) {
-    if (!minig3){
-      minigame = 3;
-      minig3 = true;
+    // botões que acessam os minigames
+    if (keyCode === 49 || keyCode === 97) {
+      if (!minig1){
+        minigame = 1;
+        esperando = true;
+        for (var i = 0; i < 4; i++){
+          ordem.push(parseInt(round(random(36.51, 40.49))));
+          ordemAux.push(ordem[i]);
+        }
+        minig1 = true;
+      }
+    } else if (keyCode === 50 || keyCode === 98) {
+      if (!minig2){
+        minigame = 2;
+        minig2 = true;
+      }
+    } else if (keyCode === 51 || keyCode === 99) {
+      if (!minig3){
+        minigame = 3;
+        minig3 = true;
+      }
     }
   }
 }
