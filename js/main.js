@@ -166,6 +166,7 @@ function draw(){
       tempoJogo += 0.01;
       text(parseInt(tempoJogo) + " anos", 10, 40);
       text("Aperte 1 para jogar o MiniGame da dança de acasalamento", xGame - 400, 20);
+      text("Aperte 3 para jogar o MiniGame da roleta da sorte", xGame - 400, 60);
     } else if (levelnum == 2){
 
     }

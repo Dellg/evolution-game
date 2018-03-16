@@ -485,17 +485,18 @@ Criatura.prototype.show = function(){
 // método que faz a criatura dar volta ao mundo quando chega ao limite da tela
 //____________________________________________________________________________
 Criatura.prototype.limites = function() {
+  var tamanho = 28;
 
-  if (this.posicao.x < -this.raio) {
-    this.posicao.x = width + this.raio;
-  } else if (this.posicao.x > width + this.raio) {
-    this.posicao.x = -this.raio;
+  if (this.posicao.x < -tamanho) {
+    this.posicao.x = width + tamanho;
+  } else if (this.posicao.x > width + tamanho) {
+    this.posicao.x = -tamanho;
   }
 
-  if (this.posicao.y < -this.raio) {
-    this.posicao.y = height + this.raio;
-  } else if (this.posicao.y > height + this.raio) {
-    this.posicao.y = -this.raio;
+  if (this.posicao.y < -tamanho) {
+    this.posicao.y = height + tamanho;
+  } else if (this.posicao.y > height + tamanho) {
+    this.posicao.y = -tamanho;
   }
 }
 

@@ -205,7 +205,6 @@ Level.prototype.rodar = function(){
         }
       }
     }
-    // O primeiro minigame se chama "reprodução sexuada" nele o bixin vai aprender a fazer a dança do acasalamento pra atrair macho, ou femea dependendo do sexo (por isso q eu perguntei se tinha como colocar)... aí podia fazer aquelas coisinha de repetir sequencia, sabe? vai uma sequencia, aí vc repete, na proxima a sequencia ja aumenta, e vc repete... aí faz uma dancinha engraçadinha qualquer...
   } else if (minigame == 2){ // minigame arena
     // Tipo, dois macaco contra dois bode.. um macaco ataca, outro macaco foge.. um bode ataca, outro bode foge.. o macaco q ataca tem q matar o bode q foge.. antes q o bode q ataca mate o macaco q foge..
   } else if (minigame == 3){ // roleta sorte
