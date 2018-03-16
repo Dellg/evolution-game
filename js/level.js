@@ -16,6 +16,8 @@ var minig1 = false, minig2 = false, minig3 = false; // flag que verifica complet
 var esperando = false; // flag para o jogador não poder pressionar
 var ordem = [], ordemAux = [];
 var contador = 0; // contador usando no minigame 1
+var roleta = 0; // variável de controle da velocidade da roleta
+var roletaPara = 0;
 
 function Level(criatura){
   if (criatura != null){
@@ -208,7 +210,63 @@ Level.prototype.rodar = function(){
   } else if (minigame == 2){ // minigame arena
     // Tipo, dois macaco contra dois bode.. um macaco ataca, outro macaco foge.. um bode ataca, outro bode foge.. o macaco q ataca tem q matar o bode q foge.. antes q o bode q ataca mate o macaco q foge..
   } else if (minigame == 3){ // roleta sorte
-    // O último é uma roleta da sorte, de 4 partes, uma parte ganha poucos pontos, outra ganha mais pontos, e outra ainda mais pontos, outra ganha nada..
+    ellipse(xGame/2, yGame/2, 300, 300);
+    fill(200, 0, 0);
+    strokeWeight(3);
+    stroke(0);
+    line(xGame/2 - 108, yGame/2 - 108, xGame/2 + 108, yGame/2 + 108);
+    line(xGame/2 + 108, yGame/2 - 108, xGame/2 - 108, yGame/2 + 108);
+    noStroke();
+    text("50 pontos", xGame/2 - 130, yGame/2);
+    text("0 pontos", xGame/2 + 70, yGame/2);
+    text("150 pontos", xGame/2 - 30, yGame/2 + 110);
+    text("300 pontos", xGame/2 - 30, yGame/2 - 110);
+
+    push();
+
+    translate(xGame/2, yGame/2);
+    stroke(24);
+    angleMode(DEGREES);
+    strokeWeight(3);
+    rotate(contador);
+    contador += roleta;
+    if (roletaPara == 2){
+      if (contador >= 45 && contador < 135){
+        alert("Que pena! Você não conseguiu pegar nenhum ponto.");
+        minigame = 0;
+      } else if (contador >= 135 && contador < 225){
+        alert("Muito bem! Você conseguiu 150 pontos.");
+        pontuacao += 150;
+        minigame = 0;
+      } else if (contador >= 225 && contador < 315){
+        alert("Bom! Você conseguiu 50 pontos.");
+        pontuacao += 50;
+        minigame = 0;
+      } else {
+        alert("Incrível! Você conseguiu 300 pontos.");
+        pontuacao += 300;
+        minigame = 0;
+      }
+    } else if (roletaPara == 1){
+      if (roleta > 0){
+        roleta -= 0.2;
+      } else if (roleta < 0){
+        roleta = 0;
+        roletaPara = 2;
+      }
+    } else {
+      if (roleta < 40){
+        roleta += 0.1;
+      } else {
+        fill(0, 255, 0);
+      }
+    }
+    if (contador >= 360){
+      contador -= 360;
+    }
+    triangle(0, -80, 30, 30, -30, 30);
+    pop();
+
   } else {
     // verifica se não há criaturas vivas para poder iniciar a geração
     if (criaturas.length <= 0){
@@ -280,6 +338,16 @@ function keyPressed() {
       if (keyCode === UP_ARROW || keyCode === DOWN_ARROW || keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW){
         ordem.push(keyCode);
         contador += 1;
+      }
+    }
+    // minigame 2 ativo
+    if (minig2){
+
+    }
+    // minigame 3 ativo
+    if (minig3){
+      if (roleta >= 40){
+        roletaPara = 1;
       }
     }
     // botões que acessam os minigames
