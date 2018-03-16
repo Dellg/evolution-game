@@ -18,6 +18,8 @@ var ordem = [], ordemAux = [];
 var contador = 0; // contador usando no minigame 1
 var roleta = 0; // variável de controle da velocidade da roleta
 var roletaPara = 0;
+var criaturasMiniGame = [];
+var arena = false;
 
 function Level(criatura){
   if (criatura != null){
@@ -175,11 +177,6 @@ Level.prototype.rodar = function(){
     }
     if (esperando){
       text("Decore a ordem:", xGame/2 - 100, 30);
-    } else {
-      text("Aperte na ordem:", xGame/2 - 100, 30);
-      text("Valendo...", xGame/2 - 100, 60);
-    }
-    if (esperando){
       if (contador < 1){
         switch (ordem[0]) {
           case 37:
@@ -206,9 +203,38 @@ Level.prototype.rodar = function(){
           esperando = false;
         }
       }
+    } else {
+      text("Aperte na ordem:", xGame/2 - 100, 30);
+      text("Valendo...", xGame/2 - 100, 60);
     }
+
   } else if (minigame == 2){ // minigame arena
-    // Tipo, dois macaco contra dois bode.. um macaco ataca, outro macaco foge.. um bode ataca, outro bode foge.. o macaco q ataca tem q matar o bode q foge.. antes q o bode q ataca mate o macaco q foge..
+    if (arena){
+      text("Você controla a criatura circulada de azul com o mouse", xGame/2 - 100, 30);
+      text("Cace a criatura verde adversária antes que a criatura vermelha cace sua criatura verde", xGame/2 - 100, 60);
+      for (var i = criaturasMiniGame.length - 1; i >= 0; i--){
+        var crtr = criaturasMiniGame[i];
+        if (crtr.acabou()){
+          minigame = 0;
+          break;
+        }
+        crtr.comportamentos(criaturasMiniGame);
+        crtr.limites();
+        crtr.update();
+        crtr.show();
+      }
+    } else {
+      var player = new Controlavel(random(100,150), random(100, yGame - 132), tipoCriaturas[0], true, true);
+      criaturasMiniGame.push(player);
+      player = new Controlavel(random(100,150), random(100, yGame - 132), tipoCriaturas[0], false, false);
+      criaturasMiniGame.push(player);
+      player = new Controlavel(random(xGame - 182, xGame - 132), random(100, yGame - 132), tipoCriaturas[1], false, true);
+      criaturasMiniGame.push(player);
+      player = new Controlavel(random(xGame - 182, xGame - 132), random(100, yGame - 132), tipoCriaturas[1], false, false);
+      criaturasMiniGame.push(player);
+      arena = true;
+    }
+
   } else if (minigame == 3){ // roleta sorte
     ellipse(xGame/2, yGame/2, 300, 300);
     fill(200, 0, 0);
@@ -308,6 +334,9 @@ Level.prototype.rodar = function(){
           }
         }
       }
+      text("Aperte 1 para jogar o MiniGame da dança de acasalamento", xGame - 400, 20);
+      text("Aperte 2 para jogar o MiniGame da arena", xGame - 400, 45);
+      text("Aperte 3 para jogar o MiniGame da roleta da sorte", xGame - 400, 70);
       for (var i = 0; i < alimentosPlanta.length; i++){
         var almt = alimentosPlanta[i];
         almt.show();
@@ -339,10 +368,6 @@ function keyPressed() {
         ordem.push(keyCode);
         contador += 1;
       }
-    }
-    // minigame 2 ativo
-    if (minig2){
-
     }
     // minigame 3 ativo
     if (minig3){
