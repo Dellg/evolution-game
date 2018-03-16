@@ -6,7 +6,7 @@ function Controlavel(x, y, caracteristicas, player, cacador){
   this.vida = 1;
   this.velocidade = p5.Vector.random2D(caracteristicas[4]);
   if (cacador){
-    this.maxVelocidade = parseFloat(caracteristicas[4]);
+    this.maxVelocidade = 1;
   } else {
     this.maxVelocidade = 0.5;
   }
