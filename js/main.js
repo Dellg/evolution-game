@@ -11,6 +11,7 @@ var tempoJogo = 0; // quantidade de anos que se passaram
 var levelnum = 1;
 var level = null;
 var imagens = [];
+var criaturasSalvas = [];
 
 //______________________________________________________________________________
 // carregando imagens no projeto
@@ -27,8 +28,9 @@ function preload(){
 function setup(){
   createCanvas(xGame, yGame);
   background(15);
-
   fill(255);
+
+  // informações do Level 1
   textFont("Times New Roman", 32);
   text("Escolha uma das criaturas existentes e modifique-a ao longo do jogo:", 60, 60);
 
@@ -44,17 +46,39 @@ function setup(){
 
   textFont("Times New Roman", 16);
   text("Nomeie a sua criatura:", 45, 300);
-  var nome = createInput();
+  nome = createInput();
   nome.style("width", "220px");
   nome.position(50, 315);
 
-  var botaoAdcCrt = createButton('Iniciar Jogo');
+  botaoAdcCrt = createButton('Iniciar Jogo');
   botaoAdcCrt.position(50, 360);
   botaoAdcCrt.mousePressed(adicionarCriatura);
 
-  var botaoNoPlayer = createButton('Testar Sem Jogador (opção de desenvolvedor)');
+  botaoNoPlayer = createButton('Testar Sem Jogador (opção de desenvolvedor)');
   botaoNoPlayer.position(50, 450);
   botaoNoPlayer.mousePressed(testar);
+
+  // informações do pré-Level 2
+  caract = createRadio();
+  caract.style("color", "#FFFFFF");
+  caract.style("font-family", "Times New Roman");
+  caract.style("font-size", "10pt");
+  caract.option('Chifres',0);
+  caract.option('Orelhas Grandes',1);
+  caract.option('Duas Caudas',2);
+  caract.option('Escalar Árvores',3);
+  caract.option('Peçonha',4);
+  caract.option('Carapaça',5);
+  caract.option('Asas',6);
+  caract.option('Espinhos',7);
+  caract.value(0);
+  caract.position(50, 145);
+  caract.hide();
+
+  botaoConfirmar = createButton('Confirmar');
+  botaoConfirmar.position(50, 360);
+  botaoConfirmar.mousePressed(confirmarNovaCaracteristica);
+  botaoConfirmar.hide();
 
   //______________________________________________________________________________
   // iniciar um jogo apenas com as criaturas pré-definidas do level
@@ -62,6 +86,14 @@ function setup(){
   function testar() {
     level = new Level(null);
     limparCampos();
+  }
+
+  //______________________________________________________________________________
+  // iniciar um jogo apenas com as criaturas pré-definidas do level
+  //______________________________________________________________________________
+  function confirmarNovaCaracteristica() {
+    levelnum = 2;
+    alert("Iniciando capítulo 2... (ainda será implementado)")
   }
 
   //______________________________________________________________________________
@@ -165,6 +197,17 @@ function draw(){
       text("Pontos de Modificação: " + pontuacao, 10, 20);
       tempoJogo += 0.01;
       text(parseInt(tempoJogo) + " anos", 10, 40);
+
+    } else if (levelnum == 1.5){ // escolha de novas características .hide() e .show()
+      fill(15);
+      noStroke();
+      rect(30,90,800,100);
+      fill(255);
+      textFont("Times New Roman", 32);
+      text("Escolha uma nova característica para fortificar sua criatura:", 60, 120);
+      caract.show();
+      botaoConfirmar.show();
+
     } else if (levelnum == 2){
 
     }

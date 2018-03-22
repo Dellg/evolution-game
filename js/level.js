@@ -157,201 +157,207 @@ Level.prototype.adicionaNovaComida = function(x, y, morto, eraCarn){
 Level.prototype.rodar = function(){
   background(15);
   fill(255);
-
-  if (minigame == 1){ // minigame reprodução
-    if (contador == 4){
-      var perdeu = false;
-      for (var i = 0; i < 4; i++){
-        if (ordem[i] != ordemAux[i]){
-          alert("Que pena! Você não conseguiu acertar.");
-          minigame = 0;
-          perdeu = true;
-          break;
-        }
-      }
-      if (!perdeu){
-        alert("Muito bem! Você conseguiu realizar a dança do acasalamento! Você recebeu 150 pontos.");
-        pontuacao += 150;
-        minigame = 0;
-      }
-    }
-    if (esperando){
-      text("Decore a ordem:", xGame/2 - 100, 30);
-      if (contador < 1){
-        switch (ordem[0]) {
-          case 37:
-            text("Esquerda", xGame/2 - 100, 60);
-            break;
-          case 38:
-            text("Cima", xGame/2 - 100, 60);
-            break;
-          case 39:
-            text("Direita", xGame/2 - 100, 60);
-            break;
-          case 40:
-            text("Baixo", xGame/2 - 100, 60);
-            break;
-        }
-        contador += 0.03;
-      } else if (contador < 1.4){
-        contador += 0.03;
-      } else {
-        contador = 0;
-        if (ordem.length){
-          ordem.splice(0, 1);
-        } else {
-          esperando = false;
-        }
-      }
-    } else {
-      text("Aperte na ordem:", xGame/2 - 100, 30);
-      text("Valendo...", xGame/2 - 100, 60);
-    }
-
-  } else if (minigame == 2){ // minigame arena
-    if (arena){
-      text("Você controla a criatura circulada de azul com o mouse", xGame/2 - 100, 30);
-      text("Cace a criatura verde adversária antes que a criatura vermelha cace sua criatura verde", xGame/2 - 100, 60);
-      for (var i = criaturasMiniGame.length - 1; i >= 0; i--){
-        var crtr = criaturasMiniGame[i];
-        if (crtr.acabou()){
-          minigame = 0;
-          break;
-        }
-        crtr.comportamentos(criaturasMiniGame);
-        crtr.limites();
-        crtr.update();
-        crtr.show();
-      }
-    } else {
-      var player = new Controlavel(random(100,150), random(100, yGame - 132), tipoCriaturas[0], true, true);
-      criaturasMiniGame.push(player);
-      player = new Controlavel(random(100,150), random(100, yGame - 132), tipoCriaturas[0], false, false);
-      criaturasMiniGame.push(player);
-      player = new Controlavel(random(xGame - 182, xGame - 132), random(100, yGame - 132), tipoCriaturas[1], false, true);
-      criaturasMiniGame.push(player);
-      player = new Controlavel(random(xGame - 182, xGame - 132), random(100, yGame - 132), tipoCriaturas[1], false, false);
-      criaturasMiniGame.push(player);
-      arena = true;
-    }
-
-  } else if (minigame == 3){ // roleta sorte
-    ellipse(xGame/2, yGame/2, 300, 300);
-    fill(200, 0, 0);
-    strokeWeight(3);
-    stroke(0);
-    line(xGame/2 - 108, yGame/2 - 108, xGame/2 + 108, yGame/2 + 108);
-    line(xGame/2 + 108, yGame/2 - 108, xGame/2 - 108, yGame/2 + 108);
-    noStroke();
-    text("50 pontos", xGame/2 - 130, yGame/2);
-    text("0 pontos", xGame/2 + 70, yGame/2);
-    text("150 pontos", xGame/2 - 30, yGame/2 + 110);
-    text("300 pontos", xGame/2 - 30, yGame/2 - 110);
-
-    push();
-
-    translate(xGame/2, yGame/2);
-    stroke(24);
-    angleMode(DEGREES);
-    strokeWeight(3);
-    rotate(contador);
-    contador += roleta;
-    if (roletaPara == 2){
-      if (contador >= 45 && contador < 135){
-        alert("Que pena! Você não conseguiu pegar nenhum ponto.");
-        minigame = 0;
-      } else if (contador >= 135 && contador < 225){
-        alert("Muito bem! Você conseguiu 150 pontos.");
-        pontuacao += 150;
-        minigame = 0;
-      } else if (contador >= 225 && contador < 315){
-        alert("Bom! Você conseguiu 50 pontos.");
-        pontuacao += 50;
-        minigame = 0;
-      } else {
-        alert("Incrível! Você conseguiu 300 pontos.");
-        pontuacao += 300;
-        minigame = 0;
-      }
-    } else if (roletaPara == 1){
-      if (roleta > 0){
-        roleta -= 0.2;
-      } else if (roleta < 0){
-        roleta = 0;
-        roletaPara = 2;
-      }
-    } else {
-      if (roleta < 40){
-        roleta += 0.1;
-      } else {
-        fill(0, 255, 0);
-      }
-    }
-    if (contador >= 360){
-      contador -= 360;
-    }
-    triangle(0, -80, 30, 30, -30, 30);
-    pop();
+  if (tempoJogo >= 10){
+    alert("Fim do capítulo 1!");
+    criaturasSalvas = tipoCriaturas;
+    levelnum = 1.5;
 
   } else {
-    // verifica se não há criaturas vivas para poder iniciar a geração
-    if (criaturas.length <= 0){
-      geracao += 1;
-      this.iniciaGeracao();
-    } else {
-      // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
-      if ((alimentosPlanta.length + alimentosInseto.length + alimentosVeneno.length) < countAlimentos){
-        if (random(1) < 0.2) {
-          this.adicionaNovaComida(null, null);
+    if (minigame == 1){ // minigame reprodução
+      if (contador == 4){
+        var perdeu = false;
+        for (var i = 0; i < 4; i++){
+          if (ordem[i] != ordemAux[i]){
+            alert("Que pena! Você não conseguiu acertar.");
+            minigame = 0;
+            perdeu = true;
+            break;
+          }
+        }
+        if (!perdeu){
+          alert("Muito bem! Você conseguiu realizar a dança do acasalamento! Você recebeu 150 pontos.");
+          pontuacao += 150;
+          minigame = 0;
         }
       }
-      for (var i = criaturas.length - 1; i >= 0; i--){
-        var crtr = criaturas[i];
-        crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas);
-        crtr.limites();
-        crtr.update();
-        crtr.show();
+      if (esperando){
+        text("Decore a ordem:", xGame/2 - 100, 30);
+        if (contador < 1){
+          switch (ordem[0]) {
+            case 37:
+              text("Esquerda", xGame/2 - 100, 60);
+              break;
+            case 38:
+              text("Cima", xGame/2 - 100, 60);
+              break;
+            case 39:
+              text("Direita", xGame/2 - 100, 60);
+              break;
+            case 40:
+              text("Baixo", xGame/2 - 100, 60);
+              break;
+          }
+          contador += 0.03;
+        } else if (contador < 1.4){
+          contador += 0.03;
+        } else {
+          contador = 0;
+          if (ordem.length){
+            ordem.splice(0, 1);
+          } else {
+            esperando = false;
+          }
+        }
+      } else {
+        text("Aperte na ordem:", xGame/2 - 100, 30);
+        text("Valendo...", xGame/2 - 100, 60);
+      }
 
-        // aqui verifica se foi feita reprodução, para adicionar os filhos à população
-        if (crtr != undefined){
-          // criatura só reproduzirá se for fêmea
-          if (crtr.genero == 1){
-            var filho = crtr.reproduz();
-            if (filho != null) {
-              criaturas.push(filho);
+    } else if (minigame == 2){ // minigame arena
+      if (arena){
+        text("Você controla a criatura circulada de azul com o mouse", xGame/2 - 100, 30);
+        text("Cace a criatura verde adversária antes que a criatura vermelha cace sua criatura verde", xGame/2 - 100, 60);
+        for (var i = criaturasMiniGame.length - 1; i >= 0; i--){
+          var crtr = criaturasMiniGame[i];
+          if (crtr.acabou()){
+            minigame = 0;
+            break;
+          }
+          crtr.comportamentos(criaturasMiniGame);
+          crtr.limites();
+          crtr.update();
+          crtr.show();
+        }
+      } else {
+        var player = new Controlavel(random(100,150), random(100, yGame - 132), tipoCriaturas[0], true, true);
+        criaturasMiniGame.push(player);
+        player = new Controlavel(random(100,150), random(100, yGame - 132), tipoCriaturas[0], false, false);
+        criaturasMiniGame.push(player);
+        player = new Controlavel(random(xGame - 182, xGame - 132), random(100, yGame - 132), tipoCriaturas[1], false, true);
+        criaturasMiniGame.push(player);
+        player = new Controlavel(random(xGame - 182, xGame - 132), random(100, yGame - 132), tipoCriaturas[1], false, false);
+        criaturasMiniGame.push(player);
+        arena = true;
+      }
+
+    } else if (minigame == 3){ // roleta sorte
+      ellipse(xGame/2, yGame/2, 300, 300);
+      fill(200, 0, 0);
+      strokeWeight(3);
+      stroke(0);
+      line(xGame/2 - 108, yGame/2 - 108, xGame/2 + 108, yGame/2 + 108);
+      line(xGame/2 + 108, yGame/2 - 108, xGame/2 - 108, yGame/2 + 108);
+      noStroke();
+      text("50 pontos", xGame/2 - 130, yGame/2);
+      text("0 pontos", xGame/2 + 70, yGame/2);
+      text("150 pontos", xGame/2 - 30, yGame/2 + 110);
+      text("300 pontos", xGame/2 - 30, yGame/2 - 110);
+
+      push();
+
+      translate(xGame/2, yGame/2);
+      stroke(24);
+      angleMode(DEGREES);
+      strokeWeight(3);
+      rotate(contador);
+      contador += roleta;
+      if (roletaPara == 2){
+        if (contador >= 45 && contador < 135){
+          alert("Que pena! Você não conseguiu pegar nenhum ponto.");
+          minigame = 0;
+        } else if (contador >= 135 && contador < 225){
+          alert("Muito bem! Você conseguiu 150 pontos.");
+          pontuacao += 150;
+          minigame = 0;
+        } else if (contador >= 225 && contador < 315){
+          alert("Bom! Você conseguiu 50 pontos.");
+          pontuacao += 50;
+          minigame = 0;
+        } else {
+          alert("Incrível! Você conseguiu 300 pontos.");
+          pontuacao += 300;
+          minigame = 0;
+        }
+      } else if (roletaPara == 1){
+        if (roleta > 0){
+          roleta -= 0.2;
+        } else if (roleta < 0){
+          roleta = 0;
+          roletaPara = 2;
+        }
+      } else {
+        if (roleta < 40){
+          roleta += 0.1;
+        } else {
+          fill(0, 255, 0);
+        }
+      }
+      if (contador >= 360){
+        contador -= 360;
+      }
+      triangle(0, -80, 30, 30, -30, 30);
+      pop();
+
+    } else {
+      // verifica se não há criaturas vivas para poder iniciar a geração
+      if (criaturas.length <= 0){
+        geracao += 1;
+        this.iniciaGeracao();
+      } else {
+        // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
+        if ((alimentosPlanta.length + alimentosInseto.length + alimentosVeneno.length) < countAlimentos){
+          if (random(1) < 0.2) {
+            this.adicionaNovaComida(null, null);
+          }
+        }
+        for (var i = criaturas.length - 1; i >= 0; i--){
+          var crtr = criaturas[i];
+          crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas);
+          crtr.limites();
+          crtr.update();
+          crtr.show();
+
+          // aqui verifica se foi feita reprodução, para adicionar os filhos à população
+          if (crtr != undefined){
+            // criatura só reproduzirá se for fêmea
+            if (crtr.genero == 1){
+              var filho = crtr.reproduz();
+              if (filho != null) {
+                criaturas.push(filho);
+              }
+            }
+          }
+          // aqui verifica se a criatura morreu, para retirá-la da população
+          if (crtr.morreu()){
+            criaturas.splice(i, 1);
+            console.log(crtr.nome + " morreu.")
+            // se a criatura morta era um carnívoro, aparece um veneno (evitar canibalismo)
+            if (crtr.tipo != 1){
+              this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, false);
+            } else {
+              this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, true);
             }
           }
         }
-        // aqui verifica se a criatura morreu, para retirá-la da população
-        if (crtr.morreu()){
-          criaturas.splice(i, 1);
-          console.log(crtr.nome + " morreu.")
-          // se a criatura morta era um carnívoro, aparece um veneno (evitar canibalismo)
-          if (crtr.tipo != 1){
-            this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, false);
-          } else {
-            this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, true);
-          }
+        text("Aperte 1 para jogar o MiniGame da dança de acasalamento", xGame - 400, 20);
+        text("Aperte 2 para jogar o MiniGame da arena", xGame - 400, 45);
+        text("Aperte 3 para jogar o MiniGame da roleta da sorte", xGame - 400, 70);
+        for (var i = 0; i < alimentosPlanta.length; i++){
+          var almt = alimentosPlanta[i];
+          almt.show();
         }
-      }
-      text("Aperte 1 para jogar o MiniGame da dança de acasalamento", xGame - 400, 20);
-      text("Aperte 2 para jogar o MiniGame da arena", xGame - 400, 45);
-      text("Aperte 3 para jogar o MiniGame da roleta da sorte", xGame - 400, 70);
-      for (var i = 0; i < alimentosPlanta.length; i++){
-        var almt = alimentosPlanta[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosInseto.length; i++){
-        var almt = alimentosInseto[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosVeneno.length; i++){
-        var almt = alimentosVeneno[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosCarne.length; i++){
-        var almt = alimentosCarne[i];
-        almt.show();
+        for (var i = 0; i < alimentosInseto.length; i++){
+          var almt = alimentosInseto[i];
+          almt.show();
+        }
+        for (var i = 0; i < alimentosVeneno.length; i++){
+          var almt = alimentosVeneno[i];
+          almt.show();
+        }
+        for (var i = 0; i < alimentosCarne.length; i++){
+          var almt = alimentosCarne[i];
+          almt.show();
+        }
       }
     }
   }
