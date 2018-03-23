@@ -92,8 +92,11 @@ function setup(){
   // iniciar um jogo apenas com as criaturas pré-definidas do level
   //______________________________________________________________________________
   function confirmarNovaCaracteristica() {
+    caract.remove();
+    botaoConfirmar.remove();
     levelnum = 2;
-    alert("Iniciando capítulo 2... (ainda será implementado)")
+    level = new Level2(criaturasSalvas);
+    alert("Iniciando capítulo 2... (ainda será implementado)");
   }
 
   //______________________________________________________________________________
@@ -208,6 +211,11 @@ function draw(){
       botaoConfirmar.show();
 
     } else if (levelnum == 2){
+      level.rodar();
+      fill(255);
+      textFont("Times New Roman", 16);
+      text("Pontos de Modificação: " + pontuacao, 10, 20);
+      text(parseInt(tempoJogo) + " anos", 10, 40);
 
     }
   } else if (menu == 2){ // fim do jogo
