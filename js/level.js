@@ -157,7 +157,7 @@ Level.prototype.adicionaNovaComida = function(x, y, morto, eraCarn){
 Level.prototype.rodar = function(){
   background(15);
   fill(255);
-  if (tempoJogo >= 10){
+  if (tempoJogo >= 40){
     alert("Fim do capítulo 1!");
     criaturasSalvas = tipoCriaturas;
     levelnum = 1.5;
@@ -299,6 +299,7 @@ Level.prototype.rodar = function(){
       pop();
 
     } else {
+      tempoJogo += 0.01;
       // verifica se não há criaturas vivas para poder iniciar a geração
       if (criaturas.length <= 0){
         geracao += 1;

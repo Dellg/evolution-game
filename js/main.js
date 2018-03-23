@@ -195,7 +195,6 @@ function draw(){
       level.rodar();
       fill(255);
       text("Pontos de Modificação: " + pontuacao, 10, 20);
-      tempoJogo += 0.01;
       text(parseInt(tempoJogo) + " anos", 10, 40);
 
     } else if (levelnum == 1.5){ // escolha de novas características .hide() e .show()
