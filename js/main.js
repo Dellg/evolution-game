@@ -48,31 +48,29 @@ function setup(){
   text("Nomeie a sua criatura:", 45, 300);
   nome = createInput();
   nome.style("width", "220px");
+  nome.value("Criatura");
   nome.position(50, 315);
 
   botaoAdcCrt = createButton('Iniciar Jogo');
   botaoAdcCrt.position(50, 360);
   botaoAdcCrt.mousePressed(adicionarCriatura);
 
-  botaoNoPlayer = createButton('Testar Sem Jogador (opção de desenvolvedor)');
-  botaoNoPlayer.position(50, 450);
-  botaoNoPlayer.mousePressed(testar);
-
   // informações do pré-Level 2
   caract = createRadio();
   caract.style("color", "#FFFFFF");
   caract.style("font-family", "Times New Roman");
   caract.style("font-size", "10pt");
-  caract.option('Chifres',0);
-  caract.option('Orelhas Grandes',1);
-  caract.option('Duas Caudas',2);
-  caract.option('Escalar Árvores',3);
-  caract.option('Peçonha',4);
-  caract.option('Carapaça',5);
-  caract.option('Asas',6);
-  caract.option('Espinhos',7);
+  caract.option('Chifres (150 pontos de modificação)----------',0);
+  caract.option('Orelhas Grandes (100 pontos de modificação)',1);
+  caract.option('Duas Caudas (150 pontos de modificação)---',2);
+  caract.option('Escalar Árvores (100 pontos de modificação)',3);
+  caract.option('Peçonha (150 pontos de modificação)----------',4);
+  caract.option('Carapaça (100 pontos de modificação)---------',5);
+  caract.option('Asas (150 pontos de modificação)---------------',6);
+  caract.option('Espinhos (85 pontos de modificação)',7);
   caract.value(0);
   caract.position(50, 145);
+  caract.style('width', '280px');
   caract.hide();
 
   botaoConfirmar = createButton('Confirmar');
@@ -83,15 +81,11 @@ function setup(){
   //______________________________________________________________________________
   // iniciar um jogo apenas com as criaturas pré-definidas do level
   //______________________________________________________________________________
-  function testar() {
-    level = new Level(null);
-    limparCampos();
-  }
-
-  //______________________________________________________________________________
-  // iniciar um jogo apenas com as criaturas pré-definidas do level
-  //______________________________________________________________________________
   function confirmarNovaCaracteristica() {
+    if (criatura[1] == caract.value()){
+      alert("Você já possui essa melhoria, escolha outra!");
+      return false;
+    }
     caract.remove();
     botaoConfirmar.remove();
     levelnum = 2;
@@ -146,8 +140,8 @@ function setup(){
     }
 
     alert("A criatura " + nome.value() + " foi criada com sucesso!")
-    this.criatura = [infor, tipo.value(), vida, fome, velocidade, resistencia, aparencia];
-    level = new Level(this.criatura);
+    criatura = [infor, tipo.value(), vida, fome, velocidade, resistencia, aparencia];
+    level = new Level(criatura);
     limparCampos();
   }
 
@@ -159,7 +153,6 @@ function setup(){
     nome.remove();
     tipo.remove();
     botaoAdcCrt.remove();
-    botaoNoPlayer.remove();
     menu = 1;
   }
 }
