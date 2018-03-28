@@ -6,7 +6,7 @@ var alimentosInseto;
 var alimentosVeneno;
 var alimentosCarne; // apenas quando uma criatura morre
 var variacaoAlimentos = 20; // variável que controla quantos tipos de alimentos serão criados
-var countAlimentos = 30; // o level 2 terá menos almentos (dificuldade maior)
+var countAlimentos; // o level 2 terá menos almentos (dificuldade maior)
 var tipoCriaturas = [];
 var tipoAlimentos = [];
 var geracao = 0;
@@ -14,6 +14,11 @@ var taxaMutacao = 0.01;
 
 // o level 2 receberá as criaturas do level 1, ao invés de criar novas
 function Level2(criaturasAnteriores){
+  countAlimentos = 20;
+  alimentosPlanta = [];
+  alimentosInseto = [];
+  alimentosVeneno = [];
+  alimentosCarne = [];
   tipoCriaturas = criaturasAnteriores;
   this.carregarDados();
 }

@@ -6,7 +6,7 @@ var alimentosInseto;
 var alimentosVeneno;
 var alimentosCarne; // apenas quando uma criatura morre
 var variacaoAlimentos = 20; // variável que controla quantos tipos de alimentos serão criados
-var countAlimentos = 80; // será para cada tipo de alimento
+var countAlimentos; // será para cada tipo de alimento
 var tipoCriaturas = [];
 var tipoAlimentos = [];
 var geracao = 0;
@@ -22,6 +22,7 @@ var criaturasMiniGame = [];
 var arena = false;
 
 function Level(criatura){
+  countAlimentos = 80;
   if (criatura != null){
     tipoCriaturas.push(criatura);
   }
