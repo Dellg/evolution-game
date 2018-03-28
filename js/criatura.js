@@ -27,6 +27,10 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   this.posicao = createVector(x, y);
   this.aceleracao = createVector();
   this.maxForca = random(0.01, 0.05);
+  // não-carnívoros recebem um bônus extra na força de desvio para fugir melhor
+  if (this.tipo != 1){
+    this.maxForca += 0.025;
+  }
   this.raio = 5;
 
   // características da IA

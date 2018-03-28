@@ -1,4 +1,4 @@
-var criaturas = [];
+var criaturas;
 var variacaoCriaturas = 3; // variável que controla a quantidade de tipo de criatura
 var quantiaEspecie = 25; // variável que controla quantas de cada criatura serão geradas
 var alimentosPlanta;
@@ -19,6 +19,7 @@ function Level2(criaturasAnteriores){
   alimentosInseto = [];
   alimentosVeneno = [];
   alimentosCarne = [];
+  criaturas = [];
   tipoCriaturas = criaturasAnteriores;
   this.carregarDados();
 }
