@@ -19,16 +19,16 @@ var criaturasSalvas = [];
 function preload(){
   link = 'https://raw.githubusercontent.com/Dellg/evolution-game/master/img/';
   // imagens padrão
-  imagens.push(loadImage(link + 'n-chifres.png')); //Nalulóbulis
-  imagens.push(loadImage(link + 'k-orelhasgrandes.png')); //Kunglob
-  imagens.push(loadImage(link + 'c-duascaudas.png')); //Cacoglobius
+  imagens.push(loadImage(link + 'nalulobulis/n-chifres.png')); //Nalulóbulis
+  imagens.push(loadImage(link + 'kunglob/k-orelhasgrandes.png')); //Kunglob
+  imagens.push(loadImage(link + 'cacoglobius/c-duascaudas.png')); //Cacoglobius
   // imagens com mutação
-  imagens.push(loadImage(link + 'n-orelhasgrandes.png'));
-  imagens.push(loadImage(link + 'k-chifres.png'));
-  imagens.push(loadImage(link + 'c-chifres.png'));
-  imagens.push(loadImage(link + 'n-duascaudas.png'));
-  imagens.push(loadImage(link + 'k-duascaudas.png'));
-  imagens.push(loadImage(link + 'c-orelhasgrandes'));
+  imagens.push(loadImage(link + 'nalulobulis/n-orelhasgrandes.png'));
+  imagens.push(loadImage(link + 'kunglob/k-chifres.png'));
+  imagens.push(loadImage(link + 'cacoglobius/c-chifres.png'));
+  imagens.push(loadImage(link + 'nalulobulis/n-duascaudas.png'));
+  imagens.push(loadImage(link + 'kunglob/k-duascaudas.png'));
+  imagens.push(loadImage(link + 'cacoglobius/c-orelhasgrandes.png'));
 }
 
 //______________________________________________________________________________
@@ -104,6 +104,11 @@ function setup(){
           criaturasSalvas[0][0].push("Chifres");
           criaturasSalvas[0][5] += 0.25;
           criaturasSalvas[0][4] -= 0.25;
+          if (criatura[1] == 1){
+            criaturasSalvas[0][6] = imagens[4];
+          } else if (criatura[1] == 2){
+            criaturasSalvas[0][6] = imagens[5];
+          }
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
@@ -114,6 +119,11 @@ function setup(){
           criaturasSalvas[0][0].push("Orelhas Grandes");
           criaturasSalvas[0][4] += 0.25;
           criaturasSalvas[0][5] -= 0.25;
+          if (criatura[1] == 0){
+            criaturasSalvas[0][6] = imagens[3];
+          } else if (criatura[1] == 2){
+            criaturasSalvas[0][6] = imagens[8];
+          }
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
@@ -124,6 +134,11 @@ function setup(){
           criaturasSalvas[0][0].push("Duas Caudas");
           criaturasSalvas[0][3] -= 0.3;
           criaturasSalvas[0][5] -= 0.25;
+          if (criatura[1] == 0){
+            criaturasSalvas[0][6] = imagens[6];
+          } else if (criatura[1] == 1){
+            criaturasSalvas[0][6] = imagens[7];
+          }
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
