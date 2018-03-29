@@ -67,7 +67,8 @@ function setup(){
   caract.option('Peçonha (150 pontos de modificação)----------',4);
   caract.option('Carapaça (100 pontos de modificação)---------',5);
   caract.option('Asas (150 pontos de modificação)---------------',6);
-  caract.option('Espinhos (85 pontos de modificação)',7);
+  caract.option('Espinhos (85 pontos de modificação)----------',7);
+  caract.option('Nada',8);
   caract.value(0);
   caract.position(50, 145);
   caract.style('width', '280px');
@@ -85,6 +86,92 @@ function setup(){
     if (criatura[1] == caract.value()){
       alert("Você já possui essa melhoria, escolha outra!");
       return false;
+    }
+
+    // dá a pontuação apropriada dependendo do upgrade
+    switch (caract.value()) {
+      case "0":
+        if (pontuacao >= 150){
+          criaturasSalvas[0][0].push("Chifres");
+          criaturasSalvas[0][5] += 0.25;
+          criaturasSalvas[0][4] -= 0.25;
+        } else {
+          alert("Você não tem pontuação suficiente para pegar esta mutação.");
+          return false;
+        }
+        break;
+      case "1":
+        if (pontuacao >= 100){
+          criaturasSalvas[0][0].push("Orelhas Grandes");
+          criaturasSalvas[0][4] += 0.25;
+          criaturasSalvas[0][5] -= 0.25;
+        } else {
+          alert("Você não tem pontuação suficiente para pegar esta mutação.");
+          return false;
+        }
+        break;
+      case "2":
+        if (pontuacao >= 150){
+          criaturasSalvas[0][0].push("Duas Caudas");
+          criaturasSalvas[0][3] -= 0.3;
+          criaturasSalvas[0][5] -= 0.25;
+        } else {
+          alert("Você não tem pontuação suficiente para pegar esta mutação.");
+          return false;
+        }
+        break;
+      case "3":
+        if (pontuacao >= 100){
+          criaturasSalvas[0][0].push("Escalar Árvores");
+          criaturasSalvas[0][4] += 0.25;
+          criaturasSalvas[0][3] += 0.3;
+        } else {
+          alert("Você não tem pontuação suficiente para pegar esta mutação.");
+          return false;
+        }
+        break;
+      case "4":
+        if (pontuacao >= 150){
+          criaturasSalvas[0][0].push("Peçonha");
+          criaturasSalvas[0][3] -= 0.3;
+          criaturasSalvas[0][4] -= 0.25;
+        } else {
+          alert("Você não tem pontuação suficiente para pegar esta mutação.");
+          return false;
+        }
+        break;
+      case "5":
+        if (pontuacao >= 100){
+          criaturasSalvas[0][0].push("Carapaça");
+          criaturasSalvas[0][5] += 0.33;
+          criaturasSalvas[0][4] -= 0.33;
+        } else {
+          alert("Você não tem pontuação suficiente para pegar esta mutação.");
+          return false;
+        }
+        break;
+      case "6":
+        if (pontuacao >= 150){
+          criaturasSalvas[0][0].push("Asas");
+          criaturasSalvas[0][3] += 0.3;
+          criaturasSalvas[0][4] += 0.25;
+        } else {
+          alert("Você não tem pontuação suficiente para pegar esta mutação.");
+          return false;
+        }
+        break;
+      case "7":
+        if (pontuacao >= 85){
+          criaturasSalvas[0][0].push("Espinhos");
+          criaturasSalvas[0][3] += 0.3;
+          criaturasSalvas[0][5] += 0.25;
+        } else {
+          alert("Você não tem pontuação suficiente para pegar esta mutação.");
+          return false;
+        }
+        break;
+      case "8":
+        break;
     }
     caract.remove();
     botaoConfirmar.remove();
@@ -197,9 +284,58 @@ function draw(){
       fill(15);
       noStroke();
       rect(30,90,800,100);
+      rect(350,130,800,100);
       fill(255);
       textFont("Times New Roman", 32);
       text("Escolha uma nova característica para fortificar sua criatura:", 60, 120);
+      textFont("Times New Roman", 16);
+      switch (caract.value()) {
+        case "0":
+          text("Adiciona chifres na sua criatura.", 380, 150);
+          text("Vantagem: +Resistência", 380, 165);
+          text("Desvantagem: -Velocidade", 380, 180);
+          break;
+        case "1":
+          text("Adiciona orelhas grandes na sua criatura.", 380, 150);
+          text("Vantagem: +Velocidade", 380, 165);
+          text("Desvantagem: -Resistência", 380, 180);
+          break;
+        case "2":
+          text("Adiciona duas caudas na sua criatura.", 380, 150);
+          text("Vantagem: -Fome", 380, 165);
+          text("Desvantagem: -Resistência", 380, 180);
+          break;
+        case "3":
+          text("Adiciona pés que possibilitam escalar árvores na sua criatura.", 380, 150);
+          text("Vantagem: +Velocidade", 380, 165);
+          text("Desvantagem: +Fome", 380, 180);
+          break;
+        case "4":
+          text("Adiciona peçonha na sua criatura.", 380, 150);
+          text("Vantagem: -Fome", 380, 165);
+          text("Desvantagem: -Velocidade", 380, 180);
+          break;
+        case "5":
+          text("Adiciona uma carapaça na sua criatura.", 380, 150);
+          text("Vantagem: ++Resistência", 380, 165);
+          text("Desvantagem: --Velocidade", 380, 180);
+          break;
+        case "6":
+          text("Adiciona asas na sua criatura.", 380, 150);
+          text("Vantagem: +Velocidade", 380, 165);
+          text("Desvantagem: +Fome", 380, 180);
+          break;
+        case "7":
+          text("Adiciona espinhos na sua criatura.", 380, 150);
+          text("Vantagem: +Resistência", 380, 165);
+          text("Desvantagem: +Fome", 380, 180);
+          break;
+        case "8":
+          text("Não adiciona nada na sua criatura.", 380, 150);
+          text("Vantagem: nenhuma", 380, 165);
+          text("Desvantagem: nenhuma", 380, 180);
+          break;
+      }
       caract.show();
       botaoConfirmar.show();
 
