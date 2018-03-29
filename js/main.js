@@ -17,9 +17,18 @@ var criaturasSalvas = [];
 // carregando imagens no projeto
 //______________________________________________________________________________
 function preload(){
-  imagens.push(loadImage('https://raw.githubusercontent.com/Dellg/evolution-game/master/img/nalulobulis.png')); //Nalulóbulis
-  imagens.push(loadImage('https://raw.githubusercontent.com/Dellg/evolution-game/master/img/kunglob.png')); //Kunglob
-  imagens.push(loadImage('https://raw.githubusercontent.com/Dellg/evolution-game/master/img/cacoglobius.png'));
+  link = 'https://raw.githubusercontent.com/Dellg/evolution-game/master/img/';
+  // imagens padrão
+  imagens.push(loadImage(link + 'n-chifres.png')); //Nalulóbulis
+  imagens.push(loadImage(link + 'k-orelhasgrandes.png')); //Kunglob
+  imagens.push(loadImage(link + 'c-duascaudas.png')); //Cacoglobius
+  // imagens com mutação
+  imagens.push(loadImage(link + 'n-orelhasgrandes.png'));
+  imagens.push(loadImage(link + 'k-chifres.png'));
+  imagens.push(loadImage(link + 'c-chifres.png'));
+  imagens.push(loadImage(link + 'n-duascaudas.png'));
+  imagens.push(loadImage(link + 'k-duascaudas.png'));
+  imagens.push(loadImage(link + 'c-orelhasgrandes'));
 }
 
 //______________________________________________________________________________
