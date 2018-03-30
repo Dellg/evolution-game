@@ -124,6 +124,7 @@ function setup(){
           } else if (criatura[1] == 2){
             criaturasSalvas[0][6] = imagens[5];
           }
+          pontuacao -= 150;
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
@@ -139,6 +140,7 @@ function setup(){
           } else if (criatura[1] == 2){
             criaturasSalvas[0][6] = imagens[8];
           }
+          pontuacao -= 100;
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
@@ -154,6 +156,7 @@ function setup(){
           } else if (criatura[1] == 1){
             criaturasSalvas[0][6] = imagens[7];
           }
+          pontuacao -= 150;
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
@@ -171,6 +174,7 @@ function setup(){
           } else if (criatura[1] == 2){
             criaturasSalvas[0][6] = imagens[11];
           }
+          pontuacao -= 100;
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
@@ -188,6 +192,7 @@ function setup(){
           } else if (criatura[1] == 2){
             criaturasSalvas[0][6] = imagens[14];
           }
+          pontuacao -= 150;
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
@@ -205,6 +210,7 @@ function setup(){
           } else if (criatura[1] == 2){
             criaturasSalvas[0][6] = imagens[17];
           }
+          pontuacao -= 100;
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
@@ -222,6 +228,7 @@ function setup(){
           } else if (criatura[1] == 2){
             criaturasSalvas[0][6] = imagens[20];
           }
+          pontuacao -= 150;
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
@@ -239,6 +246,7 @@ function setup(){
           } else if (criatura[1] == 2){
             criaturasSalvas[0][6] = imagens[23];
           }
+          pontuacao -= 85;
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
