@@ -29,6 +29,21 @@ function preload(){
   imagens.push(loadImage(link + 'nalulobulis/n-duascaudas.png'));
   imagens.push(loadImage(link + 'kunglob/k-duascaudas.png'));
   imagens.push(loadImage(link + 'cacoglobius/c-orelhasgrandes.png'));
+  imagens.push(loadImage(link + 'nalulobulis/n-escalador.png'));
+  imagens.push(loadImage(link + 'kunglob/k-escalador.png'));
+  imagens.push(loadImage(link + 'cacoglobius/c-escalador.png'));
+  imagens.push(loadImage(link + 'nalulobulis/n-peconha.png'));
+  imagens.push(loadImage(link + 'kunglob/k-peconha.png'));
+  imagens.push(loadImage(link + 'cacoglobius/c-peconha.png'));
+  imagens.push(loadImage(link + 'nalulobulis/n-carapaca.png'));
+  imagens.push(loadImage(link + 'kunglob/k-carapaca.png'));
+  imagens.push(loadImage(link + 'cacoglobius/c-carapaca.png'));
+  imagens.push(loadImage(link + 'nalulobulis/n-asas.png'));
+  imagens.push(loadImage(link + 'kunglob/k-asas.png'));
+  imagens.push(loadImage(link + 'cacoglobius/c-asas.png'));
+  imagens.push(loadImage(link + 'nalulobulis/n-espinhos.png'));
+  imagens.push(loadImage(link + 'kunglob/k-espinhos.png'));
+  imagens.push(loadImage(link + 'cacoglobius/c-espinhos.png'));
 }
 
 //______________________________________________________________________________
@@ -149,6 +164,13 @@ function setup(){
           criaturasSalvas[0][0].push("Escalar Árvores");
           criaturasSalvas[0][4] += 0.25;
           criaturasSalvas[0][3] += 0.3;
+          if (criatura[1] == 0){
+            criaturasSalvas[0][6] = imagens[9];
+          } else if (criatura[1] == 1){
+            criaturasSalvas[0][6] = imagens[10];
+          } else if (criatura[1] == 2){
+            criaturasSalvas[0][6] = imagens[11];
+          }
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
@@ -159,6 +181,13 @@ function setup(){
           criaturasSalvas[0][0].push("Peçonha");
           criaturasSalvas[0][3] -= 0.3;
           criaturasSalvas[0][4] -= 0.25;
+          if (criatura[1] == 0){
+            criaturasSalvas[0][6] = imagens[12];
+          } else if (criatura[1] == 1){
+            criaturasSalvas[0][6] = imagens[13];
+          } else if (criatura[1] == 2){
+            criaturasSalvas[0][6] = imagens[14];
+          }
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
@@ -169,6 +198,13 @@ function setup(){
           criaturasSalvas[0][0].push("Carapaça");
           criaturasSalvas[0][5] += 0.33;
           criaturasSalvas[0][4] -= 0.33;
+          if (criatura[1] == 0){
+            criaturasSalvas[0][6] = imagens[15];
+          } else if (criatura[1] == 1){
+            criaturasSalvas[0][6] = imagens[16];
+          } else if (criatura[1] == 2){
+            criaturasSalvas[0][6] = imagens[17];
+          }
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
@@ -179,6 +215,13 @@ function setup(){
           criaturasSalvas[0][0].push("Asas");
           criaturasSalvas[0][3] += 0.3;
           criaturasSalvas[0][4] += 0.25;
+          if (criatura[1] == 0){
+            criaturasSalvas[0][6] = imagens[18];
+          } else if (criatura[1] == 1){
+            criaturasSalvas[0][6] = imagens[19];
+          } else if (criatura[1] == 2){
+            criaturasSalvas[0][6] = imagens[20];
+          }
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
@@ -189,6 +232,13 @@ function setup(){
           criaturasSalvas[0][0].push("Espinhos");
           criaturasSalvas[0][3] += 0.3;
           criaturasSalvas[0][5] += 0.25;
+          if (criatura[1] == 0){
+            criaturasSalvas[0][6] = imagens[21];
+          } else if (criatura[1] == 1){
+            criaturasSalvas[0][6] = imagens[22];
+          } else if (criatura[1] == 2){
+            criaturasSalvas[0][6] = imagens[23];
+          }
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
