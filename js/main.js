@@ -255,6 +255,30 @@ function setup(){
       case "8":
         break;
     }
+
+    // upgrade das criaturas adversárias
+    criaturasSalvas[1][0].push("Carapaça");
+    criaturasSalvas[1][5] += 0.33;
+    criaturasSalvas[1][4] -= 0.33;
+    if (criaturasSalvas[1][1] == 0){
+      criaturasSalvas[1][6] = imagens[15];
+    } else if (criaturasSalvas[1][1] == 1){
+      criaturasSalvas[1][6] = imagens[16];
+    } else if (criaturasSalvas[1][1] == 2){
+      criaturasSalvas[1][6] = imagens[17];
+    }
+    
+    criaturasSalvas[2][0].push("Espinhos");
+    criaturasSalvas[2][3] += 0.3;
+    criaturasSalvas[2][5] += 0.25;
+    if (criaturasSalvas[2][1] == 0){
+      criaturasSalvas[2][6] = imagens[21];
+    } else if (criaturasSalvas[2][1] == 1){
+      criaturasSalvas[2][6] = imagens[22];
+    } else if (criaturasSalvas[2][1] == 2){
+      criaturasSalvas[2][6] = imagens[23];
+    }
+
     caract.remove();
     botaoConfirmar.remove();
     levelnum = 2;
