@@ -341,9 +341,15 @@ Level.prototype.rodar = function(){
             }
           }
         }
-        text("Aperte 1 para jogar o MiniGame da dança de acasalamento", xGame - 400, 20);
-        text("Aperte 2 para jogar o MiniGame da arena", xGame - 400, 45);
-        text("Aperte 3 para jogar o MiniGame da roleta da sorte", xGame - 400, 70);
+        if (tempoJogo >= 5){
+          text("Aperte 1 para jogar o MiniGame da dança de acasalamento", xGame - 400, 20);
+        }
+        if (tempoJogo >= 10){
+          text("Aperte 2 para jogar o MiniGame da arena", xGame - 400, 45);
+        }
+        if (tempoJogo >= 20){
+          text("Aperte 3 para jogar o MiniGame da roleta da sorte", xGame - 400, 70);
+        }
         for (var i = 0; i < alimentosPlanta.length; i++){
           var almt = alimentosPlanta[i];
           almt.show();
@@ -383,26 +389,34 @@ function keyPressed() {
         roletaPara = 1;
       }
     }
-    // botões que acessam os minigames
-    if (keyCode === 49 || keyCode === 97) {
-      if (!minig1){
-        minigame = 1;
-        esperando = true;
-        for (var i = 0; i < 4; i++){
-          ordem.push(parseInt(round(random(36.51, 40.49))));
-          ordemAux.push(ordem[i]);
+    if (tempoJogo >= 5){
+      // botões que acessam os minigames
+      if (keyCode === 49 || keyCode === 97) {
+        if (!minig1){
+          minigame = 1;
+          esperando = true;
+          for (var i = 0; i < 4; i++){
+            ordem.push(parseInt(round(random(36.51, 40.49))));
+            ordemAux.push(ordem[i]);
+          }
+          minig1 = true;
         }
-        minig1 = true;
       }
-    } else if (keyCode === 50 || keyCode === 98) {
-      if (!minig2){
-        minigame = 2;
-        minig2 = true;
+    }
+    if (tempoJogo >= 10){
+      if (keyCode === 50 || keyCode === 98) {
+        if (!minig2){
+          minigame = 2;
+          minig2 = true;
+        }
       }
-    } else if (keyCode === 51 || keyCode === 99) {
-      if (!minig3){
-        minigame = 3;
-        minig3 = true;
+    }
+    if (tempoJogo >= 20){
+      if (keyCode === 51 || keyCode === 99) {
+        if (!minig3){
+          minigame = 3;
+          minig3 = true;
+        }
       }
     }
   }

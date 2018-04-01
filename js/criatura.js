@@ -257,6 +257,9 @@ Criatura.prototype.alimenta = function(comidas, percepcao) {
     if (distancia < this.maxVelocidade + this.raio/2) {
       var devorado = comidas.splice(i, 1)[0];
       this.conhecer(devorado);
+      if (this.nome == [criatura[0][0]]){
+        pontuacao += 1;
+      }
 
       // limita a fome e a vida aos seus valores máximos
       if (this.fome > this.maxFome)
@@ -420,6 +423,10 @@ Criatura.prototype.reproduz = function() {
         novasCaracteristicas.push(this.imagem);
         novasCaracteristicas.push(this.baseConhecimento);
         console.log(this.nome + " reproduziu...");
+
+        if (this.nome == criatura[0][0]){
+          pontuacao += 5;
+        }
         // criando nova criatura com novas características e código genético herdado dos pais
         return new Criatura(this.posicao.x, this.posicao.y, novasCaracteristicas, codigoGeneticoFilho, this.geracao + 1);
       }
@@ -508,6 +515,9 @@ Criatura.prototype.limites = function() {
 // método usado quando um predador caça uma presa
 //____________________________________________________________________________
 Criatura.prototype.matou = function(devorado){
+  if (this.nome == criatura[0][0]){
+    pontuacao += 1;
+  }
   // predador ganha propriedades de vida e de fome por caçar
   this.vida += devorado.vida/3;
   this.fome += this.maxFome;
