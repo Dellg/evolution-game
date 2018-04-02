@@ -225,8 +225,8 @@ Level.prototype.rodar = function(){
             break;
           }
           crtr.comportamentos(criaturasMiniGame);
-          crtr.limites();
           crtr.update();
+          crtr.limites();
           crtr.show();
         }
       } else {

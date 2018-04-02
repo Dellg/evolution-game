@@ -207,17 +207,26 @@ Controlavel.prototype.show = function(){
 //____________________________________________________________________________
 Controlavel.prototype.limites = function() {
   var tamanho = 28;
+  var desejo = null;
 
-  if (this.posicao.x < -tamanho) {
-    this.posicao.x = width + tamanho;
-  } else if (this.posicao.x > width + tamanho) {
-    this.posicao.x = -tamanho;
+  if (this.posicao.x < tamanho){
+    desejo = createVector(this.maxVelocidade, this.velocidade.y);
+  } else if (this.posicao.x > width - tamanho){
+    desejo = createVector(-this.maxVelocidade, this.velocidade.y);
   }
 
-  if (this.posicao.y < -tamanho) {
-    this.posicao.y = height + tamanho;
-  } else if (this.posicao.y > height + tamanho) {
-    this.posicao.y = -tamanho;
+  if (this.posicao.y < tamanho){
+    desejo = createVector(this.velocidade.x, this.maxVelocidade);
+  } else if (this.posicao.y > height - tamanho){
+    desejo = createVector(this.velocidade.x, -this.maxVelocidade);
+  }
+
+  if (desejo != null){
+    desejo.normalize();
+    desejo.mult(this.maxVelocidade);
+    var direcao = p5.Vector.sub(desejo, this.velocidade);
+    direcao.limit(this.maxForca);
+    this.aplicaForca(direcao);
   }
 }
 

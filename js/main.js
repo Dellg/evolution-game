@@ -267,7 +267,7 @@ function setup(){
     } else if (criaturasSalvas[1][1] == 2){
       criaturasSalvas[1][6] = imagens[17];
     }
-    
+
     criaturasSalvas[2][0].push("Espinhos");
     criaturasSalvas[2][3] += 0.3;
     criaturasSalvas[2][5] += 0.25;
@@ -283,7 +283,7 @@ function setup(){
     botaoConfirmar.remove();
     levelnum = 2;
     level = new Level2(criaturasSalvas);
-    alert("Iniciando capítulo 2... (ainda será implementado)");
+    alert("Iniciando capítulo 2");
   }
 
   //______________________________________________________________________________
