@@ -10,7 +10,6 @@ var countAlimentos; // o level 2 terá menos almentos (dificuldade maior)
 var tipoCriaturas = [];
 var tipoAlimentos = [];
 var geracao = 0;
-var taxaMutacao = 0.01;
 
 // o level 2 receberá as criaturas do level 1, ao invés de criar novas
 function Level2(criaturasAnteriores){
@@ -137,6 +136,7 @@ Level2.prototype.rodar = function(){
     alert("Fim do capítulo 2!");
     criaturasSalvas = tipoCriaturas;
     levelnum = 3;
+    level = new Level3(criaturasSalvas);
 
   } else {
     tempoJogo += 0.01;

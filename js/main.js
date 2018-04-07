@@ -452,6 +452,12 @@ function draw(){
       text("Pontos de Modificação: " + pontuacao, 10, 20);
       text(parseInt(tempoJogo) + " anos", 10, 40);
 
+    } else if (levelnum == 3){
+      level.rodar();
+      fill(255);
+      textFont("Times New Roman", 16);
+      text("Pontos de Modificação: " + pontuacao, 10, 20);
+      text(parseInt(tempoJogo) + " anos", 10, 40);
     }
   } else if (menu == 2){ // fim do jogo
 
