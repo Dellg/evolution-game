@@ -1,5 +1,4 @@
 var criaturas;
-var variacaoCriaturas = 1; // variável que controla a quantidade de tipo de criatura
 var quantiaEspecie = 25; // variável que controla quantas de cada criatura serão geradas
 var tipoCriaturas = [];
 var geracao = 0;
@@ -15,13 +14,11 @@ function Level3(criaturasAnteriores){
 //______________________________________________________________________________
 Level3.prototype.iniciaGeracao = function(){
   // cria quantidades das criaturas pré-definidas
-  for (var i = 0; i < tipoCriaturas.length; i++){
-    for (var j = 0; j < quantiaEspecie; j++){
-      var x = random(xGame);
-      var y = random(yGame);
-      var criatura = new Criatura(x, y, tipoCriaturas[i], null, geracao);
-      criaturas.push(criatura);
-    }
+  for (var j = 0; j < quantiaEspecie; j++){
+    var x = random(xGame);
+    var y = random(yGame);
+    var criatura = new Controlavel(x, y, tipoCriaturas[0], true, true);
+    criaturas.push(criatura);
   }
   // redesenha a tela com a nova geração
   redraw();
@@ -47,26 +44,10 @@ Level3.prototype.rodar = function(){
     } else {
       for (var i = criaturas.length - 1; i >= 0; i--){
         var crtr = criaturas[i];
-        crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas);
+        crtr.comportamentos(criaturas);
         crtr.limites();
         crtr.update();
         crtr.show();
-
-        // aqui verifica se foi feita reprodução, para adicionar os filhos à população
-        if (crtr != undefined){
-          // criatura só reproduzirá se for fêmea
-          if (crtr.genero == 1){
-            var filho = crtr.reproduz();
-            if (filho != null) {
-              criaturas.push(filho);
-            }
-          }
-        }
-        // aqui verifica se a criatura morreu, para retirá-la da população
-        if (crtr.morreu()){
-          criaturas.splice(i, 1);
-          console.log(crtr.nome + " morreu.");
-        }
       }
     }
   }
