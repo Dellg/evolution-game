@@ -15,6 +15,7 @@ function Controlavel(x, y, caracteristicas, player, cacador){
   this.cacador = cacador; // booleano que identifica se ataca ou se foge
   this.terminou = false;
   this.venceu = false;
+  this.perdeu = false;
 
   // dados da criatura
   this.posicao = createVector(x, y);
@@ -26,7 +27,7 @@ function Controlavel(x, y, caracteristicas, player, cacador){
 //____________________________________________________________________________
 //  método que define qual comportamento a criatura irá realizar
 //____________________________________________________________________________
-Controlavel.prototype.comportamentos = function(criaturas) {
+Controlavel.prototype.comportamentos = function(criaturas, obstaculos) {
   var predador, presa;
   if (this.cacador){
     if (this.player){
@@ -43,6 +44,19 @@ Controlavel.prototype.comportamentos = function(criaturas) {
     presa.mult(-3.5);
     this.aplicaForca(presa);
   }
+
+  if (levelnum == 3){
+    presa = this.fugir(obstaculos);
+    presa.mult(-1);
+    this.aplicaForca(presa);
+  }
+}
+
+//____________________________________________________________________________
+// método pra verificar se a criatura está sem vida
+//____________________________________________________________________________
+Controlavel.prototype.morreu = function() {
+  return (this.perdeu || (this.posicao.y > height + 100));
 }
 
 //____________________________________________________________________________
@@ -100,6 +114,19 @@ Controlavel.prototype.fugir = function(predadores) {
   for (var i = predadores.length - 1; i >= 0; i--) {
     if (predadores[i].nome != this.nome && predadores[i].cacador){
       var distancia = this.posicao.dist(predadores[i].posicao);
+      if (distancia < lembranca && distancia < 100) {
+        lembranca = distancia;
+        maisProximo = predadores[i];
+      }
+    }
+  }
+
+  if (levelnum == 3){
+    for (var i = predadores.length - 1; i >= 0; i--) {
+      var distancia = this.posicao.dist(predadores[i].posicao);
+      if (distancia < (predadores[i].raio/2)-1){
+        this.perdeu = true;
+      }
       if (distancia < lembranca && distancia < 100) {
         lembranca = distancia;
         maisProximo = predadores[i];
