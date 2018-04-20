@@ -38,7 +38,7 @@ Level3.prototype.iniciaGeracao = function(){
 Level3.prototype.rodar = function(){
   background(15);
   fill(255);
-  if (tempoJogo >= 70){
+  if (tempoJogo >= 60){
     alert("Fim do capítulo 3!");
     criaturasSalvas = tipoCriaturas;
     levelnum = 4;
