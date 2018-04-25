@@ -44,6 +44,10 @@ function preload(){
   imagens.push(loadImage(link + 'nalulobulis/n-espinhos.png'));
   imagens.push(loadImage(link + 'kunglob/k-espinhos.png'));
   imagens.push(loadImage(link + 'cacoglobius/c-espinhos.png'));
+  // imagens com novas mutações para o level 4
+  imagens.push(loadImage(link + 'nalulobulis/n-novaevolucao.png'));
+  imagens.push(loadImage(link + 'kunglob/k-novaevolucao.png'));
+  imagens.push(loadImage(link + 'cacoglobius/c-novaevolucao.png'));
 }
 
 //______________________________________________________________________________
