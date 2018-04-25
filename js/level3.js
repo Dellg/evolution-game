@@ -40,8 +40,9 @@ Level3.prototype.rodar = function(){
   fill(255);
   if (tempoJogo >= 60){
     alert("Fim do capítulo 3!");
-    criaturasSalvas = tipoCriaturas;
+    criaturasFuturas.push(tipoCriaturas[0]);
     levelnum = 4;
+    level = new Level4(criaturasFuturas);
 
   } else {
     text("Salve o máximo de criaturas da sua espécie desviando dos obstáculos!", xGame/2 - 140, 30);

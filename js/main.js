@@ -12,6 +12,7 @@ var levelnum = 1;
 var level = null;
 var imagens = [];
 var criaturasSalvas = [];
+var criaturasFuturas = [];
 
 //______________________________________________________________________________
 // carregando imagens no projeto
@@ -45,9 +46,9 @@ function preload(){
   imagens.push(loadImage(link + 'kunglob/k-espinhos.png'));
   imagens.push(loadImage(link + 'cacoglobius/c-espinhos.png'));
   // imagens com novas mutações para o level 4
-  imagens.push(loadImage(link + 'nalulobulis/n-novaevolucao.png'));
-  imagens.push(loadImage(link + 'kunglob/k-novaevolucao.png'));
-  imagens.push(loadImage(link + 'cacoglobius/c-novaevolucao.png'));
+  imagens.push(loadImage(link + 'nalulobulis/n-novaevolucao.png')); // id 24
+  imagens.push(loadImage(link + 'kunglob/k-novaevolucao.png'));     // id 25
+  imagens.push(loadImage(link + 'cacoglobius/c-novaevolucao.png')); // id 26
 }
 
 //______________________________________________________________________________
@@ -299,8 +300,10 @@ function setup(){
       return false;
     }
 
-    var vida = 2, fome, velocidade, resistencia, aparencia;
+    var vida = 2, fome, velocidade, resistencia, aparencia, aparenciaFutura;
     var infor = [];
+    var inforModificada = [];
+
     infor.push(nome.value());
 
     switch (tipo.value()){
@@ -313,6 +316,7 @@ function setup(){
         infor.push("Grande");
         infor.push("Chifre");
         aparencia = imagens[0];
+        aparenciaFutura = imagens[24];
         break;
       // carnívoro
       case "1":
@@ -323,6 +327,7 @@ function setup(){
         infor.push("Pequeno");
         infor.push("Orelhas grandes");
         aparencia = imagens[1];
+        aparenciaFutura = imagens[25];
         break;
       // onívoro
       case "2":
@@ -333,11 +338,16 @@ function setup(){
         infor.push("Médio");
         infor.push("Duas caudas");
         aparencia = imagens[2];
+        aparenciaFutura = imagens[26];
         break;
     }
 
+    arrayCopy(infor, inforModificada);
+    inforModificada[0] = inforModificada[0] + " Modificada";
+
     alert("A criatura " + nome.value() + " foi criada com sucesso!")
     criatura = [infor, tipo.value(), vida, fome, velocidade, resistencia, aparencia];
+    criaturasFuturas.push([inforModificada, tipo.value(), vida, fome, velocidade, resistencia, aparenciaFutura]);
     level = new Level(criatura);
     limparCampos();
   }
@@ -457,6 +467,13 @@ function draw(){
       text(parseInt(tempoJogo) + " anos", 10, 40);
 
     } else if (levelnum == 3){
+      level.rodar();
+      fill(255);
+      textFont("Times New Roman", 16);
+      text("Pontos de Modificação: " + pontuacao, 10, 20);
+      text(parseInt(tempoJogo) + " anos", 10, 40);
+
+    } else if (levelnum == 4){
       level.rodar();
       fill(255);
       textFont("Times New Roman", 16);
