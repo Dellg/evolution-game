@@ -40,9 +40,9 @@ Level3.prototype.rodar = function(){
   fill(255);
   if (tempoJogo >= 60){
     alert("Fim do capítulo 3!");
-    criaturasFuturas.push(tipoCriaturas[0]);
+    criaturasSalvas = tipoCriaturas;
     levelnum = 4;
-    level = new Level4(criaturasFuturas);
+    level = new Level4(criaturasSalvas);
 
   } else {
     text("Salve o máximo de criaturas da sua espécie desviando dos obstáculos!", xGame/2 - 140, 30);
@@ -58,11 +58,13 @@ Level3.prototype.rodar = function(){
       }
       for (var i = criaturas.length - 1; i >= 0; i--){
         var crtr = criaturas[i];
-        crtr.posicao.y += crtr.maxVelocidade - (0.5 * crtr.maxVelocidade);
-        crtr.comportamentos(criaturas, obstaculos);
-        crtr.limites();
-        crtr.update();
-        crtr.show();
+        if (crtr != undefined){
+          crtr.posicao.y += crtr.maxVelocidade - (0.5 * crtr.maxVelocidade);
+          crtr.comportamentos(criaturas, obstaculos);
+          crtr.limites();
+          crtr.update();
+          crtr.show();
+        }
 
         // aqui verifica se a criatura morreu, para retirá-la da população
         if (crtr.morreu()){

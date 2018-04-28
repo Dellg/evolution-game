@@ -67,10 +67,23 @@ Level4.prototype.carregarDados = function(){
 Level4.prototype.iniciaGeracao = function(){
   // cria quantidades das criaturas pré-definidas
   for (var i = 0; i < tipoCriaturasLevel4.length; i++){
-    for (var j = 0; j < quantiaEspecie; j++){
-      var x = random(xGame);
+    for (var j = 0; j < quantiaEspecie/2; j++){
+      var x = random(xGame/2);
       var y = random(yGame);
       var criatura = new Criatura(x, y, tipoCriaturasLevel4[i], null, geracao);
+      criaturas.push(criatura);
+    }
+  }
+  // cria quantidades das criaturas pré-definidas
+  for (var i = 0; i < tipoCriaturasLevel4.length; i++){
+    for (var j = 0; j < quantiaEspecie/2; j++){
+      var x = random(xGame/2, xGame);
+      var y = random(yGame);
+      if (i == 0){
+        var criatura = new Criatura(x, y, criaturaFutura, null, geracao);
+      } else {
+        var criatura = new Criatura(x, y, tipoCriaturasLevel4[i], null, geracao);
+      }
       criaturas.push(criatura);
     }
   }
@@ -153,7 +166,7 @@ Level4.prototype.rodar = function(){
       for (var i = criaturas.length - 1; i >= 0; i--){
         var crtr = criaturas[i];
         crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas);
-        crtr.limites();
+        crtr.limitesLevel4();
         crtr.update();
         crtr.show();
 

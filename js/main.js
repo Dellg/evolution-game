@@ -12,7 +12,7 @@ var levelnum = 1;
 var level = null;
 var imagens = [];
 var criaturasSalvas = [];
-var criaturasFuturas = [];
+var criaturaFutura = null;
 
 //______________________________________________________________________________
 // carregando imagens no projeto
@@ -347,7 +347,7 @@ function setup(){
 
     alert("A criatura " + nome.value() + " foi criada com sucesso!")
     criatura = [infor, tipo.value(), vida, fome, velocidade, resistencia, aparencia];
-    criaturasFuturas.push([inforModificada, tipo.value(), vida, fome, velocidade, resistencia, aparenciaFutura]);
+    criaturaFutura = [inforModificada, tipo.value(), vida, fome, velocidade, resistencia, aparenciaFutura];
     level = new Level(criatura);
     limparCampos();
   }

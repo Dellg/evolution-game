@@ -512,6 +512,38 @@ Criatura.prototype.limites = function() {
 }
 
 //____________________________________________________________________________
+// método que faz a criatura dar meia volta ao chegar no limite da tela ou no meio (level 4)
+//____________________________________________________________________________
+Criatura.prototype.limitesLevel4 = function() {
+  var tamanho = 28;
+  var desejo = null;
+
+  if (this.posicao.x < tamanho){
+    desejo = createVector(this.maxVelocidade, this.velocidade.y);
+  } else if (this.posicao.x > width/2 - tamanho * 4 && this.posicao.x < width/2){
+    desejo = createVector(-this.maxVelocidade, this.velocidade.y);
+  } else if (this.posicao.x < width/2 + tamanho * 4 && this.posicao.x >= width/2){
+    desejo = createVector(this.maxVelocidade, this.velocidade.y);
+  } else if (this.posicao.x > width - tamanho){
+    desejo = createVector(-this.maxVelocidade, this.velocidade.y);
+  }
+
+  if (this.posicao.y < tamanho){
+    desejo = createVector(this.velocidade.x, this.maxVelocidade);
+  } else if (this.posicao.y > height - tamanho){
+    desejo = createVector(this.velocidade.x, -this.maxVelocidade);
+  }
+
+  if (desejo != null){
+    desejo.normalize();
+    desejo.mult(this.maxVelocidade);
+    var direcao = p5.Vector.sub(desejo, this.velocidade);
+    direcao.limit(this.maxForca);
+    this.aplicaForca(direcao);
+  }
+}
+
+//____________________________________________________________________________
 // método usado quando um predador caça uma presa
 //____________________________________________________________________________
 Criatura.prototype.matou = function(devorado){
