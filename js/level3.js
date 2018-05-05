@@ -38,7 +38,7 @@ Level3.prototype.iniciaGeracao = function(){
 Level3.prototype.rodar = function(){
   background(15);
   fill(255);
-  if (tempoJogo >= 60){
+  if (tempoJogo >= 300){
     alert("Fim do capítulo 3!");
     criaturasSalvas = tipoCriaturas;
     levelnum = 4;
@@ -47,7 +47,7 @@ Level3.prototype.rodar = function(){
   } else {
     text("Salve o máximo de criaturas da sua espécie desviando dos obstáculos!", xGame/2 - 140, 30);
     text("Quantidade de Criaturas: " + criaturas.length, 10, 60);
-    tempoJogo += 0.01;
+    tempoJogo += 0.1;
     // verifica se não há criaturas vivas para poder iniciar a geração
     if (criaturas.length <= 0){
       geracao += 1;

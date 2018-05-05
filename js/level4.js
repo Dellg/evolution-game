@@ -145,13 +145,13 @@ Level4.prototype.adicionaNovaComida = function(x, y, morto, eraCarn){
 Level4.prototype.rodar = function(){
   background(15);
   fill(255);
-  if (tempoJogo >= 80){
+  if (tempoJogo >= 400){
     alert("Fim do capítulo 4!");
     criaturasSalvas = tipoCriaturas;
     levelnum = 5;
 
   } else {
-    tempoJogo += 0.01;
+    tempoJogo += 0.1;
     // verifica se não há criaturas vivas para poder iniciar a geração
     if (criaturas.length <= 0){
       geracao += 1;

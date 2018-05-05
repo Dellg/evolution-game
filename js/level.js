@@ -158,7 +158,7 @@ Level.prototype.adicionaNovaComida = function(x, y, morto, eraCarn){
 Level.prototype.rodar = function(){
   background(15);
   fill(255);
-  if (tempoJogo >= 30){
+  if (tempoJogo >= 120){
     alert("Fim do capítulo 1!");
     criaturasSalvas = tipoCriaturas;
     levelnum = 1.5;
@@ -300,7 +300,7 @@ Level.prototype.rodar = function(){
       pop();
 
     } else {
-      tempoJogo += 0.01;
+      tempoJogo += 0.1;
       // verifica se não há criaturas vivas para poder iniciar a geração
       if (criaturas.length <= 0){
         geracao += 1;
@@ -341,13 +341,13 @@ Level.prototype.rodar = function(){
             }
           }
         }
-        if (tempoJogo >= 5){
+        if (tempoJogo >= 30){
           text("Aperte 1 para jogar o MiniGame da dança de acasalamento", xGame - 400, 20);
         }
-        if (tempoJogo >= 10){
+        if (tempoJogo >= 60){
           text("Aperte 2 para jogar o MiniGame da arena", xGame - 400, 45);
         }
-        if (tempoJogo >= 20){
+        if (tempoJogo >= 90){
           text("Aperte 3 para jogar o MiniGame da roleta da sorte", xGame - 400, 70);
         }
         for (var i = 0; i < alimentosPlanta.length; i++){
@@ -389,7 +389,7 @@ function keyPressed() {
         roletaPara = 1;
       }
     }
-    if (tempoJogo >= 5){
+    if (tempoJogo >= 30){
       // botões que acessam os minigames
       if (keyCode === 49 || keyCode === 97) {
         if (!minig1){
@@ -403,7 +403,7 @@ function keyPressed() {
         }
       }
     }
-    if (tempoJogo >= 10){
+    if (tempoJogo >= 60){
       if (keyCode === 50 || keyCode === 98) {
         if (!minig2){
           minigame = 2;
@@ -411,7 +411,7 @@ function keyPressed() {
         }
       }
     }
-    if (tempoJogo >= 20){
+    if (tempoJogo >= 90){
       if (keyCode === 51 || keyCode === 99) {
         if (!minig3){
           minigame = 3;
