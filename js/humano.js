@@ -17,7 +17,7 @@ function Humano(x, y, imagem){
 //____________________________________________________________________________
 //  método que define qual comportamento a criatura irá realizar
 //____________________________________________________________________________
-Humano.prototype.comportamentos = function(criaturas, obstaculos) {
+Humano.prototype.comportamentos = function() {
   var busca = this.movimenta();
   busca.mult(1);
   this.aplicaForca(busca);

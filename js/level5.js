@@ -10,6 +10,7 @@ var countAlimentos; // o level 2 terá menos almentos (dificuldade maior)
 var tipoCriaturasLevel4 = [];
 var tipoAlimentos = [];
 var geracao = 0;
+var serHumano;
 
 // o level 4 a criatura do jogador e uma nova evolução paralela de sua criatura
 function Level5(criaturasAnteriores){
@@ -65,6 +66,7 @@ Level5.prototype.carregarDados = function(){
 // aqui reinicia o jogo com uma nova geração
 //______________________________________________________________________________
 Level5.prototype.iniciaGeracao = function(){
+  serHumano = new Humano(random(xGame), random(yGame), humanoImagem);
   // cria quantidades das criaturas pré-definidas
   for (var i = 0; i < tipoCriaturasLevel4.length; i++){
     for (var j = 0; j < quantiaEspecie/2; j++){
@@ -163,6 +165,11 @@ Level5.prototype.rodar = function(){
           this.adicionaNovaComida(null, null);
         }
       }
+      // informações relacionadas ao humano
+      serHumano.comportamentos();
+      serHumano.update();
+      serHumano.show();
+      // informações relacionadas às criaturas
       for (var i = criaturas.length - 1; i >= 0; i--){
         var crtr = criaturas[i];
         crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas);
@@ -192,6 +199,7 @@ Level5.prototype.rodar = function(){
           }
         }
       }
+      // informações relacionadas às comidas
       for (var i = 0; i < alimentosPlanta.length; i++){
         var almt = alimentosPlanta[i];
         almt.show();

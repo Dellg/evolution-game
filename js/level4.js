@@ -149,6 +149,7 @@ Level4.prototype.rodar = function(){
     alert("Fim do capítulo 4!");
     criaturasSalvas = tipoCriaturas;
     levelnum = 5;
+    level = new Level5(criaturasSalvas);
 
   } else {
     tempoJogo += 0.1;

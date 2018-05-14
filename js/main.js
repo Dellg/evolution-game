@@ -13,7 +13,7 @@ var level = null;
 var imagens = [];
 var criaturasSalvas = [];
 var criaturaFutura = null;
-var humano;
+var humanoImagem;
 
 //______________________________________________________________________________
 // carregando imagens no projeto
@@ -51,7 +51,7 @@ function preload(){
   imagens.push(loadImage(link + 'kunglob/k-novaevolucao.png'));     // id 25
   imagens.push(loadImage(link + 'cacoglobius/c-novaevolucao.png')); // id 26
   // imagem do jogador humano
-  humano = loadImage(link + 'humano/humano.png');
+  humanoImagem = loadImage(link + 'humano/humano.png');
 }
 
 //______________________________________________________________________________
@@ -477,6 +477,13 @@ function draw(){
       text(parseInt(tempoJogo) + " anos", 10, 40);
 
     } else if (levelnum == 4){
+      level.rodar();
+      fill(255);
+      textFont("Times New Roman", 16);
+      text("Pontos de Modificação: " + pontuacao, 10, 20);
+      text(parseInt(tempoJogo) + " anos", 10, 40);
+
+    } else if (levelnum == 5){
       level.rodar();
       fill(255);
       textFont("Times New Roman", 16);
