@@ -13,6 +13,7 @@ var level = null;
 var imagens = [];
 var criaturasSalvas = [];
 var criaturaFutura = null;
+var humano;
 
 //______________________________________________________________________________
 // carregando imagens no projeto
@@ -49,6 +50,8 @@ function preload(){
   imagens.push(loadImage(link + 'nalulobulis/n-novaevolucao.png')); // id 24
   imagens.push(loadImage(link + 'kunglob/k-novaevolucao.png'));     // id 25
   imagens.push(loadImage(link + 'cacoglobius/c-novaevolucao.png')); // id 26
+  // imagem do jogador humano
+  humano = loadImage(link + 'humano/humano.png');
 }
 
 //______________________________________________________________________________
