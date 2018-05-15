@@ -101,7 +101,7 @@ Level5.prototype.iniciaGeracao = function(){
   // adiciona humano ao level e os ossos que precisa encontrar
   serHumano = new Humano(random(xGame), random(yGame), humanoImagem[0]);
   for (var i = 0; i < 8; i++) {
-    var osso = new Obstaculo(i, humanoImagem[1]);
+    var osso = new Osso(i, humanoImagem[1]);
     ossos.push(osso);
   }
   // redesenha a tela com a nova geração
