@@ -11,6 +11,7 @@ var tipoCriaturasLevel4 = [];
 var tipoAlimentos = [];
 var geracao = 0;
 var serHumano;
+var ossos;
 
 // o level 4 a criatura do jogador e uma nova evolução paralela de sua criatura
 function Level5(criaturasAnteriores){
@@ -20,6 +21,7 @@ function Level5(criaturasAnteriores){
   alimentosVeneno = [];
   alimentosCarne = [];
   criaturas = [];
+  ossos = [];
   tipoCriaturasLevel4 = criaturasAnteriores;
   this.carregarDados();
 }
@@ -66,7 +68,6 @@ Level5.prototype.carregarDados = function(){
 // aqui reinicia o jogo com uma nova geração
 //______________________________________________________________________________
 Level5.prototype.iniciaGeracao = function(){
-  serHumano = new Humano(random(xGame), random(yGame), humanoImagem);
   // cria quantidades das criaturas pré-definidas
   for (var i = 0; i < tipoCriaturasLevel4.length; i++){
     for (var j = 0; j < quantiaEspecie/2; j++){
@@ -96,6 +97,12 @@ Level5.prototype.iniciaGeracao = function(){
   // cria alimentos usando os tipos pré-criados
   for (var i = 0; i < countAlimentos; i++){
     this.adicionaNovaComida(null, null, false);
+  }
+  // adiciona humano ao level e os ossos que precisa encontrar
+  serHumano = new Humano(random(xGame), random(yGame), humanoImagem[0]);
+  for (var i = 0; i < 8; i++) {
+    var osso = new Obstaculo(i, humanoImagem[1]);
+    ossos.push(osso);
   }
   // redesenha a tela com a nova geração
   redraw();
@@ -150,7 +157,7 @@ Level5.prototype.rodar = function(){
   if (tempoJogo >= 800){
     alert("Fim do capítulo 4!");
     criaturasSalvas = tipoCriaturas;
-    levelnum = 5;
+    levelnum = 6;
 
   } else {
     tempoJogo += 0.1;
@@ -169,6 +176,11 @@ Level5.prototype.rodar = function(){
       serHumano.comportamentos();
       serHumano.update();
       serHumano.show();
+      // informações relacionadas aos ossos
+      for (var i = ossos.length - 1; i >= 0; i--){
+        var ossoMapa = ossos[i];
+        ossoMapa.show();
+      }
       // informações relacionadas às criaturas
       for (var i = criaturas.length - 1; i >= 0; i--){
         var crtr = criaturas[i];
