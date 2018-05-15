@@ -94,4 +94,14 @@ Humano.prototype.show = function(){
   }
   imgp = this.imagem.get(animFrame, animDirecao, 32, 32);
   image(imgp, this.posicao.x - 16, this.posicao.y - 16); // desenhar a imagem no canvas
+
+  push();
+  translate(this.posicao.x, this.posicao.y);
+  strokeWeight(2);
+  stroke(0, 200, 0);
+  noFill();
+  ellipse(0, 0, 40, 40);
+  rotate(angulo);
+
+  pop();
 }

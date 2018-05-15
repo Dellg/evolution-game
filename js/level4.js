@@ -68,7 +68,7 @@ Level4.prototype.iniciaGeracao = function(){
   // cria quantidades das criaturas pré-definidas
   for (var i = 0; i < tipoCriaturasLevel4.length; i++){
     for (var j = 0; j < quantiaEspecie/2; j++){
-      var x = random(xGame/2);
+      var x = random(xGame/2 - 32);
       var y = random(yGame);
       var criatura = new Criatura(x, y, tipoCriaturasLevel4[i], null, geracao);
       criaturas.push(criatura);
@@ -77,7 +77,7 @@ Level4.prototype.iniciaGeracao = function(){
   // cria quantidades das criaturas pré-definidas
   for (var i = 0; i < tipoCriaturasLevel4.length; i++){
     for (var j = 0; j < quantiaEspecie/2; j++){
-      var x = random(xGame/2, xGame);
+      var x = random(xGame/2 + 32, xGame);
       var y = random(yGame);
       if (i == 0){
         var criatura = new Criatura(x, y, criaturaFutura, null, geracao);
@@ -104,7 +104,11 @@ Level4.prototype.iniciaGeracao = function(){
 //______________________________________________________________________________
 Level4.prototype.adicionaNovaComida = function(x, y, morto, eraCarn){
   if (x == null || y == null){
-    x = random(5, xGame-5);
+    if (random(1) < 0.5){
+      x = random(5, xGame/2 - 32);
+    } else {
+      x = random(xGame/2 + 32, xGame-5);
+    }
     y = random(5, yGame-5);
   }
   // se foi morto, adiciona uma carne de criatura (último índice), ou um veneno se era carnívoro
