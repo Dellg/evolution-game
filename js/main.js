@@ -1,5 +1,5 @@
-var xGame = window.innerWidth-20;
-var yGame = window.innerHeight-20;
+var xGame = 1045;
+var yGame = 760;
 var menu = 0;
 // -1 = video da intro
 // 0 = menu principal
