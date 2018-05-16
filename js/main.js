@@ -14,6 +14,7 @@ var imagens = [];
 var criaturasSalvas = [];
 var criaturaFutura = null;
 var humanoImagem = [];
+var menusImagens = [];
 
 //______________________________________________________________________________
 // carregando imagens no projeto
@@ -53,6 +54,11 @@ function preload(){
   // imagem do jogador humano
   humanoImagem.push(loadImage(link + 'humano/humano.png'));
   humanoImagem.push(loadImage(link + 'humano/ossos.png'));
+  // imagens dos menus
+  menusImagens.push(loadImage(link + 'menus/principal.png'));
+  menusImagens.push(loadImage(link + 'menus/seleciona-nalu.png'));
+  menusImagens.push(loadImage(link + 'menus/seleciona-kung.png'));
+  menusImagens.push(loadImage(link + 'menus/seleciona-caco.png'));
 }
 
 //______________________________________________________________________________
