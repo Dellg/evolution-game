@@ -1,0 +1,30 @@
+button {
+  background-color: Transparent;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+}
+button:hover {
+  box-shadow: 0px 0px 40px red;
+}
+
+#botaoIniciar {
+  border-radius: 20px;
+}
+#botaoSelecionou {
+  border-radius: 20px;
+}
+
+input {
+  background-color: Transparent;
+  border-radius: 20px;
+  background-repeat: no-repeat;
+  font-family: "Lithos Pro";
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+  padding-left: 10px;
+}

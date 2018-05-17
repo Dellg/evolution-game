@@ -15,6 +15,8 @@ var criaturasSalvas = [];
 var criaturaFutura = null;
 var humanoImagem = [];
 var menusImagens = [];
+var nomeJogador;
+var tela;
 
 //______________________________________________________________________________
 // carregando imagens no projeto
@@ -66,33 +68,60 @@ function preload(){
 //______________________________________________________________________________
 function setup(){
   createCanvas(xGame, yGame);
-  background(15);
+  image(menusImagens[0], 0, 0);
   fill(255);
 
-  // informações do Level 1
-  textFont("Times New Roman", 32);
-  text("Escolha uma das criaturas existentes e modifique-a ao longo do jogo:", 60, 60);
+  // informações do menu principal
+  nomeJog = createInput();
+  nomeJog.id('nome');
+  nomeJog.style("font-size", "20px");
+  nomeJog.value("Jogador");
+  nomeJog.position(296, 485);
+  nomeJog.size(186, 50);
 
-  tipo = createRadio();
-  tipo.style("color", "#FFFFFF");
-  tipo.style("font-family", "Times New Roman");
-  tipo.style("font-size", "10pt");
-  tipo.option('Herbívoro',0);
-  tipo.option('Carnívoro',1);
-  tipo.option('Onívoro',2);
-  tipo.value(0);
-  tipo.position(50, 115);
+  botaoIniciar = createButton('');
+  botaoIniciar.id('botaoIniciar');
+  botaoIniciar.position(196, 627);
+  botaoIniciar.size(210, 50);
+  botaoIniciar.mousePressed(passouMenuPrincipal);
 
-  textFont("Times New Roman", 16);
-  text("Nomeie a sua criatura:", 45, 300);
+  // informações do menu de seleção
   nome = createInput();
-  nome.style("width", "220px");
+  nome.id('criatura');
+  nome.style("font-size", "20px");
   nome.value("Criatura");
-  nome.position(50, 315);
+  nome.position(362, 605);
+  nome.size(360, 40);
+  nome.hide();
 
-  botaoAdcCrt = createButton('Iniciar Jogo');
-  botaoAdcCrt.position(50, 360);
+  botaoAdcCrt = createButton('');
+  botaoAdcCrt.id('botaoSelecionou');
+  botaoAdcCrt.position(404, 680);
+  botaoAdcCrt.size(263, 50);
   botaoAdcCrt.mousePressed(adicionarCriatura);
+  botaoAdcCrt.hide();
+
+  tipo = -1;
+  botaoHerb = createButton('');
+  botaoHerb.id('botaoHerb');
+  botaoHerb.position(151, 169);
+  botaoHerb.size(200, 200);
+  botaoHerb.mousePressed(function t() { tipo = 0});
+  botaoHerb.hide();
+
+  botaoCarn = createButton('');
+  botaoCarn.id('botaoCarn');
+  botaoCarn.position(427, 170);
+  botaoCarn.size(200, 200);
+  botaoCarn.mousePressed(function t() { tipo = 1});
+  botaoCarn.hide();
+
+  botaoOni = createButton('');
+  botaoOni.id('botaoOni');
+  botaoOni.position(707, 170);
+  botaoOni.size(200, 200);
+  botaoOni.mousePressed(function t() { tipo = 2});
+  botaoOni.hide();
 
   // informações do pré-Level 2
   caract = createRadio();
@@ -117,6 +146,21 @@ function setup(){
   botaoConfirmar.position(50, 360);
   botaoConfirmar.mousePressed(confirmarNovaCaracteristica);
   botaoConfirmar.hide();
+
+  //______________________________________________________________________________
+  // iniciar um jogo apenas com as criaturas pré-definidas do level
+  //______________________________________________________________________________
+  function passouMenuPrincipal() {
+    nomeJogador = nomeJog.value();
+    nomeJog.remove();
+    botaoIniciar.remove();
+    tipo = 0;
+    nome.show();
+    botaoHerb.show();
+    botaoCarn.show();
+    botaoOni.show();
+    botaoAdcCrt.show();
+  }
 
   //______________________________________________________________________________
   // iniciar um jogo apenas com as criaturas pré-definidas do level
@@ -316,9 +360,9 @@ function setup(){
 
     infor.push(nome.value());
 
-    switch (tipo.value()){
+    switch (tipo){
       // herbívoro
-      case "0":
+      case 0:
         fome = 1.5;
         velocidade = 1;
         resistencia = 1.5;
@@ -329,7 +373,7 @@ function setup(){
         aparenciaFutura = imagens[24];
         break;
       // carnívoro
-      case "1":
+      case 1:
         fome = 6;
         velocidade = 1.25;
         resistencia = 2.5;
@@ -340,7 +384,7 @@ function setup(){
         aparenciaFutura = imagens[25];
         break;
       // onívoro
-      case "2":
+      case 2:
         fome = 3;
         velocidade = 1.1;
         resistencia = 1.9;
@@ -356,8 +400,8 @@ function setup(){
     inforModificada[0] = inforModificada[0] + " Modificada";
 
     alert("A criatura " + nome.value() + " foi criada com sucesso!")
-    criatura = [infor, tipo.value(), vida, fome, velocidade, resistencia, aparencia];
-    criaturaFutura = [inforModificada, tipo.value(), vida, fome, velocidade, resistencia, aparenciaFutura];
+    criatura = [infor, tipo, vida, fome, velocidade, resistencia, aparencia];
+    criaturaFutura = [inforModificada, tipo, vida, fome, velocidade, resistencia, aparenciaFutura];
     level = new Level(criatura);
     limparCampos();
   }
@@ -368,8 +412,10 @@ function setup(){
   function limparCampos(){
     // remove elementos de entrada de dado
     nome.remove();
-    tipo.remove();
     botaoAdcCrt.remove();
+    botaoHerb.remove();
+    botaoCarn.remove();
+    botaoOni.remove();
     menu = 1;
   }
 }
@@ -381,28 +427,13 @@ function draw(){
   if (menu == -1){ // intro
 
   } else if (menu == 0){ // principal
-    rect(70,140,34,34);
-    fill(15);
-    noStroke();
-    rect(300,130,800,100);
-    fill(255);
-    if (tipo.value() == 0){
-      img = imagens[0].get(32, 64, 32, 32);
-      text("Os herbívoros se alimentam de plantas, eles possuem baixa velocidade devido ao seu tamanho, se", 330, 150);
-      text("alimentam com mais frequência, possuem um chifre que usam apenas para intimidar alguns predadores.", 330, 165);
-      text("Herbívoros tem uma alta taxa de reprodução.", 330, 180);
-    } else if (tipo.value() == 1){
-      img = imagens[1].get(32, 64, 32, 32);
-      text("Os carnívoros se alimentam de outras criaturas ou de carnes, são pequenos e, por isso, são velozes,", 330, 150);
-      text("possuem orelhas grandes para ficar atentos às presas. Eles saciam sua fome muito rápido, precisando", 330, 165);
-      text("se alimentar poucas vezes. Carnívoros tem uma baixa taxa de reprodução.", 330, 180);
-    } else if (tipo.value() == 2){
-      text("Os onívoros se alimentam de plantas e alguns insetos, tem uma velocidade média devido ao seu tamanho,", 330, 150);
-      text("possuem duas caudas que ajudam na sua locomoção. Se alimentam com uma frequência regular.", 330, 165);
-      text("Onívoros tem uma taxa de reprodução balanceada.", 330, 180);
-      img = imagens[2].get(32, 64, 32, 32);
+    if (tipo == 0){
+      image(menusImagens[1], 0, 0);
+    } else if (tipo == 1){
+      image(menusImagens[2], 0, 0);
+    } else if (tipo == 2){
+      image(menusImagens[3], 0, 0);
     }
-    image(img, 72, 142);
   } else if (menu == 1){ // levels
     if (levelnum == 1){
       level.rodar();
