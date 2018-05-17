@@ -10,8 +10,8 @@ var countAlimentos; // o level 2 terá menos almentos (dificuldade maior)
 var tipoCriaturasLevel4 = [];
 var tipoAlimentos = [];
 var geracao = 0;
-var serHumano;
 var ossos;
+var pedacos = 0;
 
 // o level 4 a criatura do jogador e uma nova evolução paralela de sua criatura
 function Level5(criaturasAnteriores){
@@ -24,6 +24,7 @@ function Level5(criaturasAnteriores){
   ossos = [];
   tipoCriaturasLevel4 = criaturasAnteriores;
   this.carregarDados();
+  this.serHumano;
 }
 
 //______________________________________________________________________________
@@ -99,7 +100,7 @@ Level5.prototype.iniciaGeracao = function(){
     this.adicionaNovaComida(null, null, false);
   }
   // adiciona humano ao level e os ossos que precisa encontrar
-  serHumano = new Humano(random(xGame), random(yGame), humanoImagem[0]);
+  this.serHumano = new Humano(random(xGame), random(yGame), humanoImagem[0], humanoImagem[2]);
   for (var i = 0; i < 8; i++) {
     var osso = new Osso(i, humanoImagem[1]);
     ossos.push(osso);
@@ -173,9 +174,9 @@ Level5.prototype.rodar = function(){
         }
       }
       // informações relacionadas ao humano
-      serHumano.comportamentos(ossos);
-      serHumano.update();
-      serHumano.show();
+      this.serHumano.comportamentos(ossos);
+      this.serHumano.update();
+      this.serHumano.show();
       // informações relacionadas aos ossos
       for (var i = ossos.length - 1; i >= 0; i--){
         var ossoMapa = ossos[i];
@@ -211,6 +212,8 @@ Level5.prototype.rodar = function(){
           }
         }
       }
+      fill(255);
+      text("Pedaços de fóssil: " + pedacos, 10, 60);
       // informações relacionadas às comidas
       for (var i = 0; i < alimentosPlanta.length; i++){
         var almt = alimentosPlanta[i];

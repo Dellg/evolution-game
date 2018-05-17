@@ -1,13 +1,14 @@
 var frame = 0;
 var fps = 0.03;
-var carga = 0;
-var cavando = false;
 
-function Humano(x, y, imagem){
+function Humano(x, y, imagem, mouseImagem){
   this.nome = "Humano";
   this.velocidade = p5.Vector.random2D(1);
-  this.maxVelocidade = 1;
+  this.maxVelocidade = 2;
   this.imagem = imagem;
+  this.mouseImagem = mouseImagem;
+  this.cavando = false;
+  this.carga = 0;
 
   // dados da criatura
   this.posicao = createVector(x, y);
@@ -22,15 +23,15 @@ function Humano(x, y, imagem){
 Humano.prototype.comportamentos = function(ossos) {
   for (var i = ossos.length - 1; i >= 0; i--) {
     var distancia = this.posicao.dist(ossos[i].posicao);
-    if (distancia < this.maxVelocidade + this.raio) {
-      cavando = true;
+    if (distancia < this.maxVelocidade + this.raio + 2) {
+      this.cavando = true;
       ossos.splice(i, 1);
       this.aceleracao.mult(0);
       this.velocidade.mult(0);
     }
   }
 
-  if (cavando) {
+  if (this.cavando) {
 
   } else {
     var busca = this.movimenta();
@@ -68,19 +69,56 @@ Humano.prototype.movimenta = function() {
 }
 
 //____________________________________________________________________________
+// método que acumula carga com o clique do mouse
+//____________________________________________________________________________
+Humano.prototype.carrega = function(cavou) {
+  this.carga += cavou;
+}
+
+//____________________________________________________________________________
 // método que desenha a criatura no canvas na direção da velocidade
 //____________________________________________________________________________
 Humano.prototype.show = function(){
   var angulo = direcao + PI / 2;
   var animFrame = 0;
   var animDirecao = 0;
+  var direcao = this.velocidade.heading();
 
-  if (cavando){
+  push();
+  translate(this.posicao.x, this.posicao.y);
+  strokeWeight(2);
+  stroke(0, 200, 0);
+  noFill();
+  ellipse(0, 0, 40, 40);
+  rotate(angulo);
+  pop();
+
+  if (this.cavando){
     animDirecao = 256; // cavando
+    if (this.carga > 0){
+      this.carga -= 1;
+      if (this.carga >= 100){
+        this.cavando = false;
+        pedacos += 1;
+        this.carga = 0;
+      }
+    }
+
+    var cor = lerpColor(color(255,0,0), color(0,255,0), this.carga/100);
+    fill(cor);
+    stroke(0);
+    strokeWeight(2);
+    rect(this.posicao.x - 10, this.posicao.y - 30, 20, 20);
+
+    if (frame < 20){
+      imgm = this.mouseImagem.get(0, 0, 32, 32);
+      image(imgm, this.posicao.x - 16, this.posicao.y - 16);
+    } else {
+      imgm = this.mouseImagem.get(32, 0, 32, 32);
+      image(imgm, this.posicao.x - 16, this.posicao.y - 16);
+    }
 
   } else {
-    var direcao = this.velocidade.heading();
-
     // pegar linha do gráfico para a animação dependendo da direção
     if (direcao >= -0.3875 && direcao < 0.3875){
       animDirecao = 96; // direita
@@ -114,16 +152,7 @@ Humano.prototype.show = function(){
   } else {
     frame = 0;
   }
+
   imgp = this.imagem.get(animFrame, animDirecao, 32, 32);
   image(imgp, this.posicao.x - 16, this.posicao.y - 16); // desenhar a imagem no canvas
-
-  push();
-  translate(this.posicao.x, this.posicao.y);
-  strokeWeight(2);
-  stroke(0, 200, 0);
-  noFill();
-  ellipse(0, 0, 40, 40);
-  rotate(angulo);
-
-  pop();
 }

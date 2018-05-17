@@ -56,6 +56,7 @@ function preload(){
   // imagem do jogador humano
   humanoImagem.push(loadImage(link + 'humano/humano.png'));
   humanoImagem.push(loadImage(link + 'humano/ossos.png'));
+  humanoImagem.push(loadImage(link + 'humano/mouse.png'));
   // imagens dos menus
   menusImagens.push(loadImage(link + 'menus/principal.png'));
   menusImagens.push(loadImage(link + 'menus/seleciona-nalu.png'));
@@ -530,6 +531,14 @@ function draw(){
     }
   } else if (menu == 2){ // fim do jogo
 
+  }
+}
+
+function mousePressed(){
+  if (levelnum == 5){
+    if (level.serHumano.cavando){
+      level.serHumano.carrega(10);
+    }
   }
 }
 
