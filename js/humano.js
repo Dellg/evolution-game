@@ -1,5 +1,7 @@
 var frame = 0;
 var fps = 0.03;
+var carga = 0;
+var cavando = false;
 
 function Humano(x, y, imagem){
   this.nome = "Humano";
@@ -17,10 +19,24 @@ function Humano(x, y, imagem){
 //____________________________________________________________________________
 //  método que define qual comportamento a criatura irá realizar
 //____________________________________________________________________________
-Humano.prototype.comportamentos = function() {
-  var busca = this.movimenta();
-  busca.mult(1);
-  this.aplicaForca(busca);
+Humano.prototype.comportamentos = function(ossos) {
+  for (var i = ossos.length - 1; i >= 0; i--) {
+    var distancia = this.posicao.dist(ossos[i].posicao);
+    if (distancia < this.maxVelocidade + this.raio) {
+      cavando = true;
+      ossos.splice(i, 1);
+      this.aceleracao.mult(0);
+      this.velocidade.mult(0);
+    }
+  }
+
+  if (cavando) {
+
+  } else {
+    var busca = this.movimenta();
+    busca.mult(1);
+    this.aplicaForca(busca);
+  }
 }
 
 //____________________________________________________________________________
@@ -55,28 +71,34 @@ Humano.prototype.movimenta = function() {
 // método que desenha a criatura no canvas na direção da velocidade
 //____________________________________________________________________________
 Humano.prototype.show = function(){
-  var direcao = this.velocidade.heading();
   var angulo = direcao + PI / 2;
   var animFrame = 0;
   var animDirecao = 0;
 
-  // pegar linha do gráfico para a animação dependendo da direção
-  if (direcao >= -0.3875 && direcao < 0.3875){
-    animDirecao = 96; // direita
-  } else if (direcao >= 1.1625 && direcao < 1.9375){
-    animDirecao = 64; // baixo
-  } else if (direcao >= -1.9375 && direcao < -1.1625){
-    animDirecao = 0;  // cima
-  } else if (direcao >= -2.7125 && direcao < -1.9375){
-    animDirecao = 128; // esquerda-cima
-  } else if (direcao >= -1.1625 && direcao < -0.3875){
-    animDirecao = 160; // direita-cima
-  } else if (direcao >= 1.9375 && direcao < 2.7125){
-    animDirecao = 192; // esquerda-baixo
-  } else if (direcao >= 0.3875 && direcao < 1.1625){
-    animDirecao = 224; // direita-baixo
+  if (cavando){
+    animDirecao = 256; // cavando
+
   } else {
-    animDirecao = 32; // esquerda
+    var direcao = this.velocidade.heading();
+
+    // pegar linha do gráfico para a animação dependendo da direção
+    if (direcao >= -0.3875 && direcao < 0.3875){
+      animDirecao = 96; // direita
+    } else if (direcao >= 1.1625 && direcao < 1.9375){
+      animDirecao = 64; // baixo
+    } else if (direcao >= -1.9375 && direcao < -1.1625){
+      animDirecao = 0;  // cima
+    } else if (direcao >= -2.7125 && direcao < -1.9375){
+      animDirecao = 128; // esquerda-cima
+    } else if (direcao >= -1.1625 && direcao < -0.3875){
+      animDirecao = 160; // direita-cima
+    } else if (direcao >= 1.9375 && direcao < 2.7125){
+      animDirecao = 192; // esquerda-baixo
+    } else if (direcao >= 0.3875 && direcao < 1.1625){
+      animDirecao = 224; // direita-baixo
+    } else {
+      animDirecao = 32; // esquerda
+    }
   }
 
   // pegar coluna do gráfico para a animação dependendo do frame

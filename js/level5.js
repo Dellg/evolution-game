@@ -173,7 +173,7 @@ Level5.prototype.rodar = function(){
         }
       }
       // informações relacionadas ao humano
-      serHumano.comportamentos();
+      serHumano.comportamentos(ossos);
       serHumano.update();
       serHumano.show();
       // informações relacionadas aos ossos
