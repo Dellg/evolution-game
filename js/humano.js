@@ -110,12 +110,12 @@ Humano.prototype.show = function(){
     strokeWeight(2);
     rect(this.posicao.x - 10, this.posicao.y - 30, 20, 20);
 
-    if (frame < 20){
+    if (frame >= 0 && frame < 10 || frame >= 20 && frame < 30){
       imgm = this.mouseImagem.get(0, 0, 32, 32);
-      image(imgm, this.posicao.x - 16, this.posicao.y - 16);
+      image(imgm, this.posicao.x + 10, this.posicao.y - 40);
     } else {
       imgm = this.mouseImagem.get(32, 0, 32, 32);
-      image(imgm, this.posicao.x - 16, this.posicao.y - 16);
+      image(imgm, this.posicao.x + 10, this.posicao.y - 40);
     }
 
   } else {

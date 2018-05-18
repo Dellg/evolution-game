@@ -173,10 +173,6 @@ Level5.prototype.rodar = function(){
           this.adicionaNovaComida(null, null);
         }
       }
-      // informações relacionadas ao humano
-      this.serHumano.comportamentos(ossos);
-      this.serHumano.update();
-      this.serHumano.show();
       // informações relacionadas aos ossos
       for (var i = ossos.length - 1; i >= 0; i--){
         var ossoMapa = ossos[i];
@@ -231,6 +227,10 @@ Level5.prototype.rodar = function(){
         var almt = alimentosCarne[i];
         almt.show();
       }
+      // informações relacionadas ao humano
+      this.serHumano.comportamentos(ossos);
+      this.serHumano.update();
+      this.serHumano.show();
     }
   }
 }
