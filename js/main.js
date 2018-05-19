@@ -15,6 +15,7 @@ var criaturasSalvas = [];
 var criaturaFutura = null;
 var humanoImagem = [];
 var menusImagens = [];
+var fossilImagens = [];
 var nomeJogador;
 var tela;
 
@@ -62,6 +63,10 @@ function preload(){
   menusImagens.push(loadImage(link + 'menus/seleciona-nalu.png'));
   menusImagens.push(loadImage(link + 'menus/seleciona-kung.png'));
   menusImagens.push(loadImage(link + 'menus/seleciona-caco.png'));
+  // imagens das peças do fóssil do minigame do level 5
+  for (var i = 1; i < 10; i++){
+    fossilImagens.push(loadImage(link + 'puzzle/peca' + i + '.png'));    
+  }
 }
 
 //______________________________________________________________________________

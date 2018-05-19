@@ -161,76 +161,87 @@ Level5.prototype.rodar = function(){
     levelnum = 6;
 
   } else {
-    tempoJogo += 0.1;
-    // verifica se não há criaturas vivas para poder iniciar a geração
-    if (criaturas.length <= 0){
-      geracao += 1;
-      this.iniciaGeracao();
-    } else {
-      // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
-      if ((alimentosPlanta.length + alimentosInseto.length + alimentosVeneno.length) < countAlimentos){
-        if (random(1) < 0.2) {
-          this.adicionaNovaComida(null, null);
-        }
-      }
-      // informações relacionadas aos ossos
-      for (var i = ossos.length - 1; i >= 0; i--){
-        var ossoMapa = ossos[i];
-        ossoMapa.show();
-      }
-      // informações relacionadas às criaturas
-      for (var i = criaturas.length - 1; i >= 0; i--){
-        var crtr = criaturas[i];
-        crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas);
-        crtr.limites();
-        crtr.update();
-        crtr.show();
+    if (pedacos == 8){
+      var matriz = [];
+      matriz.push([]);
+      matriz.push([]);
+      matriz.push([]);
 
-        // aqui verifica se foi feita reprodução, para adicionar os filhos à população
-        if (crtr != undefined){
-          // criatura só reproduzirá se for fêmea
-          if (crtr.genero == 1){
-            var filho = crtr.reproduz();
-            if (filho != null) {
-              criaturas.push(filho);
+      console.log(matriz);
+      pedacos += 1;
+
+    } else {
+      tempoJogo += 0.1;
+      // verifica se não há criaturas vivas para poder iniciar a geração
+      if (criaturas.length <= 0){
+        geracao += 1;
+        this.iniciaGeracao();
+      } else {
+        // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
+        if ((alimentosPlanta.length + alimentosInseto.length + alimentosVeneno.length) < countAlimentos){
+          if (random(1) < 0.2) {
+            this.adicionaNovaComida(null, null);
+          }
+        }
+        // informações relacionadas aos ossos
+        for (var i = ossos.length - 1; i >= 0; i--){
+          var ossoMapa = ossos[i];
+          ossoMapa.show();
+        }
+        // informações relacionadas às criaturas
+        for (var i = criaturas.length - 1; i >= 0; i--){
+          var crtr = criaturas[i];
+          crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas);
+          crtr.limites();
+          crtr.update();
+          crtr.show();
+
+          // aqui verifica se foi feita reprodução, para adicionar os filhos à população
+          if (crtr != undefined){
+            // criatura só reproduzirá se for fêmea
+            if (crtr.genero == 1){
+              var filho = crtr.reproduz();
+              if (filho != null) {
+                criaturas.push(filho);
+              }
+            }
+          }
+          // aqui verifica se a criatura morreu, para retirá-la da população
+          if (crtr.morreu()){
+            criaturas.splice(i, 1);
+            console.log(crtr.nome + " morreu.")
+            // se a criatura morta era um carnívoro, aparece um veneno (evitar canibalismo)
+            if (crtr.tipo != 1){
+              this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, false);
+            } else {
+              this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, true);
             }
           }
         }
-        // aqui verifica se a criatura morreu, para retirá-la da população
-        if (crtr.morreu()){
-          criaturas.splice(i, 1);
-          console.log(crtr.nome + " morreu.")
-          // se a criatura morta era um carnívoro, aparece um veneno (evitar canibalismo)
-          if (crtr.tipo != 1){
-            this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, false);
-          } else {
-            this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, true);
-          }
+        fill(255);
+        text("Pedaços de fóssil: " + pedacos, 10, 60);
+        // informações relacionadas às comidas
+        for (var i = 0; i < alimentosPlanta.length; i++){
+          var almt = alimentosPlanta[i];
+          almt.show();
         }
+        for (var i = 0; i < alimentosInseto.length; i++){
+          var almt = alimentosInseto[i];
+          almt.show();
+        }
+        for (var i = 0; i < alimentosVeneno.length; i++){
+          var almt = alimentosVeneno[i];
+          almt.show();
+        }
+        for (var i = 0; i < alimentosCarne.length; i++){
+          var almt = alimentosCarne[i];
+          almt.show();
+        }
+        // informações relacionadas ao humano
+        this.serHumano.comportamentos(ossos);
+        this.serHumano.update();
+        this.serHumano.show();
       }
-      fill(255);
-      text("Pedaços de fóssil: " + pedacos, 10, 60);
-      // informações relacionadas às comidas
-      for (var i = 0; i < alimentosPlanta.length; i++){
-        var almt = alimentosPlanta[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosInseto.length; i++){
-        var almt = alimentosInseto[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosVeneno.length; i++){
-        var almt = alimentosVeneno[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosCarne.length; i++){
-        var almt = alimentosCarne[i];
-        almt.show();
-      }
-      // informações relacionadas ao humano
-      this.serHumano.comportamentos(ossos);
-      this.serHumano.update();
-      this.serHumano.show();
     }
   }
 }
