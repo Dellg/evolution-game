@@ -11,10 +11,15 @@ var tipoCriaturasLevel4 = [];
 var tipoAlimentos = [];
 var geracao = 0;
 var ossos;
+// variáveis do puzzle
 var pedacos = 0;
+var matriz = [];
+var indexVazio = 8;
+var quantiaCerta = 0;
+var flagMontou = false;
 
 // o level 4 a criatura do jogador e uma nova evolução paralela de sua criatura
-function Level5(criaturasAnteriores){
+function Level5(criaturasAnteriores, fossil){
   countAlimentos = 80;
   alimentosPlanta = [];
   alimentosInseto = [];
@@ -22,6 +27,10 @@ function Level5(criaturasAnteriores){
   alimentosCarne = [];
   criaturas = [];
   ossos = [];
+  for (var i = 1; i < 9; i++){
+    matriz.push(fossil.splice(random(0, fossil.length - 1), 1)[0]);
+  }
+  matriz.push(fossil.splice(0, 1)[0]);
   tipoCriaturasLevel4 = criaturasAnteriores;
   this.carregarDados();
   this.serHumano;
@@ -155,93 +164,138 @@ Level5.prototype.adicionaNovaComida = function(x, y, morto, eraCarn){
 Level5.prototype.rodar = function(){
   background(15);
   fill(255);
-  if (tempoJogo >= 800){
-    alert("Fim do capítulo 4!");
-    criaturasSalvas = tipoCriaturas;
-    levelnum = 6;
+
+  if (pedacos == 8){
+    text("Monte o quebra-cabeça com os pedaços do fóssil encontrado:", xGame/2 - 195, 100);
+    for (var i = 0; i < matriz.length; i++){
+      var x = 127 * (i % 3);
+      var y = 127 * floor(i / 3);
+      image(matriz[i], xGame/2 - (127 + 127/2) + x, yGame/2 - (127 + 127/2) + y);
+    }
+    if (flagMontou){
+      alert("Parabéns! Você montou o fóssil!");
+      levelnum = 6;
+    }
 
   } else {
-    if (pedacos == 8){
-      var matriz = [];
-      matriz.push([]);
-      matriz.push([]);
-      matriz.push([]);
-
-      console.log(matriz);
-      pedacos += 1;
-
+    tempoJogo += 0.1;
+    // verifica se não há criaturas vivas para poder iniciar a geração
+    if (criaturas.length <= 0){
+      geracao += 1;
+      this.iniciaGeracao();
     } else {
-      tempoJogo += 0.1;
-      // verifica se não há criaturas vivas para poder iniciar a geração
-      if (criaturas.length <= 0){
-        geracao += 1;
-        this.iniciaGeracao();
-      } else {
-        // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
-        if ((alimentosPlanta.length + alimentosInseto.length + alimentosVeneno.length) < countAlimentos){
-          if (random(1) < 0.2) {
-            this.adicionaNovaComida(null, null);
-          }
+      // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
+      if ((alimentosPlanta.length + alimentosInseto.length + alimentosVeneno.length) < countAlimentos){
+        if (random(1) < 0.2) {
+          this.adicionaNovaComida(null, null);
         }
-        // informações relacionadas aos ossos
-        for (var i = ossos.length - 1; i >= 0; i--){
-          var ossoMapa = ossos[i];
-          ossoMapa.show();
-        }
-        // informações relacionadas às criaturas
-        for (var i = criaturas.length - 1; i >= 0; i--){
-          var crtr = criaturas[i];
-          crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas);
-          crtr.limites();
-          crtr.update();
-          crtr.show();
+      }
+      // informações relacionadas aos ossos
+      for (var i = ossos.length - 1; i >= 0; i--){
+        var ossoMapa = ossos[i];
+        ossoMapa.show();
+      }
+      // informações relacionadas às criaturas
+      for (var i = criaturas.length - 1; i >= 0; i--){
+        var crtr = criaturas[i];
+        crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas);
+        crtr.limites();
+        crtr.update();
+        crtr.show();
 
-          // aqui verifica se foi feita reprodução, para adicionar os filhos à população
-          if (crtr != undefined){
-            // criatura só reproduzirá se for fêmea
-            if (crtr.genero == 1){
-              var filho = crtr.reproduz();
-              if (filho != null) {
-                criaturas.push(filho);
-              }
-            }
-          }
-          // aqui verifica se a criatura morreu, para retirá-la da população
-          if (crtr.morreu()){
-            criaturas.splice(i, 1);
-            console.log(crtr.nome + " morreu.")
-            // se a criatura morta era um carnívoro, aparece um veneno (evitar canibalismo)
-            if (crtr.tipo != 1){
-              this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, false);
-            } else {
-              this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, true);
+        // aqui verifica se foi feita reprodução, para adicionar os filhos à população
+        if (crtr != undefined){
+          // criatura só reproduzirá se for fêmea
+          if (crtr.genero == 1){
+            var filho = crtr.reproduz();
+            if (filho != null) {
+              criaturas.push(filho);
             }
           }
         }
-        fill(255);
-        text("Pedaços de fóssil: " + pedacos, 10, 60);
-        // informações relacionadas às comidas
-        for (var i = 0; i < alimentosPlanta.length; i++){
-          var almt = alimentosPlanta[i];
-          almt.show();
+        // aqui verifica se a criatura morreu, para retirá-la da população
+        if (crtr.morreu()){
+          criaturas.splice(i, 1);
+          console.log(crtr.nome + " morreu.")
+          // se a criatura morta era um carnívoro, aparece um veneno (evitar canibalismo)
+          if (crtr.tipo != 1){
+            this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, false);
+          } else {
+            this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, true);
+          }
         }
-        for (var i = 0; i < alimentosInseto.length; i++){
-          var almt = alimentosInseto[i];
-          almt.show();
-        }
-        for (var i = 0; i < alimentosVeneno.length; i++){
-          var almt = alimentosVeneno[i];
-          almt.show();
-        }
-        for (var i = 0; i < alimentosCarne.length; i++){
-          var almt = alimentosCarne[i];
-          almt.show();
-        }
-        // informações relacionadas ao humano
-        this.serHumano.comportamentos(ossos);
-        this.serHumano.update();
-        this.serHumano.show();
+      }
+      fill(255);
+      text("Pedaços de fóssil: " + pedacos, 10, 60);
+      // informações relacionadas às comidas
+      for (var i = 0; i < alimentosPlanta.length; i++){
+        var almt = alimentosPlanta[i];
+        almt.show();
+      }
+      for (var i = 0; i < alimentosInseto.length; i++){
+        var almt = alimentosInseto[i];
+        almt.show();
+      }
+      for (var i = 0; i < alimentosVeneno.length; i++){
+        var almt = alimentosVeneno[i];
+        almt.show();
+      }
+      for (var i = 0; i < alimentosCarne.length; i++){
+        var almt = alimentosCarne[i];
+        almt.show();
+      }
+      // informações relacionadas ao humano
+      this.serHumano.comportamentos(ossos);
+      this.serHumano.update();
+      this.serHumano.show();
+    }
+  }
+}
+
+//______________________________________________________________________________
+// função que interpreta o valor do botão pressionado
+//______________________________________________________________________________
+function keyPressed() {
+  if (pedacos == 8){
+    if (keyCode === UP_ARROW){
+      if (indexVazio >= 3 && indexVazio <= 8){
+        var aux = matriz[indexVazio];
+        matriz[indexVazio] = matriz[indexVazio - 3];
+        matriz[indexVazio - 3] = aux;
+        indexVazio -= 3;
+      }
+    } else if (keyCode === DOWN_ARROW){
+      if (indexVazio >= 0 && indexVazio <= 5){
+        var aux = matriz[indexVazio];
+        matriz[indexVazio] = matriz[indexVazio + 3];
+        matriz[indexVazio + 3] = aux;
+        indexVazio += 3;
+      }
+    } else if (keyCode === LEFT_ARROW){
+      if (indexVazio != 0 && indexVazio != 3 && indexVazio != 6){
+        var aux = matriz[indexVazio];
+        matriz[indexVazio] = matriz[indexVazio - 1];
+        matriz[indexVazio - 1] = aux;
+        indexVazio -= 1;
+      }
+    } else if (keyCode === RIGHT_ARROW){
+      if (indexVazio != 2 && indexVazio != 5 && indexVazio != 8){
+        var aux = matriz[indexVazio];
+        matriz[indexVazio] = matriz[indexVazio + 1];
+        matriz[indexVazio + 1] = aux;
+        indexVazio += 1;
       }
     }
+    // após o movimento da peça, verifica se a imagem está montada
+    for (var i = 0; i < matriz.length; i++){
+      if (matriz[i].name == i+1){
+        quantiaCerta += 1;
+      }
+    }
+    if (quantiaCerta == 9){
+      flagMontou = true;
+      return;
+    }
+    quantiaCerta = 0;
   }
 }
