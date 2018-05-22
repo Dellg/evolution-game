@@ -374,7 +374,7 @@ Level.prototype.rodar = function(){
 //______________________________________________________________________________
 // função que interpreta o valor do botão pressionado
 //______________________________________________________________________________
-function keyPressed() {
+Level.prototype.keyPressed = function() {
   if (!esperando){
     // minigame 1 ativo
     if (minig1){

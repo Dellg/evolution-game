@@ -255,7 +255,7 @@ Level5.prototype.rodar = function(){
 //______________________________________________________________________________
 // função que interpreta o valor do botão pressionado
 //______________________________________________________________________________
-function keyPressed() {
+Level5.prototype.keyPressed = function() {
   if (pedacos == 8){
     if (keyCode === UP_ARROW){
       if (indexVazio >= 3 && indexVazio <= 8){

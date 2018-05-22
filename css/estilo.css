@@ -22,6 +22,8 @@ input {
   border-radius: 20px;
   background-repeat: no-repeat;
   font-family: "Lithos Pro";
+  font-size: 25px;
+  font-weight: bold;
   border: none;
   cursor: pointer;
   overflow: hidden;

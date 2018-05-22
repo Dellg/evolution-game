@@ -31,9 +31,7 @@ Humano.prototype.comportamentos = function(ossos) {
     }
   }
 
-  if (this.cavando) {
-
-  } else {
+  if (!this.cavando) {
     var busca = this.movimenta();
     busca.mult(1);
     this.aplicaForca(busca);

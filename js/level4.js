@@ -10,6 +10,9 @@ var countAlimentos; // o level 2 terá menos almentos (dificuldade maior)
 var tipoCriaturasLevel4 = [];
 var tipoAlimentos = [];
 var geracao = 0;
+var criaturaMiniGame;
+var miniGameOn = false;
+var arena = false;
 
 // o level 4 a criatura do jogador e uma nova evolução paralela de sua criatura
 function Level4(criaturasAnteriores){
@@ -156,62 +159,93 @@ Level4.prototype.rodar = function(){
     level = new Level5(criaturasSalvas, fossilImagens);
 
   } else {
-    tempoJogo += 0.1;
-    // verifica se não há criaturas vivas para poder iniciar a geração
-    if (criaturas.length <= 0){
-      geracao += 1;
-      this.iniciaGeracao();
-    } else {
-      // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
-      if ((alimentosPlanta.length + alimentosInseto.length + alimentosVeneno.length) < countAlimentos){
-        if (random(1) < 0.2) {
-          this.adicionaNovaComida(null, null);
+    if (miniGameOn){
+      if (arena){
+        text("Pegue os pontos de modificação que irão cair:", xGame/2 - 100, 30);
+        if (criaturaMiniGame.acabou()){
+          miniGameOn = false;
+          arena = false;
         }
+        criaturaMiniGame.comportamentos();
+        criaturaMiniGame.update();
+        criaturaMiniGame.show();
+      } else {
+        criaturaMiniGame = new Controlavel2(random(xGame/2 - xGame/2, xGame - xGame/2), yGame - yGame/2, tipoCriaturas[0]);
+        arena = true;
       }
-      for (var i = criaturas.length - 1; i >= 0; i--){
-        var crtr = criaturas[i];
-        crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas);
-        crtr.limitesLevel4();
-        crtr.update();
-        crtr.show();
 
-        // aqui verifica se foi feita reprodução, para adicionar os filhos à população
-        if (crtr != undefined){
-          // criatura só reproduzirá se for fêmea
-          if (crtr.genero == 1){
-            var filho = crtr.reproduz();
-            if (filho != null) {
-              criaturas.push(filho);
+    } else {
+      tempoJogo += 0.1;
+      // verifica se não há criaturas vivas para poder iniciar a geração
+      if (criaturas.length <= 0){
+        geracao += 1;
+        this.iniciaGeracao();
+      } else {
+        // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
+        if ((alimentosPlanta.length + alimentosInseto.length + alimentosVeneno.length) < countAlimentos){
+          if (random(1) < 0.2) {
+            this.adicionaNovaComida(null, null);
+          }
+        }
+        for (var i = criaturas.length - 1; i >= 0; i--){
+          var crtr = criaturas[i];
+          crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas);
+          crtr.limitesLevel4();
+          crtr.update();
+          crtr.show();
+
+          // aqui verifica se foi feita reprodução, para adicionar os filhos à população
+          if (crtr != undefined){
+            // criatura só reproduzirá se for fêmea
+            if (crtr.genero == 1){
+              var filho = crtr.reproduz();
+              if (filho != null) {
+                criaturas.push(filho);
+              }
+            }
+          }
+          // aqui verifica se a criatura morreu, para retirá-la da população
+          if (crtr.morreu()){
+            criaturas.splice(i, 1);
+            console.log(crtr.nome + " morreu.")
+            // se a criatura morta era um carnívoro, aparece um veneno (evitar canibalismo)
+            if (crtr.tipo != 1){
+              this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, false);
+            } else {
+              this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, true);
             }
           }
         }
-        // aqui verifica se a criatura morreu, para retirá-la da população
-        if (crtr.morreu()){
-          criaturas.splice(i, 1);
-          console.log(crtr.nome + " morreu.")
-          // se a criatura morta era um carnívoro, aparece um veneno (evitar canibalismo)
-          if (crtr.tipo != 1){
-            this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, false);
-          } else {
-            this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, true);
-          }
+        for (var i = 0; i < alimentosPlanta.length; i++){
+          var almt = alimentosPlanta[i];
+          almt.show();
+        }
+        for (var i = 0; i < alimentosInseto.length; i++){
+          var almt = alimentosInseto[i];
+          almt.show();
+        }
+        for (var i = 0; i < alimentosVeneno.length; i++){
+          var almt = alimentosVeneno[i];
+          almt.show();
+        }
+        for (var i = 0; i < alimentosCarne.length; i++){
+          var almt = alimentosCarne[i];
+          almt.show();
         }
       }
-      for (var i = 0; i < alimentosPlanta.length; i++){
-        var almt = alimentosPlanta[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosInseto.length; i++){
-        var almt = alimentosInseto[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosVeneno.length; i++){
-        var almt = alimentosVeneno[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosCarne.length; i++){
-        var almt = alimentosCarne[i];
-        almt.show();
+    }
+  }
+}
+
+//______________________________________________________________________________
+// função que interpreta o valor do botão pressionado
+//______________________________________________________________________________
+Level4.prototype.keyPressed = function() {
+  if (tempoJogo >= 350){
+    // botões que acessam os minigames
+    if (keyCode === 49 || keyCode === 97) {
+      if (!miniGameOn){
+        miniGameOn = true;
       }
     }
   }

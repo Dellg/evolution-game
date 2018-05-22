@@ -81,9 +81,8 @@ function setup(){
   // informações do menu principal
   nomeJog = createInput();
   nomeJog.id('nome');
-  nomeJog.style("font-size", "20px");
   nomeJog.value("Jogador");
-  nomeJog.position(296, 485);
+  nomeJog.position(296, 490);
   nomeJog.size(186, 50);
 
   botaoIniciar = createButton('');
@@ -95,9 +94,8 @@ function setup(){
   // informações do menu de seleção
   nome = createInput();
   nome.id('criatura');
-  nome.style("font-size", "20px");
   nome.value("Criatura");
-  nome.position(362, 605);
+  nome.position(362, 610);
   nome.size(360, 40);
   nome.hide();
 
@@ -546,6 +544,10 @@ function mousePressed(){
       level.serHumano.carrega(10);
     }
   }
+}
+
+function keyPressed(){
+  level.keyPressed();
 }
 
 //______________________________________________________________________________
