@@ -63,7 +63,7 @@ function preload(){
   menusImagens.push(loadImage(link + 'menus/seleciona-nalu.png'));
   menusImagens.push(loadImage(link + 'menus/seleciona-kung.png'));
   menusImagens.push(loadImage(link + 'menus/seleciona-caco.png'));
-  menusImagens.push(loadImage(link + 'menus/icones.png'));
+  menusImagens.push(loadImage(link + 'menus/icones-game.png'));
   // imagens das peças do fóssil do minigame do level 5
   for (var i = 1; i < 10; i++){
     fossilImagens.push(loadImage(link + 'puzzle/peca' + i + '.png'));
