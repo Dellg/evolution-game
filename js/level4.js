@@ -11,6 +11,7 @@ var tipoCriaturasLevel4 = [];
 var tipoAlimentos = [];
 var geracao = 0;
 var criaturaMiniGame;
+var moedas;
 var miniGameOn = false;
 var arena = false;
 
@@ -22,6 +23,7 @@ function Level4(criaturasAnteriores){
   alimentosVeneno = [];
   alimentosCarne = [];
   criaturas = [];
+  moedas = [];
   tipoCriaturasLevel4 = criaturasAnteriores;
   this.carregarDados();
 }
@@ -166,9 +168,22 @@ Level4.prototype.rodar = function(){
           miniGameOn = false;
           arena = false;
         }
+        // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
+        if (moedas.length <= 0){
+          moedas.push(new Moeda());
+        }
         criaturaMiniGame.comportamentos();
         criaturaMiniGame.update();
         criaturaMiniGame.show();
+
+        for (var i = moedas.length - 1; i >= 0; i--){
+          var md = moedas[i];
+          md.show();
+          if (md.sumiu()){
+            moedas.splice(i, 1);
+          }
+        }
+
       } else {
         criaturaMiniGame = new Controlavel2(random(xGame/2 - xGame/2, xGame - xGame/2), yGame - yGame/2, tipoCriaturas[0]);
         arena = true;
