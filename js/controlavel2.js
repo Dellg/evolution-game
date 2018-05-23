@@ -60,15 +60,6 @@ Controlavel2.prototype.show = function(){
   var animDirecao = 0;
   var direcao = this.velocidade.heading();
 
-  push();
-  translate(this.posicao.x, this.posicao.y);
-  strokeWeight(2);
-  stroke(0, 200, 0);
-  noFill();
-  ellipse(0, 0, 40, 40);
-  rotate(angulo);
-  pop();
-
   // pegar linha do gráfico para a animação dependendo da direção
   if (direcao >= -0.3875 && direcao < 0.3875){
     animDirecao = 96; // direita
@@ -104,11 +95,21 @@ Controlavel2.prototype.show = function(){
 
   imgp = this.imagem.get(animFrame, animDirecao, 32, 32);
   image(imgp, this.posicao.x - 16, this.posicao.y - 16); // desenhar a imagem no canvas
+
+  push();
+  translate(this.posicao.x, this.posicao.y);
+  strokeWeight(2);
+  stroke(0, 200, 0);
+  noFill();
+  ellipse(0, 0, 40, 40);
+  rotate(angulo);
+  pop();
 }
 
 //____________________________________________________________________________
 // verifica se o jogo acabou
 //____________________________________________________________________________
 Controlavel2.prototype.acabou = function() {
-  return false;
+  miniGameOn = false;
+  arena = false;
 }

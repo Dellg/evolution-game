@@ -2,57 +2,64 @@ var frame = 0;
 var fps = 0.03;
 
 function Moeda(){
-  this.velocidade = 1;
   this.pontos = int(random(1,4));
-  this.posicao = createVector(random(100, width - 100), -32));
+  this.velocidade = random(1,2) + this.pontos/2;
+  this.posicao = createVector(random(100, width - 100), -32);
   this.imagem = menusImagens[4];
+  this.animFrame = 0;
+  this.animDirecao = 0;
 }
 
 Moeda.prototype.show = function(){
-  var animFrame = 0;
-  var animDirecao = 0;
 
-  if (frame >= 0 && frame < 5){
-    animDirecao = 64 * pontos;
-    animFrame = 0;
-    frame += fps;
-  } else if (frame >= 5 && frame < 10){
-    animDirecao = 64 * pontos;
-    animFrame = 32;
-    frame += fps;
-  } else if (frame >= 10 && frame < 15){
-    animDirecao = 64 * pontos;
-    animFrame = 64;
-    frame += fps;
-  } else if (frame >= 15 && frame < 20){
-    animDirecao = 64 * pontos;
-    animFrame = 96;
-    frame += fps;
-  } else if (frame >= 20 && frame < 25){
-    animDirecao = 96 * pontos;
-    animFrame = 0;
-    frame += fps;
-  } else if (frame >= 25 && frame < 30){
-    animDirecao = 96 * pontos;
-    animFrame = 32;
-    frame += fps;
-  } else if (frame >= 30 && frame < 35){
-    animDirecao = 96 * pontos;
-    animFrame = 64;
-    frame += fps;
-  } else if (frame >= 35 && frame < 40){
-    animDirecao = 96 * pontos;
-    animFrame = 96;
-    frame += fps;
+  if (frame >= 0 && frame < 0.2){
+    this.animDirecao = 64 * this.pontos;
+    this.animFrame = 0;
+  } else if (frame >= 0.2 && frame < 0.4){
+    this.animFrame = 32;
+  } else if (frame >= 0.4 && frame < 0.6){
+    this.animFrame = 64;
+  } else if (frame >= 0.6 && frame < 0.8){
+    this.animFrame = 96;
+  } else if (frame >= 0.8 && frame < 1){
+    this.animDirecao = 96 + (64 * (this.pontos - 1));
+    this.animFrame = 0;
+  } else if (frame >= 1 && frame < 1.2){
+    this.animFrame = 32;
+  } else if (frame >= 1.2 && frame < 1.4){
+    this.animFrame = 64;
+  } else if (frame >= 1.4 && frame < 1.6){
+    this.animFrame = 96;
+  } else if (frame >= 1.6 && frame < 1.8){
+    this.animFrame = 64;
+  } else if (frame >= 1.8 && frame < 2){
+    this.animFrame = 32;
+  } else if (frame >= 2 && frame < 2.2){
+    this.animFrame = 0;
+  } else if (frame >= 2.2 && frame < 2.4){
+    this.animDirecao = 64 * this.pontos;
+    this.animFrame = 96;
+  } else if (frame >= 2.4 && frame < 2.6){
+    this.animFrame = 64;
+  } else if (frame >= 2.6 && frame < 2.8){
+    this.animFrame = 32;
   } else {
     frame = 0;
   }
 
-  imgp = this.imagem.get(animFrame, animDirecao, 32, 32);
+  frame += fps;
+  imgp = this.imagem.get(this.animFrame, this.animDirecao, 32, 32);
   image(imgp, this.posicao.x - 16, this.posicao.y - 16); // desenhar a imagem no canvas
 }
 
-Moeda.prototype.sumiu = function() {
+Moeda.prototype.sumiu = function(pegandoMoeda) {
+
+  var distancia = this.posicao.dist(pegandoMoeda.posicao);
+  if (distancia < this.velocidade + 16){
+    pontuacao += this.pontos;
+    return true;
+  }
+
   this.posicao.y += this.velocidade;
   return (this.posicao.y > height + 32);
 }

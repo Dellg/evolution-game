@@ -164,14 +164,11 @@ Level4.prototype.rodar = function(){
     if (miniGameOn){
       if (arena){
         text("Pegue os pontos de modificação que irão cair:", xGame/2 - 100, 30);
-        if (criaturaMiniGame.acabou()){
-          miniGameOn = false;
-          arena = false;
-        }
         // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
-        if (moedas.length <= 0){
+        if (moedas.length <= 0 || random(1) < 0.005){
           moedas.push(new Moeda());
         }
+
         criaturaMiniGame.comportamentos();
         criaturaMiniGame.update();
         criaturaMiniGame.show();
@@ -179,7 +176,7 @@ Level4.prototype.rodar = function(){
         for (var i = moedas.length - 1; i >= 0; i--){
           var md = moedas[i];
           md.show();
-          if (md.sumiu()){
+          if (md.sumiu(criaturaMiniGame)){
             moedas.splice(i, 1);
           }
         }
