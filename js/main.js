@@ -16,6 +16,7 @@ var criaturaFutura = null;
 var humanoImagem = [];
 var menusImagens = [];
 var fossilImagens = [];
+var levelImagens = [];
 var nomeJogador;
 var tela;
 
@@ -68,6 +69,10 @@ function preload(){
   for (var i = 1; i < 10; i++){
     fossilImagens.push(loadImage(link + 'puzzle/peca' + i + '.png'));
     fossilImagens[i-1].name = i;
+  }
+  // imagens dos níveis 1, 2-3, 4 e 5
+  for (var i = 1; i < 5; i++){
+    levelImagens.push(loadImage(link + 'level/level' + i + '.png'));
   }
 }
 
