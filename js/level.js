@@ -392,7 +392,7 @@ Level.prototype.keyPressed = function() {
     if (tempoJogo >= 30){
       // botões que acessam os minigames
       if (keyCode === 49 || keyCode === 97) {
-        if (!minig1){
+        if (!minig1 && minigame == 0){
           minigame = 1;
           esperando = true;
           for (var i = 0; i < 4; i++){
@@ -405,7 +405,7 @@ Level.prototype.keyPressed = function() {
     }
     if (tempoJogo >= 60){
       if (keyCode === 50 || keyCode === 98) {
-        if (!minig2){
+        if (!minig2 && minigame == 0){
           minigame = 2;
           minig2 = true;
         }
@@ -413,7 +413,7 @@ Level.prototype.keyPressed = function() {
     }
     if (tempoJogo >= 90){
       if (keyCode === 51 || keyCode === 99) {
-        if (!minig3){
+        if (!minig3 && minigame == 0){
           minigame = 3;
           minig3 = true;
         }

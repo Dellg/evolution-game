@@ -56,7 +56,8 @@ Moeda.prototype.sumiu = function(pegandoMoeda) {
 
   var distancia = this.posicao.dist(pegandoMoeda.posicao);
   if (distancia < this.velocidade + 16){
-    pontuacao += this.pontos;
+    pontuacao += this.pontos * 10;
+    miniGamePontos += this.pontos * 10;
     return true;
   }
 

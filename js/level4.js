@@ -13,7 +13,8 @@ var geracao = 0;
 var criaturaMiniGame;
 var moedas;
 var miniGameOn = false;
-var arena = false;
+var miniGamePontos = 0;
+var arena2 = false;
 
 // o level 4 a criatura do jogador e uma nova evolução paralela de sua criatura
 function Level4(criaturasAnteriores){
@@ -162,7 +163,7 @@ Level4.prototype.rodar = function(){
 
   } else {
     if (miniGameOn){
-      if (arena){
+      if (arena2){
         text("Pegue os pontos de modificação que irão cair:", xGame/2 - 100, 30);
         // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
         if (moedas.length <= 0 || random(1) < 0.005){
@@ -178,12 +179,18 @@ Level4.prototype.rodar = function(){
           md.show();
           if (md.sumiu(criaturaMiniGame)){
             moedas.splice(i, 1);
+
+            if (miniGamePontos >= 250){
+              arena2 = false;
+              miniGameOn = false;
+              alert("Parabéns! Você conseguiu juntar alguns pontos de modificação!");
+            }
           }
         }
 
       } else {
         criaturaMiniGame = new Controlavel2(random(xGame/2 - xGame/2, xGame - xGame/2), yGame - yGame/2, tipoCriaturas[0]);
-        arena = true;
+        arena2 = true;
       }
 
     } else {
@@ -228,6 +235,9 @@ Level4.prototype.rodar = function(){
             }
           }
         }
+        if (tempoJogo >= 350){
+          text("Aperte 1 para jogar o MiniGame", xGame - 400, 20);
+        }
         for (var i = 0; i < alimentosPlanta.length; i++){
           var almt = alimentosPlanta[i];
           almt.show();
@@ -243,9 +253,6 @@ Level4.prototype.rodar = function(){
         for (var i = 0; i < alimentosCarne.length; i++){
           var almt = alimentosCarne[i];
           almt.show();
-        }
-        if (tempoJogo >= 350){
-          text("Aperte 1 para jogar o MiniGame", xGame - 400, 20);
         }
       }
     }
