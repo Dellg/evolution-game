@@ -244,6 +244,9 @@ Level4.prototype.rodar = function(){
           var almt = alimentosCarne[i];
           almt.show();
         }
+        if (tempoJogo >= 350){
+          text("Aperte 1 para jogar o MiniGame", xGame - 400, 20);
+        }
       }
     }
   }
