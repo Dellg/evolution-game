@@ -428,12 +428,6 @@ Level.prototype.rodar = function(){
           var almt = alimentosCarne[i];
           almt.show();
         }
-
-        // NÃO VAI PRECISAR DESENHAR
-        for (var i = 0; i < obstaculos.length; i++){
-          var obst = obstaculos[i];
-          obst.show();
-        }
       }
     }
   }
