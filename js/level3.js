@@ -54,7 +54,7 @@ Level3.prototype.rodar = function(){
       this.iniciaGeracao();
     } else {
       if (random(1) < 0.045) {
-        obstaculos.push(new Obstaculo());
+        obstaculos.push(new Obstaculo(false, 0, 0, 0));
       }
       for (var i = criaturas.length - 1; i >= 0; i--){
         var crtr = criaturas[i];

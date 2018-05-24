@@ -137,7 +137,7 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
 //____________________________________________________________________________
 //  método que define qual comportamento a criatura irá realizar
 //____________________________________________________________________________
-Criatura.prototype.comportamentos = function(plantas, insetos, venenos, carnes, criaturas) {
+Criatura.prototype.comportamentos = function(plantas, insetos, venenos, carnes, criaturas, obstaculos) {
   var separacao, alinhado, coeso;
   var segueVeneno, seguePlanta, segueInseto, predador, presa, segueCarne;
 
@@ -210,6 +210,10 @@ Criatura.prototype.comportamentos = function(plantas, insetos, venenos, carnes, 
     this.aplicaForca(coeso);
     this.aplicaForca(presa);
   }
+
+  presa = this.desviar(obstaculos);
+  presa.mult(-1);
+  this.aplicaForca(presa);
 }
 
 //____________________________________________________________________________
@@ -275,7 +279,7 @@ Criatura.prototype.alimenta = function(comidas, percepcao) {
   }
   // aqui define o comportamento da criatura, se irá perseguir ou se irá apenas até o local para comer
   if (maisProximo != null) {
-    return this.movimenta(maisProximo, false);
+    return this.movimenta(maisProximo, false, 0);
   }
   return createVector(0, 0);
 }
@@ -320,7 +324,7 @@ Criatura.prototype.persegue = function(predadores, percepcao) {
   // aqui define o comportamento da criatura, só irá perseguir se for caçador
   if (maisProximo != null){
     if (this.tipo == 1){
-      return this.movimenta(maisProximo, false);
+      return this.movimenta(maisProximo, false, 0);
     }
   }
   return createVector(0, 0);
@@ -344,7 +348,28 @@ Criatura.prototype.fugir = function(predadores, percepcao) {
   }
 
   if (maisProximo != null){
-    return this.movimenta(maisProximo, true);
+    return this.movimenta(maisProximo, true, 0);
+  }
+  return createVector(0, 0);
+}
+
+//____________________________________________________________________________
+// método que define se a criatura vai desviar de algum obstáculo
+//____________________________________________________________________________
+Criatura.prototype.desviar = function(obstaculos) {
+  var lembranca = Infinity;
+  var maisProximo = null;
+
+  for (var i = obstaculos.length - 1; i >= 0; i--) {
+    var distancia = this.posicao.dist(obstaculos[i].posicao);
+    if (distancia < lembranca && distancia < obstaculos[i].raio + 5) {
+      lembranca = distancia;
+      maisProximo = obstaculos[i];
+    }
+  }
+
+  if (maisProximo != null){
+    return this.movimenta(maisProximo, true, 5);
   }
   return createVector(0, 0);
 }
@@ -352,7 +377,7 @@ Criatura.prototype.fugir = function(predadores, percepcao) {
 //____________________________________________________________________________
 // método de movimento da criatura
 //____________________________________________________________________________
-Criatura.prototype.movimenta = function(obj, fugindo) {
+Criatura.prototype.movimenta = function(obj, fugindo, auxForca) {
   var desejo;
   // verifica se o objeto recebido é um vetor ou uma criatura
   if (obj.name == "p5.Vector"){
@@ -367,7 +392,11 @@ Criatura.prototype.movimenta = function(obj, fugindo) {
   }
   var direcao = p5.Vector.sub(desejo, this.velocidade);
   if (fugindo){
-    direcao.limit(this.maxForca * 3);
+    if (auxForca == 0){
+      direcao.limit(this.maxForca * 3);
+    } else {
+      direcao.limit(this.maxForca * auxForca);
+    }
   } else {
     direcao.limit(this.maxForca);
   }
@@ -707,7 +736,7 @@ Criatura.prototype.coesao = function(criaturas){
   }
   if (contador > 0){
     soma.div(contador);
-    return this.movimenta(soma, false);
+    return this.movimenta(soma, false, 0);
   } else {
     return createVector(0,0);
   }

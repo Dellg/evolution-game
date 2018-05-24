@@ -1,12 +1,18 @@
-function Obstaculo(){
-  this.cor = color(110);
-  if (random(1) < 0.1){
-    this.raio = random(80, 150);
+function Obstaculo(arvore, x, y, raio){
+  if (arvore){
+    this.cor = color(110, 125);
+    this.raio = raio;
+    this.posicao = createVector(x, y);
   } else {
-    this.raio = random(10, 80);
+    this.cor = color(110);
+    if (random(1) < 0.1){
+      this.raio = random(80, 150);
+    } else {
+      this.raio = random(10, 80);
+    }
+    this.velocidade = random(1,2);
+    this.posicao = createVector(random(0, width), 0 - (this.raio - 5));
   }
-  this.velocidade = random(1,2);
-  this.posicao = createVector(random(0, width), 0 - (this.raio - 5));
 }
 
 Obstaculo.prototype.show = function(){

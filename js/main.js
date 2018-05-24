@@ -74,6 +74,9 @@ function preload(){
   for (var i = 1; i < 5; i++){
     levelImagens.push(loadImage(link + 'level/level' + i + '.png'));
   }
+  for (var i = 1; i < 5; i++){
+    levelImagens.push(loadImage(link + 'level/level' + i + 'up.png'));
+  }
 }
 
 //______________________________________________________________________________
