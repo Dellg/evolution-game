@@ -36,7 +36,7 @@ Level3.prototype.iniciaGeracao = function(){
 // método que roda o jogo ou os minigames do level
 //______________________________________________________________________________
 Level3.prototype.rodar = function(){
-  background(15);
+  image(levelImagens[1], 0, 0);
   fill(255);
   if (tempoJogo >= 300){
     alert("Fim do capítulo 3!");

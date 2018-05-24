@@ -153,7 +153,7 @@ Level4.prototype.adicionaNovaComida = function(x, y, morto, eraCarn){
 // método que roda o jogo ou os minigames do level
 //______________________________________________________________________________
 Level4.prototype.rodar = function(){
-  background(15);
+  image(levelImagens[2], 0, 0);
   fill(255);
   if (tempoJogo >= 400){
     alert("Fim do capítulo 4!");

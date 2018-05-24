@@ -162,7 +162,7 @@ Level5.prototype.adicionaNovaComida = function(x, y, morto, eraCarn){
 // método que roda o jogo ou os minigames do level
 //______________________________________________________________________________
 Level5.prototype.rodar = function(){
-  background(15);
+  image(levelImagens[3], 0, 0);
   fill(255);
 
   if (pedacos == 8){
