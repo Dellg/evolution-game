@@ -1,12 +1,12 @@
 var frame = 0;
-var fps = 0.03;
+var fps = 0.02;
 
 function Obstaculo(arvore, x, y, raio){
+  this.imagem = menusImagens[5];
   if (arvore){
     this.raio = raio;
     this.posicao = createVector(x, y);
   } else {
-    this.imagem = menusImagens[5];
     this.raio = 55;
     this.velocidade = random(1,2);
     this.posicao = createVector(random(0, width), 0 - (this.raio - 5));
