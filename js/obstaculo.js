@@ -14,6 +14,9 @@ function Obstaculo(arvore, x, y, raio){
 }
 
 Obstaculo.prototype.show = function(){
+  var animFrame = 0;
+  var animDirecao = 0;
+
   // pegar coluna do gráfico para a animação dependendo do frame
   if (frame >= 0 && frame < 10){
     animFrame = 0;
