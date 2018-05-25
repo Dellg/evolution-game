@@ -18,19 +18,21 @@ Obstaculo.prototype.show = function(){
   var animDirecao = 0;
 
   // pegar coluna do gráfico para a animação dependendo do frame
-  if (frame >= 0 && frame < 10){
+  if (frame >= 0 && frame < 5){
     animFrame = 0;
     animDirecao = 0;
     frame += fps;
-  } else if (frame >= 10 && frame < 20){
+  } else if (frame >= 5 && frame < 10){
     animFrame = 64;
+    animDirecao = 0;
     frame += fps;
-  } else if (frame >= 20 && frame < 30){
+  } else if (frame >= 10 && frame < 15){
     animFrame = 0;
     animDirecao = 64;
     frame += fps;
-  } else if (frame >= 30 && frame < 40){
+  } else if (frame >= 15 && frame < 20){
     animFrame = 64;
+    animDirecao = 64;
     frame += fps;
   } else {
     frame = 0;
