@@ -127,7 +127,7 @@ Controlavel.prototype.fugir = function(predadores) {
       if (distancia < (predadores[i].raio/2)-1){
         this.perdeu = true;
       }
-      if (distancia < lembranca && distancia < 100) {
+      if (distancia < lembranca && distancia < predadores[i].raio + predadores[i].raio / 2) {
         lembranca = distancia;
         maisProximo = predadores[i];
       }

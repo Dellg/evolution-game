@@ -22,6 +22,56 @@ Level3.prototype.iniciaGeracao = function(){
     var criatura = new Controlavel(x, y, tipoCriaturas[0], true, true);
     criaturas.push(criatura);
   }
+  // colocando obstáculos em suas posições
+    // árvores com flores vermelhas
+  r = 35;
+  x = 772;
+  y = 226;
+  obst = new Obstaculo(true, x, y, r);
+  obstaculos.push(obst);
+    // árvores com plantas laranjas
+  r = 30;
+  x = 348;
+  y = 176;
+  obst = new Obstaculo(true, x, y, r);
+  obstaculos.push(obst);
+  x = 81;
+  y = 770;
+  obst = new Obstaculo(true, x, y, r);
+  obstaculos.push(obst);
+    // cactos
+  r = 50;
+  x = 79;
+  y = 320;
+  obst = new Obstaculo(true, x, y, r);
+  obstaculos.push(obst);
+  x = 365;
+  y = 388;
+  obst = new Obstaculo(true, x, y, 70); // cacto maior
+  obstaculos.push(obst);
+  x = 973;
+  y = 572;
+  obst = new Obstaculo(true, x, y, r);
+  obstaculos.push(obst);
+  x = 1010;
+  y = 579;
+  obst = new Obstaculo(true, x, y, 33); // cacto menor
+  obstaculos.push(obst);
+    // árvores grandes
+  r = 55;
+  x = 125;
+  y = 320;
+  obst = new Obstaculo(true, x, y, r);
+  obstaculos.push(obst);
+  x = 505;
+  y = 764;
+  obst = new Obstaculo(true, x, y, r);
+  obstaculos.push(obst);
+  x = 921;
+  y = 545;
+  obst = new Obstaculo(true, x, y, r);
+  obstaculos.push(obst);
+
   // redesenha a tela com a nova geração
   if (jaIniciou){
     alert("Você teve muitas baixas! Por sorte, algumas de suas criaturas já tinha chegado lá!");
@@ -71,8 +121,9 @@ Level3.prototype.rodar = function(){
           criaturas.splice(i, 1);
         }
       }
+      image(levelImagens[5], 0, 0);
 
-      for (var i = obstaculos.length - 1; i >= 0; i--){
+      for (var i = obstaculos.length - 1; i >= 9; i--){
         var obst = obstaculos[i];
         obst.show();
         if (obst.sumiu()){

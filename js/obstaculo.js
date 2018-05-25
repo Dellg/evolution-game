@@ -1,24 +1,39 @@
+var frame = 0;
+var fps = 0.03;
+
 function Obstaculo(arvore, x, y, raio){
   if (arvore){
-    this.cor = color(110, 125);
     this.raio = raio;
     this.posicao = createVector(x, y);
   } else {
-    this.cor = color(110);
-    if (random(1) < 0.1){
-      this.raio = random(80, 150);
-    } else {
-      this.raio = random(10, 80);
-    }
+    this.imagem = menusImagens[5];
+    this.raio = 55;
     this.velocidade = random(1,2);
     this.posicao = createVector(random(0, width), 0 - (this.raio - 5));
   }
 }
 
 Obstaculo.prototype.show = function(){
-  noStroke();
-  fill(this.cor);
-  ellipse(this.posicao.x, this.posicao.y, this.raio);
+  // pegar coluna do gráfico para a animação dependendo do frame
+  if (frame >= 0 && frame < 10){
+    animFrame = 0;
+    animDirecao = 0;
+    frame += fps;
+  } else if (frame >= 10 && frame < 20){
+    animFrame = 64;
+    frame += fps;
+  } else if (frame >= 20 && frame < 30){
+    animFrame = 0;
+    animDirecao = 64;
+    frame += fps;
+  } else if (frame >= 30 && frame < 40){
+    animFrame = 64;
+    frame += fps;
+  } else {
+    frame = 0;
+  }
+  imgp = this.imagem.get(animFrame, animDirecao, 64, 64);
+  image(imgp, this.posicao.x - 32, this.posicao.y - 32); // desenhar a imagem no canvas
 }
 
 Obstaculo.prototype.sumiu = function() {
