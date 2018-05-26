@@ -22,6 +22,9 @@ var flagMontou = false;
 
 // o level 4 a criatura do jogador e uma nova evolução paralela de sua criatura
 function Level5(criaturasAnteriores, fossil){
+  for (var i = 0; i < 9; i++){
+    fossilImagens[i].name = i+1;
+  }
   countAlimentos = 80;
   alimentosPlanta = [];
   alimentosInseto = [];

@@ -1,6 +1,6 @@
 var xGame = 1045;
 var yGame = 760;
-var menu = 0;
+var menu = -1///0;
 // -1 = video da intro
 // 0 = menu principal
 // 1 = levels
@@ -20,86 +20,70 @@ var levelImagens = [];
 var nomeJogador;
 var tela;
 var musicas = [];
+var particulas = [];
+var quantidadeObjetos = 61; // imagens e sons
+var contadorObjetos = 0; // para gerenciar o loading
+var carregando = true;
+var link = 'https://raw.githubusercontent.com/Dellg/evolution-game/master/';
 
 //______________________________________________________________________________
 // carregando imagens no projeto
 //______________________________________________________________________________
 function preload(){
-  link = 'https://raw.githubusercontent.com/Dellg/evolution-game/master/img/';
-  // imagens padrão
-  imagens.push(loadImage(link + 'nalulobulis/n-chifres.png')); //Nalulóbulis
-  imagens.push(loadImage(link + 'kunglob/k-orelhasgrandes.png')); //Kunglob
-  imagens.push(loadImage(link + 'cacoglobius/c-duascaudas.png')); //Cacoglobius
-  // imagens com mutação
-  imagens.push(loadImage(link + 'nalulobulis/n-orelhasgrandes.png'));
-  imagens.push(loadImage(link + 'kunglob/k-chifres.png'));
-  imagens.push(loadImage(link + 'cacoglobius/c-chifres.png'));
-  imagens.push(loadImage(link + 'nalulobulis/n-duascaudas.png'));
-  imagens.push(loadImage(link + 'kunglob/k-duascaudas.png'));
-  imagens.push(loadImage(link + 'cacoglobius/c-orelhasgrandes.png'));
-  imagens.push(loadImage(link + 'nalulobulis/n-escalador.png'));
-  imagens.push(loadImage(link + 'kunglob/k-escalador.png'));
-  imagens.push(loadImage(link + 'cacoglobius/c-escalador.png'));
-  imagens.push(loadImage(link + 'nalulobulis/n-peconha.png'));
-  imagens.push(loadImage(link + 'kunglob/k-peconha.png'));
-  imagens.push(loadImage(link + 'cacoglobius/c-peconha.png'));
-  imagens.push(loadImage(link + 'nalulobulis/n-carapaca.png'));
-  imagens.push(loadImage(link + 'kunglob/k-carapaca.png'));
-  imagens.push(loadImage(link + 'cacoglobius/c-carapaca.png'));
-  imagens.push(loadImage(link + 'nalulobulis/n-asas.png'));
-  imagens.push(loadImage(link + 'kunglob/k-asas.png'));
-  imagens.push(loadImage(link + 'cacoglobius/c-asas.png'));
-  imagens.push(loadImage(link + 'nalulobulis/n-espinhos.png'));
-  imagens.push(loadImage(link + 'kunglob/k-espinhos.png'));
-  imagens.push(loadImage(link + 'cacoglobius/c-espinhos.png'));
-  // imagens com novas mutações para o level 4
-  imagens.push(loadImage(link + 'nalulobulis/n-novaevolucao.png')); // id 24
-  imagens.push(loadImage(link + 'kunglob/k-novaevolucao.png'));     // id 25
-  imagens.push(loadImage(link + 'cacoglobius/c-novaevolucao.png')); // id 26
-  // imagem do jogador humano
-  humanoImagem.push(loadImage(link + 'humano/humano.png'));
-  humanoImagem.push(loadImage(link + 'humano/ossos.png'));
-  humanoImagem.push(loadImage(link + 'humano/mouseClicou.png'));
-  // imagens dos menus
-  menusImagens.push(loadImage(link + 'menus/principal.png'));
-  menusImagens.push(loadImage(link + 'menus/seleciona-nalu.png'));
-  menusImagens.push(loadImage(link + 'menus/seleciona-kung.png'));
-  menusImagens.push(loadImage(link + 'menus/seleciona-caco.png'));
-  menusImagens.push(loadImage(link + 'menus/icones-game.png'));
-  menusImagens.push(loadImage(link + 'menus/pedras.png'));
-  // imagens das peças do fóssil do minigame do level 5
-  for (var i = 1; i < 10; i++){
-    fossilImagens.push(loadImage(link + 'puzzle/peca' + i + '.png'));
-    fossilImagens[i-1].name = i;
+  // carregando imagem inicial
+  menusImagens.push(loadImage(link + 'img/menus/carregando.png'));
+}
+
+// funções que carregam os objetos do jogo
+function carregaArquivo(vetor, tipo, id, arquivo){
+  if (tipo == 0){
+    loadImage(arquivo, imageLoaded);
+    function imageLoaded(image){
+      vetor[id] = image;
+      contadorObjetos++;
+      if (contadorObjetos == quantidadeObjetos){
+        botaoCrdts.show();
+        nomeJog.show();
+        botaoIniciar.show();
+        musicas[0].play();
+        carregando = false;
+      }
+    }
+  } else {
+    loadSound(arquivo, soundLoaded);
+    function soundLoaded(sound){
+      vetor[id] = sound;
+      contadorObjetos++;
+      if (contadorObjetos == quantidadeObjetos){
+        botaoCrdts.show();
+        nomeJog.show();
+        botaoIniciar.show();
+        musicas[0].play();
+        carregando = false;
+      }
+    }
   }
-  // imagens dos níveis 1, 2-3, 4 e 5
-  for (var i = 1; i < 5; i++){
-    levelImagens.push(loadImage(link + 'level/level' + i + '.png'));
-  }
-  for (var i = 1; i < 5; i++){
-    levelImagens.push(loadImage(link + 'level/level' + i + 'up.png'));
-  }
-  // carregando músicas
-  link = 'https://raw.githubusercontent.com/Dellg/evolution-game/master/music/';
-  musicas.push(loadSound(link + 'Woodland-Tales-Adrian-von-Ziegler.mp3'));
-  musicas.push(loadSound(link + 'Slava-Moy-Brat-Adrian-von-Ziegler.mp3'));
-  musicas.push(loadSound(link + 'Tale-of-Siltharea-Adrian-von-Ziegler.mp3'));
-  musicas.push(loadSound(link + 'Forest-Rites-Adrian-von-Ziegler.mp3'));
-  musicas.push(loadSound(link + 'Origins-Adrian-von-Ziegler.mp3'));
-  musicas.push(loadSound(link + 'Fable-Adrian-von-Ziegler.mp3'));
-  musicas.push(loadSound(link + 'Galdrar-Adrian-von-Ziegler.mp3'));
-  musicas.push(loadSound(link + 'Follow-the-Hunt-Adrian-von-Ziegler.mp3'));
-  musicas.push(loadSound(link + 'Sacred-Earth-Adrian-von-Ziegler.mp3'));
 }
 
 //______________________________________________________________________________
 // preparação do jogo e recebimento de dados do usuário
 //______________________________________________________________________________
 function setup(){
+  var tamanhoDna = 50;
+  for (var i = 0; i < tamanhoDna; i++){
+    alphaDna = i - floor(tamanhoDna/2);
+    x = xGame/2 + (20 * alphaDna);
+    y = yGame/2 + sin(contador + (0.25 * alphaDna));
+    particulas.push(new Particula(x, y, 0, i));
+  }
+  for (var i = 0; i < tamanhoDna; i++){
+    alphaDna = i - floor(tamanhoDna/2);
+    x = xGame/2 + (20 * alphaDna);
+    y = yGame/2 + sin(contador + (0.25 * alphaDna));
+    particulas.push(new Particula(x, y, 1, i));
+  }
   createCanvas(xGame, yGame);
   image(menusImagens[0], 0, 0);
-  musicas[0].play();
-  fill(255);
 
   // créditos para as músicas
   botaoCrdts = createButton('Músicas por Adrian von Ziegler');
@@ -110,6 +94,7 @@ function setup(){
   botaoCrdts.id('botaoMusica');
   botaoCrdts.position(xGame - 270, yGame - 20);
   botaoCrdts.mousePressed(redireciona);
+  botaoCrdts.hide();
 
   // informações do menu principal
   nomeJog = createInput();
@@ -117,12 +102,77 @@ function setup(){
   nomeJog.value("Jogador");
   nomeJog.position(296, 490);
   nomeJog.size(186, 50);
+  nomeJog.hide();
 
   botaoIniciar = createButton('');
   botaoIniciar.id('botaoIniciar');
   botaoIniciar.position(196, 627);
   botaoIniciar.size(210, 50);
   botaoIniciar.mousePressed(passouMenuPrincipal);
+  botaoIniciar.hide();
+
+  // imagens padrão
+  carregaArquivo(imagens, 0, 0, link + 'img/nalulobulis/n-chifres.png'); //Nalulóbulis
+  carregaArquivo(imagens, 0, 1, link + 'img/kunglob/k-orelhasgrandes.png'); //Kunglob
+  carregaArquivo(imagens, 0, 2, link + 'img/cacoglobius/c-duascaudas.png'); //Cacoglobius
+  // imagens com mutação
+  carregaArquivo(imagens, 0, 3, link + 'img/nalulobulis/n-orelhasgrandes.png');
+  carregaArquivo(imagens, 0, 4, link + 'img/kunglob/k-chifres.png');
+  carregaArquivo(imagens, 0, 5, link + 'img/cacoglobius/c-chifres.png');
+  carregaArquivo(imagens, 0, 6, link + 'img/nalulobulis/n-duascaudas.png');
+  carregaArquivo(imagens, 0, 7, link + 'img/kunglob/k-duascaudas.png');
+  carregaArquivo(imagens, 0, 8, link + 'img/cacoglobius/c-orelhasgrandes.png');
+  carregaArquivo(imagens, 0, 9, link + 'img/nalulobulis/n-escalador.png');
+  carregaArquivo(imagens, 0, 10, link + 'img/kunglob/k-escalador.png');
+  carregaArquivo(imagens, 0, 11, link + 'img/cacoglobius/c-escalador.png');
+  carregaArquivo(imagens, 0, 12, link + 'img/nalulobulis/n-peconha.png');
+  carregaArquivo(imagens, 0, 13, link + 'img/kunglob/k-peconha.png');
+  carregaArquivo(imagens, 0, 14, link + 'img/cacoglobius/c-peconha.png');
+  carregaArquivo(imagens, 0, 15, link + 'img/nalulobulis/n-carapaca.png');
+  carregaArquivo(imagens, 0, 16, link + 'img/kunglob/k-carapaca.png');
+  carregaArquivo(imagens, 0, 17, link + 'img/cacoglobius/c-carapaca.png');
+  carregaArquivo(imagens, 0, 18, link + 'img/nalulobulis/n-asas.png');
+  carregaArquivo(imagens, 0, 19, link + 'img/kunglob/k-asas.png');
+  carregaArquivo(imagens, 0, 20, link + 'img/cacoglobius/c-asas.png');
+  carregaArquivo(imagens, 0, 21, link + 'img/nalulobulis/n-espinhos.png');
+  carregaArquivo(imagens, 0, 22, link + 'img/kunglob/k-espinhos.png');
+  carregaArquivo(imagens, 0, 23, link + 'img/cacoglobius/c-espinhos.png');
+  // imagens com novas mutações para o level 4
+  carregaArquivo(imagens, 0, 24, link + 'img/nalulobulis/n-novaevolucao.png'); // id 24
+  carregaArquivo(imagens, 0, 25, link + 'img/kunglob/k-novaevolucao.png');     // id 25
+  carregaArquivo(imagens, 0, 26, link + 'img/cacoglobius/c-novaevolucao.png'); // id 26
+  // imagem do jogador humano
+  carregaArquivo(humanoImagem, 0, 0, link + 'img/humano/humano.png');
+  carregaArquivo(humanoImagem, 0, 1, link + 'img/humano/ossos.png');
+  carregaArquivo(humanoImagem, 0, 2, link + 'img/humano/mouseClicou.png');
+  // imagens dos menus
+  carregaArquivo(menusImagens, 0, 1, link + 'img/menus/principal.png');
+  carregaArquivo(menusImagens, 0, 2, link + 'img/menus/seleciona-nalu.png');
+  carregaArquivo(menusImagens, 0, 3, link + 'img/menus/seleciona-kung.png');
+  carregaArquivo(menusImagens, 0, 4, link + 'img/menus/seleciona-caco.png');
+  carregaArquivo(menusImagens, 0, 5, link + 'img/menus/icones-game.png');
+  carregaArquivo(menusImagens, 0, 6, link + 'img/menus/pedras.png');
+  // imagens das peças do fóssil do minigame do level 5
+  for (var i = 1; i < 10; i++){
+    carregaArquivo(fossilImagens, 0, i-1, link + 'img/puzzle/peca' + i + '.png');
+  }
+  // imagens dos níveis 1, 2-3, 4 e 5
+  for (var i = 1; i < 5; i++){
+    carregaArquivo(levelImagens, 0, i-1, link + 'img/level/level' + i + '.png');
+  }
+  for (var i = 1; i < 5; i++){
+    carregaArquivo(levelImagens, 0, i+3, link + 'img/level/level' + i + 'up.png');
+  }
+  // carregando músicas
+  carregaArquivo(musicas, 1, 0, link + 'music/Woodland-Tales-Adrian-von-Ziegler.mp3');
+  carregaArquivo(musicas, 1, 1, link + 'music/Slava-Moy-Brat-Adrian-von-Ziegler.mp3');
+  carregaArquivo(musicas, 1, 2, link + 'music/Tale-of-Siltharea-Adrian-von-Ziegler.mp3');
+  carregaArquivo(musicas, 1, 3, link + 'music/Forest-Rites-Adrian-von-Ziegler.mp3');
+  carregaArquivo(musicas, 1, 4, link + 'music/Origins-Adrian-von-Ziegler.mp3');
+  carregaArquivo(musicas, 1, 5, link + 'music/Fable-Adrian-von-Ziegler.mp3');
+  carregaArquivo(musicas, 1, 6, link + 'music/Galdrar-Adrian-von-Ziegler.mp3');
+  carregaArquivo(musicas, 1, 7, link + 'music/Follow-the-Hunt-Adrian-von-Ziegler.mp3');
+  carregaArquivo(musicas, 1, 8, link + 'music/Sacred-Earth-Adrian-von-Ziegler.mp3');
 
   // informações do menu de seleção
   nome = createInput();
@@ -469,112 +519,119 @@ function setup(){
 // onde o jogo acontece, de fato
 //______________________________________________________________________________
 function draw(){
-  if (menu == -1){ // intro
-
-  } else if (menu == 0){ // principal
-    if (tipo == 0){
+  if (carregando){
+    background(0);
+    for (var i = 0; i < particulas.length; i++){
+      particulas[i].animar();
+    }
+  } else {
+    if (menu == -1){ // intro
       image(menusImagens[1], 0, 0);
-    } else if (tipo == 1){
-      image(menusImagens[2], 0, 0);
-    } else if (tipo == 2){
-      image(menusImagens[3], 0, 0);
-    }
-  } else if (menu == 1){ // levels
-    if (levelnum == 1){
-      level.rodar();
-      fill(255);
-      text("Pontos de Modificação: " + pontuacao, 10, 20);
-      text(parseInt(tempoJogo) + " anos", 10, 40);
-
-    } else if (levelnum == 1.5){ // escolha de novas características .hide() e .show()
-      fill(15);
-      noStroke();
-      rect(30,90,800,100);
-      rect(350,130,800,100);
-      fill(255);
-      textFont("Times New Roman", 32);
-      text("Escolha uma nova característica para fortificar sua criatura:", 60, 120);
-      textFont("Times New Roman", 16);
-      switch (caract.value()) {
-        case "0":
-          text("Adiciona chifres na sua criatura.", 380, 150);
-          text("Vantagem: +Resistência", 380, 165);
-          text("Desvantagem: -Velocidade", 380, 180);
-          break;
-        case "1":
-          text("Adiciona orelhas grandes na sua criatura.", 380, 150);
-          text("Vantagem: +Velocidade", 380, 165);
-          text("Desvantagem: -Resistência", 380, 180);
-          break;
-        case "2":
-          text("Adiciona duas caudas na sua criatura.", 380, 150);
-          text("Vantagem: -Fome", 380, 165);
-          text("Desvantagem: -Resistência", 380, 180);
-          break;
-        case "3":
-          text("Adiciona pés que possibilitam escalar árvores na sua criatura.", 380, 150);
-          text("Vantagem: +Velocidade", 380, 165);
-          text("Desvantagem: +Fome", 380, 180);
-          break;
-        case "4":
-          text("Adiciona peçonha na sua criatura.", 380, 150);
-          text("Vantagem: -Fome", 380, 165);
-          text("Desvantagem: -Velocidade", 380, 180);
-          break;
-        case "5":
-          text("Adiciona uma carapaça na sua criatura.", 380, 150);
-          text("Vantagem: ++Resistência", 380, 165);
-          text("Desvantagem: --Velocidade", 380, 180);
-          break;
-        case "6":
-          text("Adiciona asas na sua criatura.", 380, 150);
-          text("Vantagem: +Velocidade", 380, 165);
-          text("Desvantagem: +Fome", 380, 180);
-          break;
-        case "7":
-          text("Adiciona espinhos na sua criatura.", 380, 150);
-          text("Vantagem: +Resistência", 380, 165);
-          text("Desvantagem: +Fome", 380, 180);
-          break;
-        case "8":
-          text("Não adiciona nada na sua criatura.", 380, 150);
-          text("Vantagem: nenhuma", 380, 165);
-          text("Desvantagem: nenhuma", 380, 180);
-          break;
+    } else if (menu == 0){ // principal
+      if (tipo == 0){
+        image(menusImagens[2], 0, 0);
+      } else if (tipo == 1){
+        image(menusImagens[3], 0, 0);
+      } else if (tipo == 2){
+        image(menusImagens[4], 0, 0);
       }
-      caract.show();
-      botaoConfirmar.show();
+    } else if (menu == 1){ // levels
+      if (levelnum == 1){
+        level.rodar();
+        fill(255);
+        text("Pontos de Modificação: " + pontuacao, 10, 20);
+        text(parseInt(tempoJogo) + " anos", 10, 40);
 
-    } else if (levelnum == 2){
-      level.rodar();
-      fill(255);
-      textFont("Times New Roman", 16);
-      text("Pontos de Modificação: " + pontuacao, 10, 20);
-      text(parseInt(tempoJogo) + " anos", 10, 40);
+      } else if (levelnum == 1.5){ // escolha de novas características .hide() e .show()
+        fill(15);
+        noStroke();
+        rect(30,90,800,100);
+        rect(350,130,800,100);
+        fill(255);
+        textFont("Times New Roman", 32);
+        text("Escolha uma nova característica para fortificar sua criatura:", 60, 120);
+        textFont("Times New Roman", 16);
+        switch (caract.value()) {
+          case "0":
+            text("Adiciona chifres na sua criatura.", 380, 150);
+            text("Vantagem: +Resistência", 380, 165);
+            text("Desvantagem: -Velocidade", 380, 180);
+            break;
+          case "1":
+            text("Adiciona orelhas grandes na sua criatura.", 380, 150);
+            text("Vantagem: +Velocidade", 380, 165);
+            text("Desvantagem: -Resistência", 380, 180);
+            break;
+          case "2":
+            text("Adiciona duas caudas na sua criatura.", 380, 150);
+            text("Vantagem: -Fome", 380, 165);
+            text("Desvantagem: -Resistência", 380, 180);
+            break;
+          case "3":
+            text("Adiciona pés que possibilitam escalar árvores na sua criatura.", 380, 150);
+            text("Vantagem: +Velocidade", 380, 165);
+            text("Desvantagem: +Fome", 380, 180);
+            break;
+          case "4":
+            text("Adiciona peçonha na sua criatura.", 380, 150);
+            text("Vantagem: -Fome", 380, 165);
+            text("Desvantagem: -Velocidade", 380, 180);
+            break;
+          case "5":
+            text("Adiciona uma carapaça na sua criatura.", 380, 150);
+            text("Vantagem: ++Resistência", 380, 165);
+            text("Desvantagem: --Velocidade", 380, 180);
+            break;
+          case "6":
+            text("Adiciona asas na sua criatura.", 380, 150);
+            text("Vantagem: +Velocidade", 380, 165);
+            text("Desvantagem: +Fome", 380, 180);
+            break;
+          case "7":
+            text("Adiciona espinhos na sua criatura.", 380, 150);
+            text("Vantagem: +Resistência", 380, 165);
+            text("Desvantagem: +Fome", 380, 180);
+            break;
+          case "8":
+            text("Não adiciona nada na sua criatura.", 380, 150);
+            text("Vantagem: nenhuma", 380, 165);
+            text("Desvantagem: nenhuma", 380, 180);
+            break;
+        }
+        caract.show();
+        botaoConfirmar.show();
 
-    } else if (levelnum == 3){
-      level.rodar();
-      fill(255);
-      textFont("Times New Roman", 16);
-      text("Pontos de Modificação: " + pontuacao, 10, 20);
-      text(parseInt(tempoJogo) + " anos", 10, 40);
+      } else if (levelnum == 2){
+        level.rodar();
+        fill(255);
+        textFont("Times New Roman", 16);
+        text("Pontos de Modificação: " + pontuacao, 10, 20);
+        text(parseInt(tempoJogo) + " anos", 10, 40);
 
-    } else if (levelnum == 4){
-      level.rodar();
-      fill(255);
-      textFont("Times New Roman", 16);
-      text("Pontos de Modificação: " + pontuacao, 10, 20);
-      text(parseInt(tempoJogo) + " anos", 10, 40);
+      } else if (levelnum == 3){
+        level.rodar();
+        fill(255);
+        textFont("Times New Roman", 16);
+        text("Pontos de Modificação: " + pontuacao, 10, 20);
+        text(parseInt(tempoJogo) + " anos", 10, 40);
 
-    } else if (levelnum == 5){
-      level.rodar();
-      fill(255);
-      textFont("Times New Roman", 16);
-      text("Pontos de Modificação: " + pontuacao, 10, 20);
-      text(parseInt(tempoJogo) + " anos", 10, 40);
+      } else if (levelnum == 4){
+        level.rodar();
+        fill(255);
+        textFont("Times New Roman", 16);
+        text("Pontos de Modificação: " + pontuacao, 10, 20);
+        text(parseInt(tempoJogo) + " anos", 10, 40);
+
+      } else if (levelnum == 5){
+        level.rodar();
+        fill(255);
+        textFont("Times New Roman", 16);
+        text("Pontos de Modificação: " + pontuacao, 10, 20);
+        text(parseInt(tempoJogo) + " anos", 10, 40);
+      }
+    } else if (menu == 2){ // fim do jogo
+
     }
-  } else if (menu == 2){ // fim do jogo
-
   }
 }
 
