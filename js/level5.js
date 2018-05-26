@@ -5,6 +5,8 @@ var alimentosPlanta;
 var alimentosInseto;
 var alimentosVeneno;
 var alimentosCarne; // apenas quando uma criatura morre
+var quantiaObstaculos = 12; // quantidade de árvores para desviar
+var obstaculos;
 var variacaoAlimentos = 20; // variável que controla quantos tipos de alimentos serão criados
 var countAlimentos; // o level 2 terá menos almentos (dificuldade maior)
 var tipoCriaturasLevel4 = [];
@@ -27,6 +29,7 @@ function Level5(criaturasAnteriores, fossil){
   alimentosCarne = [];
   criaturas = [];
   ossos = [];
+  obstaculos = [];
   for (var i = 1; i < 9; i++){
     matriz.push(fossil.splice(random(0, fossil.length - 1), 1)[0]);
   }
@@ -87,6 +90,46 @@ Level5.prototype.iniciaGeracao = function(){
       criaturas.push(criatura);
     }
   }
+  // colocando obstáculos em suas posições
+    // árvores com flores vermelhas
+  r = 35;
+  x = 893;
+  y = 336;
+  obst = new Obstaculo(true, x, y, r);
+  obstaculos.push(obst);
+  x = 93;
+  y = 764;
+  obst = new Obstaculo(true, x, y, r);
+  obstaculos.push(obst);
+    // cactos
+  r = 55;
+  x = 887;
+  y = 52;
+  obst = new Obstaculo(true, x, y, r);
+  obstaculos.push(obst);
+  x = 929;
+  y = 65;
+  obst = new Obstaculo(true, x, y, 30); // cacto menor
+  obstaculos.push(obst);
+  x = 523;
+  y = 323;
+  obst = new Obstaculo(true, x, y, r);
+  obstaculos.push(obst);
+    // árvores grandes
+  r = 50;
+  x = 173;
+  y = 176;
+  obst = new Obstaculo(true, x, y, r);
+  obstaculos.push(obst);
+  x = 401;
+  y = 550;
+  obst = new Obstaculo(true, x, y, r + 5);
+  obstaculos.push(obst);
+  x = 826 ;
+  y = 705;
+  obst = new Obstaculo(true, x, y, r);
+  obstaculos.push(obst);
+
   // cria quantidades das criaturas pré-definidas
   for (var i = 0; i < tipoCriaturasLevel4.length; i++){
     for (var j = 0; j < quantiaEspecie/2; j++){
@@ -198,7 +241,7 @@ Level5.prototype.rodar = function(){
       // informações relacionadas às criaturas
       for (var i = criaturas.length - 1; i >= 0; i--){
         var crtr = criaturas[i];
-        crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas);
+        crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas, obstaculos);
         crtr.limites();
         crtr.update();
         crtr.show();
@@ -250,6 +293,7 @@ Level5.prototype.rodar = function(){
       this.serHumano.show();
     }
   }
+  image(levelImagens[7], 0, 0);
 }
 
 //______________________________________________________________________________
