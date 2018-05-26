@@ -216,8 +216,8 @@ Level5.prototype.rodar = function(){
       image(matriz[i], xGame/2 - (127 + 127/2) + x, yGame/2 - (127 + 127/2) + y);
     }
     if (flagMontou){
-      alert("Parabéns! Você montou o fóssil!");
       levelnum = 6;
+      alert("Parabéns! Você montou o fóssil!");
     }
 
   } else {
@@ -232,11 +232,6 @@ Level5.prototype.rodar = function(){
         if (random(1) < 0.2) {
           this.adicionaNovaComida(null, null);
         }
-      }
-      // informações relacionadas aos ossos
-      for (var i = ossos.length - 1; i >= 0; i--){
-        var ossoMapa = ossos[i];
-        ossoMapa.show();
       }
       // informações relacionadas às criaturas
       for (var i = criaturas.length - 1; i >= 0; i--){
@@ -291,9 +286,16 @@ Level5.prototype.rodar = function(){
       this.serHumano.comportamentos(ossos);
       this.serHumano.update();
       this.serHumano.show();
+
+      image(levelImagens[7], 0, 0);
+
+      // informações relacionadas aos ossos (ficará por cima de tudo)
+      for (var i = ossos.length - 1; i >= 0; i--){
+        var ossoMapa = ossos[i];
+        ossoMapa.show();
+      }
     }
   }
-  image(levelImagens[7], 0, 0);
 }
 
 //______________________________________________________________________________

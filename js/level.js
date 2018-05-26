@@ -304,20 +304,25 @@ Level.prototype.rodar = function(){
       }
 
     } else if (minigame == 3){ // roleta sorte
-      ellipse(xGame/2, yGame/2, 300, 300);
-      fill(200, 0, 0);
       strokeWeight(3);
       stroke(0);
-      line(xGame/2 - 108, yGame/2 - 108, xGame/2 + 108, yGame/2 + 108);
-      line(xGame/2 + 108, yGame/2 - 108, xGame/2 - 108, yGame/2 + 108);
+      fill(92, 64, 51);
+      ellipse(xGame/2, yGame/2, 300, 300);
+      fill(200, 0, 0);
+      line(xGame/2 - 106, yGame/2 - 106, xGame/2 + 106, yGame/2 + 106);
+      line(xGame/2 + 106, yGame/2 - 106, xGame/2 - 106, yGame/2 + 106);
+      textFont('Lithos Pro');
+      textSize(16);
       noStroke();
-      text("50 pontos", xGame/2 - 130, yGame/2);
-      text("0 pontos", xGame/2 + 70, yGame/2);
-      text("150 pontos", xGame/2 - 30, yGame/2 + 110);
-      text("300 pontos", xGame/2 - 30, yGame/2 - 110);
+      fill(255);
+      text("50 pontos", xGame/2 - 140, yGame/2);
+      text("0 pontos", xGame/2 + 60, yGame/2);
+      text("150 pontos", xGame/2 - 45, yGame/2 + 110);
+      text("300 pontos", xGame/2 - 45, yGame/2 - 110);
 
       push();
 
+      fill(255, 0, 0);
       translate(xGame/2, yGame/2);
       stroke(24);
       angleMode(DEGREES);
@@ -429,9 +434,21 @@ Level.prototype.rodar = function(){
           almt.show();
         }
       }
+      image(levelImagens[4], 0, 0);
     }
   }
-  image(levelImagens[4], 0, 0);
+}
+
+//______________________________________________________________________________
+// função que interpreta o valor do botão do mouse
+//______________________________________________________________________________
+Level.prototype.mousePressed = function() {
+  // minigame 3 ativo
+  if (minig3){
+    if (roleta >= 40){
+      roletaPara = 1;
+    }
+  }
 }
 
 //______________________________________________________________________________

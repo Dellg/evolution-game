@@ -549,7 +549,11 @@ function draw(){
 }
 
 function mousePressed(){
-  if (levelnum == 5){
+  if (levelnum == 1){
+    if (level != undefined){
+      level.mousePressed();      
+    }
+  } else if (levelnum == 5){
     if (level.serHumano.cavando){
       level.serHumano.carrega(10);
     }
