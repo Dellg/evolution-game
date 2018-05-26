@@ -82,6 +82,14 @@ function preload(){
   // carregando músicas
   link = 'https://raw.githubusercontent.com/Dellg/evolution-game/master/music/';
   musicas.push(loadSound(link + 'Woodland-Tales-Adrian-von-Ziegler.mp3'));
+  musicas.push(loadSound(link + 'Slava-Moy-Brat-Adrian-von-Ziegler.mp3'));
+  musicas.push(loadSound(link + 'Tale-of-Siltharea-Adrian-von-Ziegler.mp3'));
+  musicas.push(loadSound(link + 'Forest-Rites-Adrian-von-Ziegler.mp3'));
+  musicas.push(loadSound(link + 'Origins-Adrian-von-Ziegler.mp3'));
+  musicas.push(loadSound(link + 'Fable-Adrian-von-Ziegler.mp3'));
+  musicas.push(loadSound(link + 'Galdrar-Adrian-von-Ziegler.mp3'));
+  musicas.push(loadSound(link + 'Follow-the-Hunt-Adrian-von-Ziegler.mp3'));
+  musicas.push(loadSound(link + 'Sacred-Earth-Adrian-von-Ziegler.mp3'));
 }
 
 //______________________________________________________________________________
