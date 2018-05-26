@@ -520,7 +520,6 @@ function setup(){
 //______________________________________________________________________________
 function draw(){
   if (carregando){
-    background(0);
     for (var i = 0; i < particulas.length; i++){
       particulas[i].animar();
     }
