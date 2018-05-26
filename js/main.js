@@ -19,6 +19,7 @@ var fossilImagens = [];
 var levelImagens = [];
 var nomeJogador;
 var tela;
+var musicas = [];
 
 //______________________________________________________________________________
 // carregando imagens no projeto
@@ -78,6 +79,9 @@ function preload(){
   for (var i = 1; i < 5; i++){
     levelImagens.push(loadImage(link + 'level/level' + i + 'up.png'));
   }
+  // carregando músicas
+  link = 'https://raw.githubusercontent.com/Dellg/evolution-game/master/music/';
+  musicas.push(loadSound(link + 'Woodland-Tales-Adrian-von-Ziegler.mp3'));
 }
 
 //______________________________________________________________________________
@@ -86,7 +90,18 @@ function preload(){
 function setup(){
   createCanvas(xGame, yGame);
   image(menusImagens[0], 0, 0);
+  musicas[0].play();
   fill(255);
+
+  // créditos para as músicas
+  botaoCrdts = createButton('Músicas por Adrian von Ziegler');
+  botaoCrdts.style('font-family', 'Lithos Pro');
+  botaoCrdts.size(270, 30);
+  botaoCrdts.style('font-weight', 'bold');
+  botaoCrdts.style('color', 'white');
+  botaoCrdts.id('botaoMusica');
+  botaoCrdts.position(xGame - 270, yGame - 20);
+  botaoCrdts.mousePressed(redireciona);
 
   // informações do menu principal
   nomeJog = createInput();
@@ -161,6 +176,13 @@ function setup(){
   botaoConfirmar.position(50, 360);
   botaoConfirmar.mousePressed(confirmarNovaCaracteristica);
   botaoConfirmar.hide();
+
+  //______________________________________________________________________________
+  // função que redireciona o jogador para o link do canal do Adrian von Ziegler (músico)
+  //______________________________________________________________________________
+  function redireciona() {
+    open('https://www.youtube.com/channel/UCSeJA6az0GrNM4_-pl3HQSQ');
+  }
 
   //______________________________________________________________________________
   // iniciar um jogo apenas com as criaturas pré-definidas do level
@@ -551,7 +573,7 @@ function draw(){
 function mousePressed(){
   if (levelnum == 1){
     if (level != undefined){
-      level.mousePressed();      
+      level.mousePressed();
     }
   } else if (levelnum == 5){
     if (level.serHumano.cavando){
