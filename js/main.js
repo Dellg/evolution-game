@@ -83,7 +83,6 @@ function setup(){
     particulas.push(new Particula(x, y, 1, i));
   }
   createCanvas(xGame, yGame);
-  image(menusImagens[0], 0, 0);
 
   // créditos para as músicas
   botaoCrdts = createButton('Músicas por Adrian von Ziegler');
@@ -520,6 +519,7 @@ function setup(){
 //______________________________________________________________________________
 function draw(){
   if (carregando){
+    image(menusImagens[0], 0, 0);
     for (var i = 0; i < particulas.length; i++){
       particulas[i].animar();
     }
