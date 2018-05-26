@@ -249,6 +249,7 @@ function setup(){
     nomeJog.remove();
     botaoIniciar.remove();
     tipo = 0;
+    menu = 0;
     nome.show();
     botaoHerb.show();
     botaoCarn.show();
