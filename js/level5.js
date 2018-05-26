@@ -221,6 +221,8 @@ Level5.prototype.rodar = function(){
     if (flagMontou){
       levelnum = 6;
       alert("Parabéns! Você montou o fóssil!");
+      musicas[7].stop();
+      musicas[8].play();
     }
 
   } else {

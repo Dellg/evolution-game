@@ -2,7 +2,7 @@ var frame = 0;
 var fps = 0.02;
 
 function Obstaculo(arvore, x, y, raio){
-  this.imagem = menusImagens[5];
+  this.imagem = menusImagens[6];
   if (arvore){
     this.raio = raio;
     this.posicao = createVector(x, y);

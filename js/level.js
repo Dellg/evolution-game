@@ -223,6 +223,8 @@ Level.prototype.rodar = function(){
   if (tempoJogo >= 120){
     alert("Fim do capítulo 1!");
     criaturasSalvas = tipoCriaturas;
+    musicas[3].stop();
+    musicas[4].play();
     levelnum = 1.5;
 
   } else {

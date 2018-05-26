@@ -5,7 +5,7 @@ function Moeda(){
   this.pontos = int(random(1,4));
   this.velocidade = random(1) + this.pontos/2;
   this.posicao = createVector(random(100, width - 100), -32);
-  this.imagem = menusImagens[4];
+  this.imagem = menusImagens[5];
   this.animFrame = 0;
   this.animDirecao = 0;
 }

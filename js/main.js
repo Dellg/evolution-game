@@ -249,6 +249,8 @@ function setup(){
     nomeJog.remove();
     botaoIniciar.remove();
     tipo = 0;
+    musicas[0].stop();
+    musicas[2].play();
     menu = 0;
     nome.show();
     botaoHerb.show();
@@ -512,6 +514,8 @@ function setup(){
     botaoCarn.remove();
     botaoOni.remove();
     menu = 1;
+    musicas[2].stop();
+    musicas[3].play();
   }
 }
 

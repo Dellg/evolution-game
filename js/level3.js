@@ -91,6 +91,8 @@ Level3.prototype.rodar = function(){
   if (tempoJogo >= 300){
     alert("Fim do capítulo 3!");
     criaturasSalvas = tipoCriaturas;
+    musicas[5].stop();
+    musicas[6].play();
     levelnum = 4;
     level = new Level4(criaturasSalvas);
 
