@@ -92,7 +92,7 @@ Level3.prototype.rodar = function(){
     alert("Fim do capítulo 3!");
     criaturasSalvas = tipoCriaturas;
     musicas[5].stop();
-    musicas[6].play();
+    musicas[6].loop();
     levelnum = 4;
     level = new Level4(criaturasSalvas);
 

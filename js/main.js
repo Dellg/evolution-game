@@ -45,7 +45,7 @@ function carregaArquivo(vetor, tipo, id, arquivo){
         botaoCrdts.show();
         nomeJog.show();
         botaoIniciar.show();
-        musicas[0].play();
+        musicas[0].loop();
         carregando = false;
       }
     }
@@ -58,7 +58,7 @@ function carregaArquivo(vetor, tipo, id, arquivo){
         botaoCrdts.show();
         nomeJog.show();
         botaoIniciar.show();
-        musicas[0].play();
+        musicas[0].loop();
         carregando = false;
       }
     }
@@ -250,7 +250,7 @@ function setup(){
     botaoIniciar.remove();
     tipo = 0;
     musicas[0].stop();
-    musicas[2].play();
+    musicas[2].loop();
     menu = 0;
     nome.show();
     botaoHerb.show();

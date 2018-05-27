@@ -224,7 +224,7 @@ Level.prototype.rodar = function(){
     alert("Fim do capítulo 1!");
     criaturasSalvas = tipoCriaturas;
     musicas[3].stop();
-    musicas[4].play();
+    musicas[4].loop();
     levelnum = 1.5;
 
   } else {

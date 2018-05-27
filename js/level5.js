@@ -222,7 +222,7 @@ Level5.prototype.rodar = function(){
       levelnum = 6;
       alert("Parabéns! Você montou o fóssil!");
       musicas[7].stop();
-      musicas[8].play();
+      musicas[8].loop();
     }
 
   } else {
