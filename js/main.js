@@ -515,7 +515,7 @@ function setup(){
     botaoOni.remove();
     menu = 1;
     musicas[2].stop();
-    musicas[3].play();
+    musicas[3].loop();
   }
 }
 
