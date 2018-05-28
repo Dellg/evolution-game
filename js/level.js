@@ -437,6 +437,8 @@ Level.prototype.rodar = function(){
         }
       }
       image(levelImagens[4], 0, 0);
+      image(menusImagens[8], 0, 0);
+      image(menusImagens[9], 0, 0);
     }
   }
 }

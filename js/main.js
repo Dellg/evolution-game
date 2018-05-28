@@ -21,7 +21,7 @@ var nomeJogador;
 var tela;
 var musicas = [];
 var particulas = [];
-var quantidadeObjetos = 61; // imagens e sons
+var quantidadeObjetos = 64; // imagens e sons
 var contadorObjetos = 0; // para gerenciar o loading
 var carregando = true;
 var link = 'https://raw.githubusercontent.com/Dellg/evolution-game/master/';
@@ -151,6 +151,9 @@ function setup(){
   carregaArquivo(menusImagens, 0, 4, link + 'img/menus/seleciona-caco.png');
   carregaArquivo(menusImagens, 0, 5, link + 'img/menus/icones-game.png');
   carregaArquivo(menusImagens, 0, 6, link + 'img/menus/pedras.png');
+  carregaArquivo(menusImagens, 0, 7, link + 'img/menus/icones-minigames.png');
+  carregaArquivo(menusImagens, 0, 8, link + 'img/menus/hud.png');
+  carregaArquivo(menusImagens, 0, 9, link + 'img/menus/hud-minigames.png');
   // imagens das peças do fóssil do minigame do level 5
   for (var i = 1; i < 10; i++){
     carregaArquivo(fossilImagens, 0, i-1, link + 'img/puzzle/peca' + i + '.png');
