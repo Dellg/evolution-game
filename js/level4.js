@@ -224,6 +224,7 @@ Level4.prototype.rodar = function(){
     musicas[6].stop();
     musicas[7].loop();
     levelnum = 5;
+    botaoCrdts.elt.textContent = 'Follow the Hunt - por Adrian von Ziegler ft Lukasz Kapuscinski';
     level = new Level5(criaturasSalvas, fossilImagens);
 
   } else {

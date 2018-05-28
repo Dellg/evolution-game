@@ -85,13 +85,12 @@ function setup(){
   createCanvas(xGame, yGame);
 
   // créditos para as músicas
-  botaoCrdts = createButton('Músicas por Adrian von Ziegler');
+  botaoCrdts = createButton('Woodland Tales - por Adrian von Ziegler');
   botaoCrdts.style('font-family', 'Lithos Pro');
-  botaoCrdts.size(270, 30);
   botaoCrdts.style('font-weight', 'bold');
   botaoCrdts.style('color', 'white');
   botaoCrdts.id('botaoMusica');
-  botaoCrdts.position(xGame - 270, yGame - 20);
+  botaoCrdts.position(30, yGame - 30);
   botaoCrdts.mousePressed(redireciona);
   botaoCrdts.hide();
 
@@ -241,7 +240,39 @@ function setup(){
   // função que redireciona o jogador para o link do canal do Adrian von Ziegler (músico)
   //______________________________________________________________________________
   function redireciona() {
-    open('https://www.youtube.com/channel/UCSeJA6az0GrNM4_-pl3HQSQ');
+    switch (menu) {
+      case -1: // intro
+        open('https://www.youtube.com/watch?v=2kHmb7ZVh6s');
+        break; // seleção
+      case 0:
+        open('https://www.youtube.com/watch?v=fD2Cn8DqIq4');
+        break;
+      case 1: // levels
+        switch (levelnum) {
+          case 1:
+            open('https://www.youtube.com/watch?v=guJHiF2RSyo');
+            break;
+          case 1.5:
+            open('https://www.youtube.com/watch?v=_n6faOWXpKw');
+            break;
+          case 2:
+            open('https://www.youtube.com/watch?v=_n6faOWXpKw');
+            break;
+          case 3:
+            open('https://www.youtube.com/watch?v=SC-aRr0JY8A');
+            break;
+          case 4:
+            open('https://www.youtube.com/watch?v=bmooZIyYUr0');
+            break;
+          case 5:
+            open('https://www.youtube.com/watch?v=5sd0HexlfPk');
+            break;
+        }
+        break;
+      case 2: // final
+        open('https://www.youtube.com/watch?v=aRZMHXoOK5g');
+        break;
+    }
   }
 
   //______________________________________________________________________________
@@ -254,6 +285,7 @@ function setup(){
     tipo = 0;
     musicas[0].stop();
     musicas[2].loop();
+    botaoCrdts.elt.textContent = 'Tale of Silthârea - por Adrian von Ziegler';
     menu = 0;
     nome.show();
     botaoHerb.show();
@@ -516,6 +548,7 @@ function setup(){
     botaoHerb.remove();
     botaoCarn.remove();
     botaoOni.remove();
+    botaoCrdts.elt.textContent = 'Forest Rites - por Adrian von Ziegler';
     menu = 1;
     musicas[2].stop();
     musicas[3].loop();
@@ -546,8 +579,13 @@ function draw(){
       if (levelnum == 1){
         level.rodar();
         fill(255);
-        text("Pontos de Modificação: " + pontuacao, 10, 20);
-        text(parseInt(tempoJogo) + " anos", 10, 40);
+        strokeWeight(3);
+        stroke(0);
+        textFont("Lithos Pro", 16);
+        textStyle(BOLD);
+        image(menusImagens[8], 25, 25);
+        text(pontuacao, 90, 60);
+        text(parseInt(tempoJogo), 90, 100);
 
       } else if (levelnum == 1.5){ // escolha de novas características .hide() e .show()
         fill(15);

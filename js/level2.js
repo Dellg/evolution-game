@@ -191,6 +191,7 @@ Level2.prototype.rodar = function(){
     musicas[4].stop();
     musicas[5].loop();
     levelnum = 3;
+    botaoCrdts.elt.textContent = 'Fable - por Adrian von Ziegler';
     level = new Level3(criaturasSalvas);
 
   } else {

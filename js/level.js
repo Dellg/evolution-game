@@ -22,6 +22,12 @@ var roleta = 0; // variável de controle da velocidade da roleta
 var roletaPara = 0;
 var criaturasMiniGame = [];
 var arena = false;
+var scale1 = 0;
+var scale2 = 0;
+var scale3 = 0;
+var scale1flag = true;
+var scale2flag = true;
+var scale3flag = true;
 
 function Level(criatura){
   countAlimentos = 80;
@@ -226,6 +232,7 @@ Level.prototype.rodar = function(){
     musicas[3].stop();
     musicas[4].loop();
     levelnum = 1.5;
+    botaoCrdts.elt.textContent = 'Origins - por Adrian von Ziegler';
 
   } else {
     if (minigame == 1){ // minigame reprodução
@@ -410,15 +417,6 @@ Level.prototype.rodar = function(){
             }
           }
         }
-        if (tempoJogo >= 30){
-          text("Aperte 1 para jogar o MiniGame da dança de acasalamento", xGame - 400, 20);
-        }
-        if (tempoJogo >= 60){
-          text("Aperte 2 para jogar o MiniGame da arena", xGame - 400, 45);
-        }
-        if (tempoJogo >= 90){
-          text("Aperte 3 para jogar o MiniGame da roleta da sorte", xGame - 400, 70);
-        }
         for (var i = 0; i < alimentosPlanta.length; i++){
           var almt = alimentosPlanta[i];
           almt.show();
@@ -437,8 +435,77 @@ Level.prototype.rodar = function(){
         }
       }
       image(levelImagens[4], 0, 0);
-      image(menusImagens[8], 25, 25);
       image(menusImagens[9], xGame - 250, 25);
+      // ícones
+      if (minig1){
+        imgp = menusImagens[7].get(64, 0, 32, 32);
+        image(imgp, xGame - 230, 75);
+      } else {
+        if (tempoJogo >= 30){
+          imgp = menusImagens[7].get(32, 0, 32, 32);
+          image(imgp, xGame - 230, 75, imgp.width + scale1, imgp.height + scale1);
+          if (scale1flag){
+            scale1 += 0.25;
+            if (scale1 >= 3){
+              scale1flag = false;
+            }
+          } else {
+            scale1 -= 0.25;
+            if (scale1 <= 0){
+              scale1flag = true;
+            }
+          }
+        } else {
+          imgp = menusImagens[7].get(0, 0, 32, 32);
+          image(imgp, xGame - 230, 75);
+        }
+      }
+      if (minig2){
+        imgp = menusImagens[7].get(64, 32, 32, 32);
+        image(imgp, xGame - 160, 75);
+      } else {
+        if (tempoJogo >= 60){
+          imgp = menusImagens[7].get(32, 32, 32, 32);
+          image(imgp, xGame - 160, 75, imgp.width + scale2, imgp.height + scale2);
+          if (scale2flag){
+            scale2 += 0.25;
+            if (scale2 >= 3){
+              scale2flag = false;
+            }
+          } else {
+            scale2 -= 0.25;
+            if (scale2 <= 0){
+              scale2flag = true;
+            }
+          }
+        } else {
+          imgp = menusImagens[7].get(0, 32, 32, 32);
+          image(imgp, xGame - 160, 75);
+        }
+      }
+      if (minig3){
+        imgp = menusImagens[7].get(64, 64, 32, 32);
+        image(imgp, xGame - 90, 75);
+      } else {
+        if (tempoJogo >= 90){
+          imgp = menusImagens[7].get(32, 64, 32, 32);
+          image(imgp, xGame - 90, 75, imgp.width + scale3, imgp.height + scale3);
+          if (scale3flag){
+            scale3 += 0.25;
+            if (scale3 >= 3){
+              scale3flag = false;
+            }
+          } else {
+            scale3 -= 0.25;
+            if (scale3 <= 0){
+              scale3flag = true;
+            }
+          }
+        } else {
+          imgp = menusImagens[7].get(0, 64, 32, 32);
+          image(imgp, xGame - 90, 75);
+        }
+      }
     }
   }
 }

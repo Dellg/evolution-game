@@ -94,6 +94,7 @@ Level3.prototype.rodar = function(){
     musicas[5].stop();
     musicas[6].loop();
     levelnum = 4;
+    botaoCrdts.elt.textContent = 'Galdrar - por Adrian von Ziegler';
     level = new Level4(criaturasSalvas);
 
   } else {

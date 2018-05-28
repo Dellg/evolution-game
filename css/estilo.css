@@ -17,9 +17,11 @@ button:hover {
   border-radius: 20px;
 }
 
-#botaoMusica:hover {
-  box-shadow: 0px 0px 0px black;
-  text-shadow: 0px 0px 10px red;
+#botaoMusica {
+  padding: 5px;
+  text-shadow: 0px 0px 15px black;
+  border-radius: 20px;
+  background: linear-gradient(rgba(63, 40, 107, 0.5), rgba(45, 16, 78, 0.5));
 }
 
 input {

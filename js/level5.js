@@ -219,7 +219,9 @@ Level5.prototype.rodar = function(){
       image(matriz[i], xGame/2 - (127 + 127/2) + x, yGame/2 - (127 + 127/2) + y);
     }
     if (flagMontou){
+      botaoCrdts.elt.textContent = 'Sacred Earth - por Adrian von Ziegler';
       levelnum = 6;
+      menu = 2;
       alert("Parabéns! Você montou o fóssil!");
       musicas[7].stop();
       musicas[8].loop();
