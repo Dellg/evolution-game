@@ -578,14 +578,6 @@ function draw(){
     } else if (menu == 1){ // levels
       if (levelnum == 1){
         level.rodar();
-        fill(255);
-        strokeWeight(3);
-        stroke(0);
-        textFont("Lithos Pro", 16);
-        textStyle(BOLD);
-        image(menusImagens[8], 25, 25);
-        text(pontuacao, 90, 60);
-        text(parseInt(tempoJogo), 90, 100);
 
       } else if (levelnum == 1.5){ // escolha de novas características .hide() e .show()
         fill(15);
@@ -648,32 +640,27 @@ function draw(){
 
       } else if (levelnum == 2){
         level.rodar();
-        fill(255);
-        textFont("Times New Roman", 16);
-        text("Pontos de Modificação: " + pontuacao, 10, 20);
-        text(parseInt(tempoJogo) + " anos", 10, 40);
 
       } else if (levelnum == 3){
         level.rodar();
-        fill(255);
-        textFont("Times New Roman", 16);
-        text("Pontos de Modificação: " + pontuacao, 10, 20);
-        text(parseInt(tempoJogo) + " anos", 10, 40);
 
       } else if (levelnum == 4){
         level.rodar();
-        fill(255);
-        textFont("Times New Roman", 16);
-        text("Pontos de Modificação: " + pontuacao, 10, 20);
-        text(parseInt(tempoJogo) + " anos", 10, 40);
 
       } else if (levelnum == 5){
         level.rodar();
-        fill(255);
-        textFont("Times New Roman", 16);
-        text("Pontos de Modificação: " + pontuacao, 10, 20);
-        text(parseInt(tempoJogo) + " anos", 10, 40);
       }
+
+      // desenha HUD em todos os levels
+      fill(255);
+      strokeWeight(3);
+      stroke(0);
+      textFont("Lithos Pro", 16);
+      textStyle(BOLD);
+      image(menusImagens[8], 25, 25);
+      text(pontuacao, 90, 60);
+      text(parseInt(tempoJogo), 90, 100);
+
     } else if (menu == 2){ // fim do jogo
 
     }

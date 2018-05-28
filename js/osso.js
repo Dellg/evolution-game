@@ -1,7 +1,7 @@
 function Osso(id, imagem){
   this.id = id;
   this.imagem = imagem;
-  this.posicao = createVector(random(5, xGame-5), random(5, yGame-5));
+  this.posicao = createVector(random(10, xGame-150), random(10, yGame-10));
 }
 
 //____________________________________________________________________________

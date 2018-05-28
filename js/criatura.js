@@ -573,6 +573,34 @@ Criatura.prototype.limitesLevel4 = function() {
 }
 
 //____________________________________________________________________________
+// método que faz a criatura dar meia volta ao chegar perto da água (level 5)
+//____________________________________________________________________________
+Criatura.prototype.limitesLevel5 = function() {
+  var tamanho = 28;
+  var desejo = null;
+
+  if (this.posicao.x < tamanho){
+    desejo = createVector(this.maxVelocidade, this.velocidade.y);
+  } else if (this.posicao.x > xGame - 100 - tamanho * 4){
+    desejo = createVector(-this.maxVelocidade, this.velocidade.y);
+  }
+
+  if (this.posicao.y < -tamanho) {
+    this.posicao.y = height + tamanho;
+  } else if (this.posicao.y > height + tamanho) {
+    this.posicao.y = -tamanho;
+  }
+
+  if (desejo != null){
+    desejo.normalize();
+    desejo.mult(this.maxVelocidade);
+    var direcao = p5.Vector.sub(desejo, this.velocidade);
+    direcao.limit(this.maxForca);
+    this.aplicaForca(direcao);
+  }
+}
+
+//____________________________________________________________________________
 // método usado quando um predador caça uma presa
 //____________________________________________________________________________
 Criatura.prototype.matou = function(devorado){

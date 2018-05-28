@@ -244,7 +244,7 @@ Level5.prototype.rodar = function(){
       for (var i = criaturas.length - 1; i >= 0; i--){
         var crtr = criaturas[i];
         crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas, obstaculos);
-        crtr.limites();
+        crtr.limitesLevel5();
         crtr.update();
         crtr.show();
 
