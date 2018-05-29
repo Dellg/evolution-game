@@ -270,8 +270,6 @@ Level5.prototype.rodar = function(){
           }
         }
       }
-      fill(255);
-      text("Pedaços de fóssil: " + pedacos, 10, 60);
       // informações relacionadas às comidas
       for (var i = 0; i < alimentosPlanta.length; i++){
         var almt = alimentosPlanta[i];
@@ -294,13 +292,22 @@ Level5.prototype.rodar = function(){
       this.serHumano.update();
       this.serHumano.show();
 
-      image(levelImagens[7], 0, 0);
-
       // informações relacionadas aos ossos (ficará por cima de tudo)
       for (var i = ossos.length - 1; i >= 0; i--){
         var ossoMapa = ossos[i];
         ossoMapa.show();
       }
+
+      image(levelImagens[7], 0, 0);
+      image(menusImagens[11], xGame - 250, 25);
+      imgp = menusImagens[7].get(64, 0, 32, 32);
+      image(imgp, xGame - 230, 75);
+      fill(255);
+      strokeWeight(3);
+      stroke(0);
+      textFont("Lithos Pro", 16);
+      textStyle(BOLD);
+      text(pedacos, xGame - 190, 75);
     }
   }
 }

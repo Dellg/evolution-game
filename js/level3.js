@@ -99,7 +99,6 @@ Level3.prototype.rodar = function(){
 
   } else {
     text("Salve o máximo de criaturas da sua espécie desviando dos obstáculos!", xGame/2 - 140, 30);
-    text("Quantidade de Criaturas: " + criaturas.length, 10, 60);
     tempoJogo += 0.1;
     // verifica se não há criaturas vivas para poder iniciar a geração
     if (criaturas.length <= 0){
@@ -133,6 +132,15 @@ Level3.prototype.rodar = function(){
           obstaculos.splice(i, 1);
         }
       }
+      image(menusImagens[10], xGame - 250, 25);
+      imgp = menusImagens[7].get(32 * criatura[1], 32, 32, 32);
+      image(imgp, xGame - 230, 75);
+      fill(255);
+      strokeWeight(3);
+      stroke(0);
+      textFont("Lithos Pro", 16);
+      textStyle(BOLD);
+      text(criaturas.length, xGame - 190, 75);
     }
   }
 }
