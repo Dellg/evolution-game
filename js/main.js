@@ -21,7 +21,7 @@ var nomeJogador;
 var tela;
 var musicas = [];
 var particulas = [];
-var quantidadeObjetos = 64; // imagens e sons
+var quantidadeObjetos = 73; // imagens e sons
 var contadorObjetos = 0; // para gerenciar o loading
 var carregando = true;
 var link = 'https://raw.githubusercontent.com/Dellg/evolution-game/master/';
@@ -139,6 +139,16 @@ function setup(){
   carregaArquivo(imagens, 0, 24, link + 'img/nalulobulis/n-novaevolucao.png'); // id 24
   carregaArquivo(imagens, 0, 25, link + 'img/kunglob/k-novaevolucao.png');     // id 25
   carregaArquivo(imagens, 0, 26, link + 'img/cacoglobius/c-novaevolucao.png'); // id 26
+  // imagens para o minigame da dança do acasalamento
+  carregaArquivo(imagens, 0, 27, link + 'img/nalulobulis/n-down.png');
+  carregaArquivo(imagens, 0, 28, link + 'img/nalulobulis/n-left.png');
+  carregaArquivo(imagens, 0, 29, link + 'img/nalulobulis/n-up.png');
+  carregaArquivo(imagens, 0, 30, link + 'img/kunglob/k-down.png');
+  carregaArquivo(imagens, 0, 31, link + 'img/kunglob/k-left.png');
+  carregaArquivo(imagens, 0, 32, link + 'img/kunglob/k-up.png');
+  carregaArquivo(imagens, 0, 33, link + 'img/cacoglobius/c-down.png');
+  carregaArquivo(imagens, 0, 34, link + 'img/cacoglobius/c-left.png');
+  carregaArquivo(imagens, 0, 35, link + 'img/cacoglobius/c-up.png');
   // imagem do jogador humano
   carregaArquivo(humanoImagem, 0, 0, link + 'img/humano/humano.png');
   carregaArquivo(humanoImagem, 0, 1, link + 'img/humano/ossos.png');
@@ -154,9 +164,10 @@ function setup(){
   carregaArquivo(menusImagens, 0, 8, link + 'img/menus/hud.png');
   carregaArquivo(menusImagens, 0, 9, link + 'img/menus/hud-minigames.png');
   // imagens das peças do fóssil do minigame do level 5
-  for (var i = 1; i < 10; i++){
-    carregaArquivo(fossilImagens, 0, i-1, link + 'img/puzzle/peca' + i + '.png');
+  for (var i = 1; i < 9; i++){
+    carregaArquivo(fossilImagens, 0, i-1, link + 'img/puzzle/peca' + i + '-0.png');
   }
+  carregaArquivo(fossilImagens, 0, 9, link + 'img/puzzle/peca9.png');
   // imagens dos níveis 1, 2-3, 4 e 5
   for (var i = 1; i < 5; i++){
     carregaArquivo(levelImagens, 0, i-1, link + 'img/level/level' + i + '.png');
@@ -576,10 +587,7 @@ function draw(){
         image(menusImagens[4], 0, 0);
       }
     } else if (menu == 1){ // levels
-      if (levelnum == 1){
-        level.rodar();
-
-      } else if (levelnum == 1.5){ // escolha de novas características .hide() e .show()
+      if (levelnum == 1.5){ // escolha de novas características .hide() e .show()
         fill(15);
         noStroke();
         rect(30,90,800,100);
@@ -637,18 +645,8 @@ function draw(){
         }
         caract.show();
         botaoConfirmar.show();
-
-      } else if (levelnum == 2){
-        level.rodar();
-
-      } else if (levelnum == 3){
-        level.rodar();
-
-      } else if (levelnum == 4){
-        level.rodar();
-
-      } else if (levelnum == 5){
-        level.rodar();
+      } else {
+        level.rodar(); // todos os levels
       }
 
       // desenha HUD em todos os levels
