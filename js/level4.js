@@ -322,6 +322,8 @@ Level4.prototype.rodar = function(){
           almt.show();
         }
 
+        image(levelImagens[6], 0, 0);
+        image(menusImagens[9], xGame - 250, 25);
         if (miniGameCompleto){
           imgp = menusImagens[7].get(64, 96, 32, 32);
           image(imgp, xGame - 90, 75);
@@ -348,7 +350,6 @@ Level4.prototype.rodar = function(){
       }
     }
   }
-  image(levelImagens[6], 0, 0);
 }
 
 //______________________________________________________________________________

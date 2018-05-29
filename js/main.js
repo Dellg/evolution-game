@@ -174,7 +174,7 @@ function setup(){
   for (var i = 1; i < 9; i++){
     carregaArquivo(fossilImagens, 0, i-1, link + 'img/puzzle/peca' + i + '-0.png');
   }
-  carregaArquivo(fossilImagens, 0, 9, link + 'img/puzzle/peca9.png');
+  carregaArquivo(fossilImagens, 0, 8, link + 'img/puzzle/peca9.png');
   // imagens dos níveis 1, 2-3, 4 e 5
   for (var i = 1; i < 5; i++){
     carregaArquivo(levelImagens, 0, i-1, link + 'img/level/level' + i + '.png');

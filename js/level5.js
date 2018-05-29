@@ -300,14 +300,14 @@ Level5.prototype.rodar = function(){
 
       image(levelImagens[7], 0, 0);
       image(menusImagens[11], xGame - 250, 25);
-      imgp = menusImagens[7].get(64, 0, 32, 32);
-      image(imgp, xGame - 230, 75);
+      imgp = menusImagens[5].get(64, 0, 32, 32);
+      image(imgp, xGame - 170, 80);
       fill(255);
       strokeWeight(3);
       stroke(0);
       textFont("Lithos Pro", 16);
       textStyle(BOLD);
-      text(pedacos, xGame - 190, 75);
+      text(pedacos, xGame - 130, 100);
     }
   }
 }
