@@ -15,8 +15,11 @@ var geracao = 0;
 var criaturaMiniGame;
 var moedas;
 var miniGameOn = false;
+var miniGameCompleto = false;
 var miniGamePontos = 0;
 var arena2 = false;
+var scale1 = 0;
+var scale1flag = true;
 
 // o level 4 a criatura do jogador e uma nova evolução paralela de sua criatura
 function Level4(criaturasAnteriores){
@@ -249,6 +252,7 @@ Level4.prototype.rodar = function(){
             if (miniGamePontos >= 250){
               arena2 = false;
               miniGameOn = false;
+              miniGameCompleto = true;
               alert("Parabéns! Você conseguiu juntar alguns pontos de modificação!");
             }
           }
@@ -301,9 +305,6 @@ Level4.prototype.rodar = function(){
             }
           }
         }
-        if (tempoJogo >= 350){
-          text("Aperte 1 para jogar o MiniGame", xGame - 400, 20);
-        }
         for (var i = 0; i < alimentosPlanta.length; i++){
           var almt = alimentosPlanta[i];
           almt.show();
@@ -320,6 +321,30 @@ Level4.prototype.rodar = function(){
           var almt = alimentosCarne[i];
           almt.show();
         }
+
+        if (miniGameCompleto){
+          imgp = menusImagens[7].get(64, 96, 32, 32);
+          image(imgp, xGame - 90, 75);
+        } else {
+          if (tempoJogo >= 350){
+            imgp = menusImagens[7].get(32, 96, 32, 32);
+            image(imgp, xGame - 90, 75, imgp.width + scale1, imgp.height + scale1);
+            if (scale1flag){
+              scale1 += 0.25;
+              if (scale1 >= 3){
+                scale1flag = false;
+              }
+            } else {
+              scale1 -= 0.25;
+              if (scale1 <= 0){
+                scale1flag = true;
+              }
+            }
+          } else {
+            imgp = menusImagens[7].get(0, 96, 32, 32);
+            image(imgp, xGame - 90, 75);
+          }
+        }
       }
     }
   }
@@ -331,10 +356,12 @@ Level4.prototype.rodar = function(){
 //______________________________________________________________________________
 Level4.prototype.keyPressed = function() {
   if (tempoJogo >= 350){
-    // botões que acessam os minigames
-    if (keyCode === 49 || keyCode === 97) {
-      if (!miniGameOn){
-        miniGameOn = true;
+    if (!miniGameCompleto){
+      // botões que acessam os minigames
+      if (keyCode === 49 || keyCode === 97) {
+        if (!miniGameOn){
+          miniGameOn = true;
+        }
       }
     }
   }
