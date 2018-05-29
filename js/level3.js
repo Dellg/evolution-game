@@ -133,14 +133,14 @@ Level3.prototype.rodar = function(){
         }
       }
       image(menusImagens[10], xGame - 250, 25);
-      imgp = menusImagens[7].get(32 * criatura[1], 32, 32, 32);
-      image(imgp, xGame - 230, 75);
+      imgp = menusImagens[5].get(32 * criatura[1], 32, 32, 32);
+      image(imgp, xGame - 190, 80);
       fill(255);
       strokeWeight(3);
       stroke(0);
       textFont("Lithos Pro", 16);
       textStyle(BOLD);
-      text(criaturas.length, xGame - 190, 75);
+      text(criaturas.length, xGame - 150, 90);
     }
   }
 }
