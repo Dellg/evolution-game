@@ -28,6 +28,7 @@ var scale3 = 0;
 var scale1flag = true;
 var scale2flag = true;
 var scale3flag = true;
+var ultimoPressionado = 0;
 
 function Level(criatura){
   countAlimentos = 80;
@@ -236,25 +237,9 @@ Level.prototype.rodar = function(){
 
   } else {
     if (minigame == 1){ // minigame reprodução
-      if (contador == 4){
-        var perdeu = false;
-        for (var i = 0; i < 4; i++){
-          if (ordem[i] != ordemAux[i]){
-            alert("Que pena! Você não conseguiu acertar.");
-            minigame = 0;
-            perdeu = true;
-            break;
-          }
-        }
-        if (!perdeu){
-          alert("Muito bem! Você conseguiu realizar a dança do acasalamento! Você recebeu 150 pontos.");
-          pontuacao += 150;
-          minigame = 0;
-        }
-      }
       if (esperando){
         text("Decore a ordem:", xGame/2 - 100, 30);
-        if (contador < 1){
+        if (contador < 1.5){
           switch (ordem[0]) {
             case 37:
               image(imagens[30 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
@@ -277,9 +262,7 @@ Level.prototype.rodar = function(){
               break;
           }
           contador += 0.03;
-        } else if (contador < 1.4){
-          contador += 0.03;
-        } else {
+        } else if (contador >= 1.5){
           contador = 0;
           if (ordem.length){
             ordem.splice(0, 1);
@@ -288,8 +271,41 @@ Level.prototype.rodar = function(){
           }
         }
       } else {
+        switch (ultimoPressionado) {
+          case 37:
+            image(imagens[30 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
+            break;
+          case 38:
+            image(imagens[31 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
+            break;
+          case 39:
+            image(imagens[28 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
+            break;
+          case 40:
+            image(imagens[29 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
+            break;
+          default:
+            image(imagens[27 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
+            break;
+        }
         text("Aperte na ordem:", xGame/2 - 100, 30);
         text("Valendo...", xGame/2 - 100, 60);
+      }
+      if (contador == 4){
+        var perdeu = false;
+        for (var i = 0; i < 4; i++){
+          if (ordem[i] != ordemAux[i]){
+            alert("Que pena! Você não conseguiu acertar.");
+            minigame = 0;
+            perdeu = true;
+            break;
+          }
+        }
+        if (!perdeu){
+          alert("Muito bem! Você conseguiu realizar a dança do acasalamento! Você recebeu 150 pontos.");
+          pontuacao += 150;
+          minigame = 0;
+        }
       }
 
     } else if (minigame == 2){ // minigame arena
@@ -537,6 +553,7 @@ Level.prototype.keyPressed = function() {
     // minigame 1 ativo
     if (minig1){
       if (keyCode === UP_ARROW || keyCode === DOWN_ARROW || keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW){
+        ultimoPressionado = keyCode;
         ordem.push(keyCode);
         contador += 1;
       }
