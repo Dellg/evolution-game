@@ -257,16 +257,23 @@ Level.prototype.rodar = function(){
         if (contador < 1){
           switch (ordem[0]) {
             case 37:
+              image(imagens[30 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
               text("Esquerda", xGame/2 - 100, 60);
               break;
             case 38:
+              image(imagens[31 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
               text("Cima", xGame/2 - 100, 60);
               break;
             case 39:
+              image(imagens[28 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
               text("Direita", xGame/2 - 100, 60);
               break;
             case 40:
+              image(imagens[29 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
               text("Baixo", xGame/2 - 100, 60);
+              break;
+            default:
+              image(imagens[27 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
               break;
           }
           contador += 0.03;

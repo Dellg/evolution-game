@@ -18,10 +18,9 @@ var menusImagens = [];
 var fossilImagens = [];
 var levelImagens = [];
 var nomeJogador;
-var tela;
 var musicas = [];
 var particulas = [];
-var quantidadeObjetos = 73; // imagens e sons
+var quantidadeObjetos = 79; // imagens e sons
 var contadorObjetos = 0; // para gerenciar o loading
 var carregando = true;
 var link = 'https://raw.githubusercontent.com/Dellg/evolution-game/master/';
@@ -140,15 +139,21 @@ function setup(){
   carregaArquivo(imagens, 0, 25, link + 'img/kunglob/k-novaevolucao.png');     // id 25
   carregaArquivo(imagens, 0, 26, link + 'img/cacoglobius/c-novaevolucao.png'); // id 26
   // imagens para o minigame da dança do acasalamento
-  carregaArquivo(imagens, 0, 27, link + 'img/nalulobulis/n-down.png');
-  carregaArquivo(imagens, 0, 28, link + 'img/nalulobulis/n-left.png');
-  carregaArquivo(imagens, 0, 29, link + 'img/nalulobulis/n-up.png');
-  carregaArquivo(imagens, 0, 30, link + 'img/kunglob/k-down.png');
-  carregaArquivo(imagens, 0, 31, link + 'img/kunglob/k-left.png');
-  carregaArquivo(imagens, 0, 32, link + 'img/kunglob/k-up.png');
-  carregaArquivo(imagens, 0, 33, link + 'img/cacoglobius/c-down.png');
-  carregaArquivo(imagens, 0, 34, link + 'img/cacoglobius/c-left.png');
-  carregaArquivo(imagens, 0, 35, link + 'img/cacoglobius/c-up.png');
+  carregaArquivo(imagens, 0, 27, link + 'img/nalulobulis/n-idle.png');
+  carregaArquivo(imagens, 0, 28, link + 'img/nalulobulis/n-right.png');
+  carregaArquivo(imagens, 0, 29, link + 'img/nalulobulis/n-down.png');
+  carregaArquivo(imagens, 0, 30, link + 'img/nalulobulis/n-left.png');
+  carregaArquivo(imagens, 0, 31, link + 'img/nalulobulis/n-up.png');
+  carregaArquivo(imagens, 0, 32, link + 'img/kunglob/k-idle.png');
+  carregaArquivo(imagens, 0, 33, link + 'img/kunglob/k-right.png');
+  carregaArquivo(imagens, 0, 34, link + 'img/kunglob/k-down.png');
+  carregaArquivo(imagens, 0, 35, link + 'img/kunglob/k-left.png');
+  carregaArquivo(imagens, 0, 36, link + 'img/kunglob/k-up.png');
+  carregaArquivo(imagens, 0, 37, link + 'img/cacoglobius/c-idle.png');
+  carregaArquivo(imagens, 0, 38, link + 'img/cacoglobius/c-right.png');
+  carregaArquivo(imagens, 0, 39, link + 'img/cacoglobius/c-down.png');
+  carregaArquivo(imagens, 0, 40, link + 'img/cacoglobius/c-left.png');
+  carregaArquivo(imagens, 0, 41, link + 'img/cacoglobius/c-up.png');
   // imagem do jogador humano
   carregaArquivo(humanoImagem, 0, 0, link + 'img/humano/humano.png');
   carregaArquivo(humanoImagem, 0, 1, link + 'img/humano/ossos.png');
