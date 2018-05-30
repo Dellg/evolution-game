@@ -34,9 +34,9 @@ function Level5(criaturasAnteriores, fossil){
   ossos = [];
   obstaculos = [];
   for (var i = 1; i < 9; i++){
-    matriz.push(fossil.splice(random(0, fossil.length - 1), 1)[0]);
+    matriz.push(fossil.splice(random(8 * criatura[1], 8 + (criatura[1] + 1), 1)[0]);
   }
-  matriz.push(fossil.splice(0, 1)[0]);
+  matriz.push(fossil.splice(fossil.length - 1, 1)[0]);
   tipoCriaturasLevel4 = criaturasAnteriores;
   this.carregarDados();
   this.serHumano;
