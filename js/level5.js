@@ -22,9 +22,11 @@ var flagMontou = false;
 
 // o level 4 a criatura do jogador e uma nova evolução paralela de sua criatura
 function Level5(criaturasAnteriores, fossil){
-  for (var i = 0; i < 9; i++){
-    fossilImagens[i].name = i+1;
+  for (var i = 0; i < fossil.length-1; i++){
+    fossilImagens[i].name = (i+1) % 9;
   }
+  fossilImagens[fossil.length-1].name = 9;
+
   countAlimentos = 80;
   alimentosPlanta = [];
   alimentosInseto = [];
@@ -34,7 +36,7 @@ function Level5(criaturasAnteriores, fossil){
   ossos = [];
   obstaculos = [];
   for (var i = 1; i < 9; i++){
-    matriz.push(fossil.splice(random(8 * criatura[1], 8 + (criatura[1] + 1)), 1)[0]);
+    matriz.push(fossil.splice(random(8 * criatura[1], 7 * (criatura[1] + 1) - (i-1)), 1)[0]);
   }
   matriz.push(fossil.splice(fossil.length - 1, 1)[0]);
   tipoCriaturasLevel4 = criaturasAnteriores;
