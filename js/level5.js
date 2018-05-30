@@ -16,14 +16,20 @@ var ossos;
 // variáveis do puzzle
 var pedacos = 0;
 var matriz = [];
-var indexVazio = 8;
+var indexVazio;
 var quantiaCerta = 0;
 var flagMontou = false;
 
 // o level 4 a criatura do jogador e uma nova evolução paralela de sua criatura
 function Level5(criaturasAnteriores, fossil){
-  for (var i = 0; i < fossil.length-1; i++){
-    fossilImagens[i].name = (i+1) % 9;
+  for (var i = 0; i < 8; i++){
+    fossilImagens[i].name = (i % 8) + 1;
+  }
+  for (var i = 8; i < 16; i++){
+    fossilImagens[i].name = (i % 8) + 1;
+  }
+  for (var i = 16; i < fossil.length-1; i++){
+    fossilImagens[i].name = (i % 8) + 1;
   }
   fossilImagens[fossil.length-1].name = 9;
 
@@ -39,6 +45,13 @@ function Level5(criaturasAnteriores, fossil){
     matriz.push(fossil.splice(random(8 * criatura[1], 7 * (criatura[1] + 1) - (i-1)), 1)[0]);
   }
   matriz.push(fossil.splice(fossil.length - 1, 1)[0]);
+  matriz = embaralha(matriz);
+  for (var i = 0; i < matriz.length; i++){
+    if (matriz[i].name == 9){
+      indexVazio = i;
+      break;
+    }
+  }
   tipoCriaturasLevel4 = criaturasAnteriores;
   this.carregarDados();
   this.serHumano;
@@ -360,4 +373,33 @@ Level5.prototype.keyPressed = function() {
     }
     quantiaCerta = 0;
   }
+}
+
+// função que embaralha a matriz para ter solução
+function embaralha(paraEmbaralhar){
+  var bugado = true;
+  do {
+    for (var i = paraEmbaralhar.length - 1; i > 0; i--) {
+      aleatorio = Math.floor(Math.random() * (i + 1));
+      // swap
+      auxiliar = paraEmbaralhar[i];
+      paraEmbaralhar[i] = paraEmbaralhar[aleatorio];
+      paraEmbaralhar[aleatorio] = auxiliar;
+    }
+    var contagemImpares = 0;
+    for (var i = 0; i < paraEmbaralhar.length; i++){
+      for (var j = i+1; j < paraEmbaralhar.length; j++){
+        if (paraEmbaralhar[i].name != 9 && paraEmbaralhar[j].name != 9){
+          if (paraEmbaralhar[i].name > paraEmbaralhar[j].name){
+            contagemImpares += 1;
+          }
+        }
+      }
+    }
+    console.log('contagem: ' + contagemImpares);
+    if (contagemImpares % 2 == 0){
+      bugado = false;
+    }
+  } while (bugado);
+  return paraEmbaralhar;
 }
