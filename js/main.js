@@ -24,6 +24,7 @@ var quantidadeObjetos = 105; // imagens e sons
 var contadorObjetos = 0; // para gerenciar o loading
 var carregando = true;
 var link = 'https://raw.githubusercontent.com/Dellg/evolution-game/master/';
+var upgradeSelecionado = 0;
 
 //______________________________________________________________________________
 // carregando imagens no projeto
@@ -171,7 +172,7 @@ function setup(){
   carregaArquivo(menusImagens, 0, 10, link + 'img/menus/hud-minigames2.png');
   carregaArquivo(menusImagens, 0, 11, link + 'img/menus/hud-minigames3.png');
   for (var i = 1; i < 9; i++){
-    carregaArquivo(menusImagens, 0, 11 + i, link + 'img/menus/upgrade' + i + '.png');    
+    carregaArquivo(menusImagens, 0, 11 + i, link + 'img/menus/upgrade' + i + '.png');
   }
   // imagens das peças do fóssil do minigame do level 5
   for (var i = 1; i < 9; i++){
@@ -240,26 +241,73 @@ function setup(){
   botaoOni.hide();
 
   // informações do pré-Level 2
-  caract = createRadio();
-  caract.style("color", "#FFFFFF");
-  caract.style("font-family", "Times New Roman");
-  caract.style("font-size", "10pt");
-  caract.option('Chifres (150 pontos de modificação)----------',0);
-  caract.option('Orelhas Grandes (100 pontos de modificação)',1);
-  caract.option('Duas Caudas (150 pontos de modificação)---',2);
-  caract.option('Escalar Árvores (100 pontos de modificação)',3);
-  caract.option('Peçonha (150 pontos de modificação)----------',4);
-  caract.option('Carapaça (100 pontos de modificação)---------',5);
-  caract.option('Asas (150 pontos de modificação)---------------',6);
-  caract.option('Espinhos (85 pontos de modificação)----------',7);
-  caract.option('Nada',8);
-  caract.value(0);
-  caract.position(50, 145);
-  caract.style('width', '280px');
-  caract.hide();
+  botaoUpgrade1 = createButton('');
+  botaoUpgrade1.class('botaoUpgrade');
+  botaoUpgrade1.position(78, 248);
+  botaoUpgrade1.size(134, 134);
+  botaoUpgrade1.mousePressed(function t() { upgradeSelecionado = 0});
+  botaoUpgrade1.hide();
 
-  botaoConfirmar = createButton('Confirmar');
-  botaoConfirmar.position(50, 360);
+  botaoUpgrade2 = createButton('');
+  botaoUpgrade2.class('botaoUpgrade');
+  botaoUpgrade2.position(222, 248);
+  botaoUpgrade2.size(134, 134);
+  botaoUpgrade2.mousePressed(function t() { upgradeSelecionado = 1});
+  botaoUpgrade2.hide();
+
+  botaoUpgrade3 = createButton('');
+  botaoUpgrade3.class('botaoUpgrade');
+  botaoUpgrade3.position(366, 248);
+  botaoUpgrade3.size(134, 134);
+  botaoUpgrade3.mousePressed(function t() { upgradeSelecionado = 2});
+  botaoUpgrade3.hide();
+
+  botaoUpgrade4 = createButton('');
+  botaoUpgrade4.class('botaoUpgrade');
+  botaoUpgrade4.position(510, 248);
+  botaoUpgrade4.size(134, 134);
+  botaoUpgrade4.mousePressed(function t() { upgradeSelecionado = 3});
+  botaoUpgrade4.hide();
+
+  botaoUpgrade5 = createButton('');
+  botaoUpgrade5.class('botaoUpgrade');
+  botaoUpgrade5.position(78, 428);
+  botaoUpgrade5.size(134, 134);
+  botaoUpgrade5.mousePressed(function t() { upgradeSelecionado = 4});
+  botaoUpgrade5.hide();
+
+  botaoUpgrade6 = createButton('');
+  botaoUpgrade6.class('botaoUpgrade');
+  botaoUpgrade6.position(222, 428);
+  botaoUpgrade6.size(134, 134);
+  botaoUpgrade6.mousePressed(function t() { upgradeSelecionado = 5});
+  botaoUpgrade6.hide();
+
+  botaoUpgrade7 = createButton('');
+  botaoUpgrade7.class('botaoUpgrade');
+  botaoUpgrade7.position(366, 428);
+  botaoUpgrade7.size(134, 134);
+  botaoUpgrade7.mousePressed(function t() { upgradeSelecionado = 6});
+  botaoUpgrade7.hide();
+
+  botaoUpgrade8 = createButton('');
+  botaoUpgrade8.class('botaoUpgrade');
+  botaoUpgrade8.position(510, 428);
+  botaoUpgrade8.size(134, 134);
+  botaoUpgrade8.mousePressed(function t() { upgradeSelecionado = 7});
+  botaoUpgrade8.hide();
+
+  botaoCancelar = createButton('');
+  botaoCancelar.id('botaoCancelar');
+  botaoCancelar.position(250, 627);
+  botaoCancelar.size(210, 50);
+  botaoCancelar.mousePressed(function t() { upgradeSelecionado = 8; confirmarNovaCaracteristica()});
+  botaoCancelar.hide();
+
+  botaoConfirmar = createButton('');
+  botaoConfirmar.id('botaoConfirmar');
+  botaoConfirmar.position(600, 627);
+  botaoConfirmar.size(210, 50);
   botaoConfirmar.mousePressed(confirmarNovaCaracteristica);
   botaoConfirmar.hide();
 
@@ -325,14 +373,14 @@ function setup(){
   // iniciar um jogo apenas com as criaturas pré-definidas do level
   //______________________________________________________________________________
   function confirmarNovaCaracteristica() {
-    if (criatura[1] == caract.value()){
+    if (criatura[1] == upgradeSelecionado){
       alert("Você já possui essa melhoria, escolha outra!");
       return false;
     }
 
     // dá a pontuação apropriada dependendo do upgrade
-    switch (caract.value()) {
-      case "0":
+    switch (upgradeSelecionado) {
+      case 0:
         if (pontuacao >= 150){
           criaturasSalvas[0][0].push("Chifres");
           criaturasSalvas[0][5] += 0.25;
@@ -348,7 +396,7 @@ function setup(){
           return false;
         }
         break;
-      case "1":
+      case 1:
         if (pontuacao >= 100){
           criaturasSalvas[0][0].push("Orelhas Grandes");
           criaturasSalvas[0][4] += 0.25;
@@ -364,7 +412,7 @@ function setup(){
           return false;
         }
         break;
-      case "2":
+      case 2:
         if (pontuacao >= 150){
           criaturasSalvas[0][0].push("Duas Caudas");
           criaturasSalvas[0][3] -= 0.3;
@@ -380,7 +428,7 @@ function setup(){
           return false;
         }
         break;
-      case "3":
+      case 3:
         if (pontuacao >= 100){
           criaturasSalvas[0][0].push("Escalar Árvores");
           criaturasSalvas[0][4] += 0.25;
@@ -398,7 +446,7 @@ function setup(){
           return false;
         }
         break;
-      case "4":
+      case 4:
         if (pontuacao >= 150){
           criaturasSalvas[0][0].push("Peçonha");
           criaturasSalvas[0][3] -= 0.3;
@@ -416,7 +464,7 @@ function setup(){
           return false;
         }
         break;
-      case "5":
+      case 5:
         if (pontuacao >= 100){
           criaturasSalvas[0][0].push("Carapaça");
           criaturasSalvas[0][5] += 0.33;
@@ -434,7 +482,7 @@ function setup(){
           return false;
         }
         break;
-      case "6":
+      case 6:
         if (pontuacao >= 150){
           criaturasSalvas[0][0].push("Asas");
           criaturasSalvas[0][3] += 0.3;
@@ -452,7 +500,7 @@ function setup(){
           return false;
         }
         break;
-      case "7":
+      case 7:
         if (pontuacao >= 85){
           criaturasSalvas[0][0].push("Espinhos");
           criaturasSalvas[0][3] += 0.3;
@@ -470,7 +518,7 @@ function setup(){
           return false;
         }
         break;
-      case "8":
+      case 8:
         break;
     }
 
@@ -497,7 +545,15 @@ function setup(){
       criaturasSalvas[2][6] = imagens[23];
     }
 
-    caract.remove();
+    botaoUpgrade1.remove();
+    botaoUpgrade2.remove();
+    botaoUpgrade3.remove();
+    botaoUpgrade4.remove();
+    botaoUpgrade5.remove();
+    botaoUpgrade6.remove();
+    botaoUpgrade7.remove();
+    botaoUpgrade8.remove();
+    botaoCancelar.remove();
     botaoConfirmar.remove();
     levelnum = 2;
     level = new Level2(criaturasSalvas);
@@ -604,63 +660,35 @@ function draw(){
       }
     } else if (menu == 1){ // levels
       if (levelnum == 1.5){ // escolha de novas características .hide() e .show()
-        fill(15);
-        noStroke();
-        rect(30,90,800,100);
-        rect(350,130,800,100);
-        fill(255);
-        textFont("Times New Roman", 32);
-        text("Escolha uma nova característica para fortificar sua criatura:", 60, 120);
-        textFont("Times New Roman", 16);
-        switch (caract.value()) {
-          case "0":
-            text("Adiciona chifres na sua criatura.", 380, 150);
-            text("Vantagem: +Resistência", 380, 165);
-            text("Desvantagem: -Velocidade", 380, 180);
+        switch (upgradeSelecionado) {
+          case 0:
+            image(menusImagens[12], 0, 0);
             break;
-          case "1":
-            text("Adiciona orelhas grandes na sua criatura.", 380, 150);
-            text("Vantagem: +Velocidade", 380, 165);
-            text("Desvantagem: -Resistência", 380, 180);
+          case 1:
+            image(menusImagens[13], 0, 0);
             break;
-          case "2":
-            text("Adiciona duas caudas na sua criatura.", 380, 150);
-            text("Vantagem: -Fome", 380, 165);
-            text("Desvantagem: -Resistência", 380, 180);
+          case 2:
+            image(menusImagens[14], 0, 0);
             break;
-          case "3":
-            text("Adiciona pés que possibilitam escalar árvores na sua criatura.", 380, 150);
-            text("Vantagem: +Velocidade", 380, 165);
-            text("Desvantagem: +Fome", 380, 180);
+          case 3:
+            image(menusImagens[15], 0, 0);
             break;
-          case "4":
-            text("Adiciona peçonha na sua criatura.", 380, 150);
-            text("Vantagem: -Fome", 380, 165);
-            text("Desvantagem: -Velocidade", 380, 180);
+          case 4:
+            image(menusImagens[16], 0, 0);
             break;
-          case "5":
-            text("Adiciona uma carapaça na sua criatura.", 380, 150);
-            text("Vantagem: ++Resistência", 380, 165);
-            text("Desvantagem: --Velocidade", 380, 180);
+          case 5:
+            image(menusImagens[17], 0, 0);
             break;
-          case "6":
-            text("Adiciona asas na sua criatura.", 380, 150);
-            text("Vantagem: +Velocidade", 380, 165);
-            text("Desvantagem: +Fome", 380, 180);
+          case 6:
+            image(menusImagens[18], 0, 0);
             break;
-          case "7":
-            text("Adiciona espinhos na sua criatura.", 380, 150);
-            text("Vantagem: +Resistência", 380, 165);
-            text("Desvantagem: +Fome", 380, 180);
+          case 7:
+            image(menusImagens[19], 0, 0);
             break;
-          case "8":
-            text("Não adiciona nada na sua criatura.", 380, 150);
-            text("Vantagem: nenhuma", 380, 165);
-            text("Desvantagem: nenhuma", 380, 180);
+          case 8:
+            image(menusImagens[20], 0, 0);
             break;
         }
-        caract.show();
-        botaoConfirmar.show();
       } else {
         level.rodar(); // todos os levels
       }

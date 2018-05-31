@@ -232,6 +232,16 @@ Level.prototype.rodar = function(){
     criaturasSalvas = tipoCriaturas;
     musicas[3].stop();
     musicas[4].loop();
+    botaoUpgrade1.show();
+    botaoUpgrade2.show();
+    botaoUpgrade3.show();
+    botaoUpgrade4.show();
+    botaoUpgrade5.show();
+    botaoUpgrade6.show();
+    botaoUpgrade7.show();
+    botaoUpgrade8.show();
+    botaoCancelar.show();
+    botaoConfirmar.show();
     levelnum = 1.5;
     botaoCrdts.elt.textContent = 'Origins - por Adrian von Ziegler';
 

@@ -10,10 +10,20 @@ button:hover {
   box-shadow: 0px 0px 40px red;
 }
 
+.botaoUpgrade {
+  border-radius: 70px;
+}
+
 #botaoIniciar {
   border-radius: 20px;
 }
 #botaoSelecionou {
+  border-radius: 20px;
+}
+#botaoCancelar {
+  border-radius: 20px;
+}
+#botaoConfirmar {
   border-radius: 20px;
 }
 
