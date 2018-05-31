@@ -17,10 +17,12 @@ var humanoImagem = [];
 var menusImagens = [];
 var fossilImagens = [];
 var levelImagens = [];
+var introImagens = [];
+var zeramentoImagens = [];
 var nomeJogador;
 var musicas = [];
 var particulas = [];
-var quantidadeObjetos = 105; // imagens e sons
+var quantidadeObjetos = 123; // imagens e sons
 var contadorObjetos = 0; // para gerenciar o loading
 var carregando = true;
 var link = 'https://raw.githubusercontent.com/Dellg/evolution-game/master/';
@@ -202,6 +204,14 @@ function setup(){
   carregaArquivo(musicas, 1, 6, link + 'music/Galdrar-Adrian-von-Ziegler.mp3');
   carregaArquivo(musicas, 1, 7, link + 'music/Follow-the-Hunt-Adrian-von-Ziegler.mp3');
   carregaArquivo(musicas, 1, 8, link + 'music/Sacred-Earth-Adrian-von-Ziegler.mp3');
+
+  // carregando imagens da introdução e do zeramento
+  for (var i = 1; i < 12; i++){
+    carregaArquivo(introImagens, 0, i-1, link + 'img/historia/intro' + i + '.png');
+  }
+  for (var i = 2; i < 9; i++){
+    carregaArquivo(zeramentoImagens, 0, i-2, link + 'img/historia/zeramento' + i + '.png');
+  }
 
   // informações do menu de seleção
   nome = createInput();
