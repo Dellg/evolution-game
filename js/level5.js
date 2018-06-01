@@ -240,6 +240,8 @@ Level5.prototype.rodar = function(){
       alert("Parabéns! Você montou o fóssil!");
       musicas[7].stop();
       musicas[8].loop();
+      imagemAtual = 0;
+      tempoImagem = 0;
     }
 
   } else {

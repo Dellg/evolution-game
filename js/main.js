@@ -27,6 +27,8 @@ var contadorObjetos = 0; // para gerenciar o loading
 var carregando = true;
 var link = 'https://raw.githubusercontent.com/Dellg/evolution-game/master/';
 var upgradeSelecionado = 0;
+var imagemAtual = 0;
+var tempoImagem = 0;
 
 //______________________________________________________________________________
 // carregando imagens no projeto
@@ -329,6 +331,9 @@ function setup(){
       case -1: // intro
         open('https://www.youtube.com/watch?v=2kHmb7ZVh6s');
         break; // seleção
+      case -0.5:
+        open('https://www.youtube.com/watch?v=nwZu4x_3x0M');
+        break;
       case 0:
         open('https://www.youtube.com/watch?v=fD2Cn8DqIq4');
         break;
@@ -369,14 +374,9 @@ function setup(){
     botaoIniciar.remove();
     tipo = 0;
     musicas[0].stop();
-    musicas[2].loop();
-    botaoCrdts.elt.textContent = 'Tale of Silthârea - por Adrian von Ziegler';
-    menu = 0;
-    nome.show();
-    botaoHerb.show();
-    botaoCarn.show();
-    botaoOni.show();
-    botaoAdcCrt.show();
+    musicas[1].loop();
+    botaoCrdts.elt.textContent = 'Slava, Moy Brat - por Adrian von Ziegler';
+    menu = -0.5;
   }
 
   //______________________________________________________________________________
@@ -660,6 +660,82 @@ function draw(){
   } else {
     if (menu == -1){ // intro
       image(menusImagens[1], 0, 0);
+    } else if (menu == -0.5){
+      tempoImagem += 0.1;
+      fill(255);
+      strokeWeight(3);
+      stroke(0);
+      textFont("Lithos Pro", 24);
+      textStyle(BOLD);
+      switch (imagemAtual) {
+        case 0:
+          image(introImagens[0], 0, 0);
+          text('E a humanidade segue seu curso tranquilamente...', 90, 60);
+          break;
+        case 1:
+          image(introImagens[1], 0, 0);
+          text('E a humanidade segue seu curso tranquilamente...', 90, 60);
+          break;
+        case 2:
+          image(introImagens[2], 0, 0);
+          text('Cada um em seu próprio destino, todos dentro de um pequeno', 90, 60);
+          text('planeta em um vasto universo...', 90, 90);
+          break;
+        case 3:
+          image(introImagens[3], 0, 0);
+          text('Cada um em seu próprio destino, todos dentro de um pequeno', 90, 60);
+          text('planeta em um vasto universo...', 90, 90);
+          break;
+        case 4:
+          image(introImagens[4], 0, 0);
+          text('Me diz uma coisa...', 90, 60);
+          text('Você acredita que há vida em outros planetas?!', 90, 90);
+          break;
+        case 5:
+          image(introImagens[5], 0, 0);
+          text('Alguns acreditam que nesta imensidão existe algum planeta', 90, 60);
+          text('com vida tão complexa quanto a nossa...', 90, 90);
+          text('Outros acreditam que é pura fantasia!', 90, 120);
+          break;
+        case 6:
+          image(introImagens[6], 0, 0);
+          text('O que você acha?', 90, 60);
+          text('Muitos buscam pela resposta, mas nada se encontrou até agora.', 90, 90);
+          break;
+        case 7:
+          image(introImagens[7], 0, 0);
+          text('Tá bom, te contarei um segredo...', 90, 60);
+          break;
+        case 8:
+          image(introImagens[8], 0, 0);
+          text('Há 380 bilhões de anos luz da terra (onde os humanos jamais', 90, 60);
+          text('conseguiram chegar a imaginar) existe um pequeno planeta a', 90, 90);
+          text('girar em seu próprio sistema solar...', 90, 120);
+          text('É o planeta Geb...', 90, 150);
+          break;
+        case 9:
+          image(introImagens[9], 0, 0);
+          text('A verdade é que Geb se desenvolveu de uma maneira muito', 90, 60);
+          text('parecida com a Terra, ao ponto de também gerar vidas', 90, 90);
+          text('complexas.', 90, 120);
+          break;
+        case 10:
+          image(introImagens[9], 0, 0);
+          text('Como pode ver, a vida aqui está aflorando visivelmente, e os', 90, 60);
+          text('seres vivos desse planeta apesar de familiares são um pouco', 90, 90);
+          text('diferentes..', 90, 120);
+          break;
+        case 11:
+          image(introImagens[10], 0, 0);
+          text('Você gostaria de passar uma temporada aqui?! Não se preocupe,', 90, 60);
+          text('pode ficar quantos milhões de anos quiser...', 90, 90);
+          break;
+        case 12:
+          image(introImagens[10], 0, 0);
+          text('Observe de perto as gerações surgindo e sucumbindo, a vida', 90, 60);
+          text('fluindo de acordo com a evolução natural.', 90, 90);
+          break;
+      }
     } else if (menu == 0){ // principal
       if (tipo == 0){
         image(menusImagens[2], 0, 0);
@@ -714,12 +790,94 @@ function draw(){
       text(parseInt(tempoJogo), 90, 100);
 
     } else if (menu == 2){ // fim do jogo
-
+      tempoImagem += 0.1;
+      fill(255);
+      strokeWeight(3);
+      stroke(0);
+      textFont("Lithos Pro", 24);
+      textStyle(BOLD);
+      switch (imagemAtual) {
+        case 0:
+          image(introImagens[6], 0, 0);
+          text('Já faz um bom tempo não é?!', 90, 60);
+          text('O que acha de voltar para casa agora?!', 90, 90);
+          break;
+        case 1:
+          image(zeramentoImagens[0], 0, 0);
+          text('Parece que muita coisa tem acontecido por aqui na terra...', 90, 60);
+          break;
+        case 2:
+          image(zeramentoImagens[1], 0, 0);
+          text('Foi uma viagem e tanta, não foi?!', 90, 60);
+          break;
+        case 3:
+          image(zeramentoImagens[1], 0, 0);
+          text('Passar tantos anos em um planeta distante e depois voltar', 90, 60);
+          text('para seu antigo lar pode dar um pouco de nostalgia...', 90, 90);
+          break;
+        case 4:
+          image(zeramentoImagens[2], 0, 0);
+          text('Estava com saudade? Se passaram ' + int(tempoJogo) + ' milhões de anos', 90, 60);
+          text('desde que saiu para ir até o planeta Geb.', 90, 90);
+          break;
+        case 5:
+          image(zeramentoImagens[3], 0, 0);
+          text('Se prestar atenção, aqui na terra muitas coisas mudaram', 90, 60);
+          text('também, a evolução é um processo constante.', 90, 90);
+          break;
+        case 6:
+          image(zeramentoImagens[4], 0, 0);
+          text('Não se preocupe com Geb, tudo irá continuar seguindo seu', 90, 60);
+          text('curso natural...', 90, 90);
+          text(criatura[0][0] + ' vai continuar evoluindo...', 90, 120);
+          break;
+        case 7:
+          image(zeramentoImagens[5], 0, 0);
+          text('Os humanos vão continuar evoluindo...', 90, 60);
+          break;
+        case 8:
+          image(zeramentoImagens[6], 0, 0);
+          text('Porque a vida só existe se for livre para modificar...', 90, 60);
+          text('para evoluir... pra construir e desconstruir...', 90, 90);
+          break;
+        case 9:
+          image(zeramentoImagens[6], 0, 0);
+          text('Obrigado pela viagem e volte sempre!', 90, 60);
+          break;
+        case 10:
+          image(zeramentoImagens[6], 0, 0);
+          textFont("Lithos Pro", 60);
+          text('Fim', xGame/2, 120);
+          break;
+      }
     }
   }
 }
 
 function mousePressed(){
+  if (menu == -0.5){
+    if (tempoImagem >= 30){
+      tempoImagem = 0;
+      imagemAtual += 1;
+      if (imagemAtual == 13){
+        menu = 0;
+        musicas[1].stop();
+        musicas[2].loop();
+        botaoCrdts.elt.textContent = 'Tale of Silthârea - por Adrian von Ziegler';
+        nome.show();
+        botaoHerb.show();
+        botaoCarn.show();
+        botaoOni.show();
+        botaoAdcCrt.show();
+      }
+    }
+  }
+  if (menu == 2){
+    if (tempoImagem >= 30){
+      tempoImagem = 0;
+      imagemAtual += 1;
+    }
+  }
   if (levelnum == 1){
     if (level != undefined){
       level.mousePressed();
