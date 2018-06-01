@@ -14,6 +14,34 @@ button:hover {
   border-radius: 70px;
 }
 
+#sliderVolume {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 200px;
+  height: 20px;
+  background: linear-gradient(rgba(63, 40, 107, 0.5), rgba(45, 16, 78, 0.5));
+  outline: none;
+}
+#sliderVolume:hover {
+  box-shadow: 0px 0px 40px red;
+}
+
+#sliderVolume::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 100px;
+  background: white;
+  cursor: pointer;
+}
+#sliderVolume::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: black;
+  cursor: pointer;
+}
+
 #botaoIniciar {
   border-radius: 20px;
 }
@@ -25,6 +53,13 @@ button:hover {
 }
 #botaoConfirmar {
   border-radius: 20px;
+}
+
+#sliderVolume {
+  padding: 5px;
+  text-shadow: 0px 0px 15px black;
+  border-radius: 20px;
+  background: linear-gradient(rgba(63, 40, 107, 0.5), rgba(45, 16, 78, 0.5));
 }
 
 #botaoMusica {

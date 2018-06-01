@@ -102,7 +102,9 @@ function setup(){
   botaoCrdts.hide();
 
   volumeSlider = createSlider(0, 100, 100);
-  volumeSlider.position(50, yGame - 50);
+  volumeSlider.id('sliderVolume');
+  volumeSlider.elt.textContent = 'Teste';
+  volumeSlider.position(29, yGame - 65);
   volumeSlider.hide();
   volumeSlider.mouseMoved(mudouVolume);
 
@@ -330,15 +332,15 @@ function setup(){
 
   botaoCancelar = createButton('');
   botaoCancelar.id('botaoCancelar');
-  botaoCancelar.position(250, 627);
-  botaoCancelar.size(210, 50);
+  botaoCancelar.position(242, 640);
+  botaoCancelar.size(260, 45);
   botaoCancelar.mousePressed(function t() { upgradeSelecionado = 8; confirmarNovaCaracteristica()});
   botaoCancelar.hide();
 
   botaoConfirmar = createButton('');
   botaoConfirmar.id('botaoConfirmar');
-  botaoConfirmar.position(600, 627);
-  botaoConfirmar.size(210, 50);
+  botaoConfirmar.position(582, 643);
+  botaoConfirmar.size(260, 45);
   botaoConfirmar.mousePressed(confirmarNovaCaracteristica);
   botaoConfirmar.hide();
 
