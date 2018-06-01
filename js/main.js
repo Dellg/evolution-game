@@ -29,6 +29,7 @@ var link = 'https://raw.githubusercontent.com/Dellg/evolution-game/master/';
 var upgradeSelecionado = 0;
 var imagemAtual = 0;
 var tempoImagem = 0;
+var volumeSlider;
 
 //______________________________________________________________________________
 // carregando imagens no projeto
@@ -47,6 +48,7 @@ function carregaArquivo(vetor, tipo, id, arquivo){
       contadorObjetos++;
       if (contadorObjetos == quantidadeObjetos){
         botaoCrdts.show();
+        volumeSlider.show();
         nomeJog.show();
         botaoIniciar.show();
         musicas[0].loop();
@@ -60,6 +62,7 @@ function carregaArquivo(vetor, tipo, id, arquivo){
       contadorObjetos++;
       if (contadorObjetos == quantidadeObjetos){
         botaoCrdts.show();
+        volumeSlider.show();
         nomeJog.show();
         botaoIniciar.show();
         musicas[0].loop();
@@ -97,6 +100,22 @@ function setup(){
   botaoCrdts.position(30, yGame - 30);
   botaoCrdts.mousePressed(redireciona);
   botaoCrdts.hide();
+
+  volumeSlider = createSlider(0, 100, 100);
+  volumeSlider.position(50, yGame - 50);
+  volumeSlider.hide();
+  volumeSlider.mouseMoved(mudouVolume);
+
+  // função que controla o volume das músicas
+  function mudouVolume(){
+    if (musicas.length == 9){
+      for (var i = 0; i < musicas.length; i++){
+        if (musicas[i] != undefined){
+          musicas[i].setVolume(volumeSlider.value()/100);
+        }
+      }
+    }
+  }
 
   // informações do menu principal
   nomeJog = createInput();
@@ -897,10 +916,10 @@ function keyPressed(){
 // método para verificar se um array contém um objeto
 //______________________________________________________________________________
 Array.prototype.contains = function(obj) {
-    var i = this.length;
-    while (i--) {
-        if (this[i].codigo === obj.codigo)
-            return true;
-    }
-    return false;
+  var i = this.length;
+  while (i--) {
+    if (this[i].codigo === obj.codigo)
+      return true;
+  }
+  return false;
 }
