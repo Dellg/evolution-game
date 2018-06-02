@@ -221,7 +221,7 @@ Level4.prototype.adicionaNovaComida = function(x, y, morto, eraCarn){
 Level4.prototype.rodar = function(){
   image(levelImagens[2], 0, 0);
   fill(255);
-  if (tempoJogo >= 400){
+  if (tempoJogo >= 250){
     alert("Fim do capítulo 4!");
     criaturasSalvas = tipoCriaturas;
     musicas[6].stop();
@@ -264,7 +264,7 @@ Level4.prototype.rodar = function(){
       }
 
     } else {
-      tempoJogo += 0.1;
+      tempoJogo += 0.05;
       // verifica se não há criaturas vivas para poder iniciar a geração
       if (criaturas.length <= 0){
         geracao += 1;
@@ -328,7 +328,7 @@ Level4.prototype.rodar = function(){
           imgp = menusImagens[7].get(64, 96, 32, 32);
           image(imgp, xGame - 90, 75);
         } else {
-          if (tempoJogo >= 350){
+          if (tempoJogo >= 210){
             imgp = menusImagens[7].get(32, 96, 32, 32);
             image(imgp, xGame - 90, 75, imgp.width + scale1, imgp.height + scale1);
             if (scale1flag){
@@ -356,7 +356,7 @@ Level4.prototype.rodar = function(){
 // função que interpreta o valor do botão pressionado
 //______________________________________________________________________________
 Level4.prototype.keyPressed = function() {
-  if (tempoJogo >= 350){
+  if (tempoJogo >= 210){
     if (!miniGameCompleto){
       // botões que acessam os minigames
       if (keyCode === 49 || keyCode === 97) {

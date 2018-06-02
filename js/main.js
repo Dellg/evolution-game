@@ -30,6 +30,7 @@ var upgradeSelecionado = 0;
 var imagemAtual = 0;
 var tempoImagem = 0;
 var volumeSlider;
+var frameHistoria = 0;
 
 //______________________________________________________________________________
 // carregando imagens no projeto
@@ -757,6 +758,19 @@ function draw(){
           text('fluindo de acordo com a evolução natural.', 90, 90);
           break;
       }
+      if (tempoImagem >= 30){
+        if (frameHistoria >= 0 && frameHistoria < 10 || frameHistoria >= 20 && frameHistoria < 30){
+          imgm = humanoImagem[2].get(0, 0, 32, 32);
+          image(imgm, 40, 40);
+        } else {
+          imgm = humanoImagem[2].get(32, 0, 32, 32);
+          image(imgm, 40, 40);
+        }
+        frameHistoria += 0.4;
+        if (frameHistoria >= 40){
+          frameHistoria = 0;
+        }
+      }
     } else if (menu == 0){ // principal
       if (tipo == 0){
         image(menusImagens[2], 0, 0);
@@ -796,6 +810,14 @@ function draw(){
             image(menusImagens[20], 0, 0);
             break;
         }
+        text('150', 120, 390);
+        text('100', 263, 390);
+        text('150', 406, 390);
+        text('100', 549, 390);
+        text('150', 120, 570);
+        text('100', 263, 570);
+        text('150', 406, 570);
+        text('85', 553, 570);
       } else {
         level.rodar(); // todos os levels
       }
@@ -869,7 +891,25 @@ function draw(){
           image(zeramentoImagens[6], 0, 0);
           textFont("Lithos Pro", 60);
           text('Fim', xGame/2, 120);
+          textFont("Lithos Pro", 18);
+          text('Jogador: ' + nomeJogador, xGame/2, 200);
+          text('Espécie: ' + criatura[0][0], xGame/2, 220);
+          text('Pontos de Modificação: ' + pontuacao, xGame/2, 240);
+          text('Tempo de Jogo: ' + int(tempoJogo), xGame/2, 260);
           break;
+      }
+      if (tempoImagem >= 30 && imagemAtual != 10){
+        if (frameHistoria >= 0 && frameHistoria < 10 || frameHistoria >= 20 && frameHistoria < 30){
+          imgm = humanoImagem[2].get(0, 0, 32, 32);
+          image(imgm, 40, 40);
+        } else {
+          imgm = humanoImagem[2].get(32, 0, 32, 32);
+          image(imgm, 40, 40);
+        }
+        frameHistoria += 0.4;
+        if (frameHistoria >= 40){
+          frameHistoria = 0;
+        }
       }
     }
   }
@@ -894,7 +934,7 @@ function mousePressed(){
     }
   }
   if (menu == 2){
-    if (tempoImagem >= 30){
+    if (tempoImagem >= 30 && imagemAtual != 10){
       tempoImagem = 0;
       imagemAtual += 1;
     }

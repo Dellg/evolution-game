@@ -227,7 +227,7 @@ Level.prototype.adicionaNovaComida = function(x, y, morto, eraCarn){
 Level.prototype.rodar = function(){
   image(levelImagens[0], 0, 0);
   fill(255);
-  if (tempoJogo >= 120){
+  if (tempoJogo >= 80){
     alert("Fim do capítulo 1!");
     criaturasSalvas = tipoCriaturas;
     musicas[3].stop();
@@ -409,7 +409,7 @@ Level.prototype.rodar = function(){
       pop();
 
     } else {
-      tempoJogo += 0.1;
+      tempoJogo += 0.05;
       // verifica se não há criaturas vivas para poder iniciar a geração
       if (criaturas.length <= 0){
         geracao += 1;
@@ -474,7 +474,7 @@ Level.prototype.rodar = function(){
         imgp = menusImagens[7].get(64, 0, 32, 32);
         image(imgp, xGame - 230, 75);
       } else {
-        if (tempoJogo >= 30){
+        if (tempoJogo >= 20){
           imgp = menusImagens[7].get(32, 0, 32, 32);
           image(imgp, xGame - 230, 75, imgp.width + scale1, imgp.height + scale1);
           if (scale1flag){
@@ -497,7 +497,7 @@ Level.prototype.rodar = function(){
         imgp = menusImagens[7].get(64, 32, 32, 32);
         image(imgp, xGame - 160, 75);
       } else {
-        if (tempoJogo >= 60){
+        if (tempoJogo >= 40){
           imgp = menusImagens[7].get(32, 32, 32, 32);
           image(imgp, xGame - 160, 75, imgp.width + scale2, imgp.height + scale2);
           if (scale2flag){
@@ -520,7 +520,7 @@ Level.prototype.rodar = function(){
         imgp = menusImagens[7].get(64, 64, 32, 32);
         image(imgp, xGame - 90, 75);
       } else {
-        if (tempoJogo >= 90){
+        if (tempoJogo >= 60){
           imgp = menusImagens[7].get(32, 64, 32, 32);
           image(imgp, xGame - 90, 75, imgp.width + scale3, imgp.height + scale3);
           if (scale3flag){
@@ -574,7 +574,7 @@ Level.prototype.keyPressed = function() {
         roletaPara = 1;
       }
     }
-    if (tempoJogo >= 30){
+    if (tempoJogo >= 20){
       // botões que acessam os minigames
       if (keyCode === 49 || keyCode === 97) {
         if (!minig1 && minigame == 0){
@@ -588,7 +588,7 @@ Level.prototype.keyPressed = function() {
         }
       }
     }
-    if (tempoJogo >= 60){
+    if (tempoJogo >= 40){
       if (keyCode === 50 || keyCode === 98) {
         if (!minig2 && minigame == 0){
           minigame = 2;
@@ -596,7 +596,7 @@ Level.prototype.keyPressed = function() {
         }
       }
     }
-    if (tempoJogo >= 90){
+    if (tempoJogo >= 60){
       if (keyCode === 51 || keyCode === 99) {
         if (!minig3 && minigame == 0){
           minigame = 3;
