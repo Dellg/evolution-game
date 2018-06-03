@@ -86,7 +86,9 @@ Level3.prototype.iniciaGeracao = function(){
 // método que roda o jogo ou os minigames do level
 //______________________________________________________________________________
 Level3.prototype.rodar = function(){
-  image(levelImagens[1], 0, 0);
+  var aleatorioX = random(-2, 2);
+  var aleatorioY = random(-2, 2);
+  image(levelImagens[1], aleatorioX, aleatorioY);
   fill(255);
   if (tempoJogo >= 180){
     alert("Fim do capítulo 3!");
@@ -123,7 +125,7 @@ Level3.prototype.rodar = function(){
           criaturas.splice(i, 1);
         }
       }
-      image(levelImagens[5], 0, 0);
+      image(levelImagens[5], aleatorioX, aleatorioY);
 
       for (var i = obstaculos.length - 1; i >= 9; i--){
         var obst = obstaculos[i];
