@@ -107,7 +107,7 @@ Level3.prototype.rodar = function(){
       geracao += 1;
       this.iniciaGeracao();
     } else {
-      if (random(1) < 0.045) {
+      if (random(1) < 0.05) {
         obstaculos.push(new Obstaculo(false, 0, 0, 0));
       }
       for (var i = criaturas.length - 1; i >= 0; i--){

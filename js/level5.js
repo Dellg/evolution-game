@@ -66,33 +66,10 @@ Level5.prototype.carregarDados = function(){
     var t = i%3;
     var v = random(0.5, 1.5);
     var f = random(0.5, 3);
-    var r;
-    var g;
-    var b;
-    switch (t) {
-      // planta
-      case 0:
-        r = random(0, 126);
-        g = random(177, 255);
-        b = 0;
-        break;
-      // inseto
-      case 1:
-        r = random(177, 255);
-        g = random(0, 126);
-        b = 0;
-        break;
-      // veneno
-      case 2:
-        r = random(0, 80);
-        g = random(0, 80);
-        b = random(126, 255);
-        break;
-    }
-    tipoAlimentos[i] = [t, v, f, r, g, b];
+    tipoAlimentos[i] = [t, v, f, humanoImagem[3]];
   }
   // criatura que morreu
-  tipoAlimentos.push([3, random(0.5, 1.5), random(0.5, 3), 255, 255, 255]);
+  tipoAlimentos.push([3, random(0.5, 1.5), random(0.5, 3), humanoImagem[3]]);
 }
 
 //______________________________________________________________________________
@@ -257,6 +234,23 @@ Level5.prototype.rodar = function(){
           this.adicionaNovaComida(null, null);
         }
       }
+      // informações relacionadas às comidas
+      for (var i = 0; i < alimentosPlanta.length; i++){
+        var almt = alimentosPlanta[i];
+        almt.show();
+      }
+      for (var i = 0; i < alimentosInseto.length; i++){
+        var almt = alimentosInseto[i];
+        almt.show();
+      }
+      for (var i = 0; i < alimentosVeneno.length; i++){
+        var almt = alimentosVeneno[i];
+        almt.show();
+      }
+      for (var i = 0; i < alimentosCarne.length; i++){
+        var almt = alimentosCarne[i];
+        almt.show();
+      }
       // informações relacionadas às criaturas
       for (var i = criaturas.length - 1; i >= 0; i--){
         var crtr = criaturas[i];
@@ -286,23 +280,6 @@ Level5.prototype.rodar = function(){
             this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, true);
           }
         }
-      }
-      // informações relacionadas às comidas
-      for (var i = 0; i < alimentosPlanta.length; i++){
-        var almt = alimentosPlanta[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosInseto.length; i++){
-        var almt = alimentosInseto[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosVeneno.length; i++){
-        var almt = alimentosVeneno[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosCarne.length; i++){
-        var almt = alimentosCarne[i];
-        almt.show();
       }
       // informações relacionadas ao humano
       this.serHumano.comportamentos(ossos);
