@@ -22,7 +22,7 @@ var zeramentoImagens = [];
 var nomeJogador;
 var musicas = [];
 var particulas = [];
-var quantidadeObjetos = 123; // imagens e sons
+var quantidadeObjetos = 124; // imagens e sons
 var contadorObjetos = 0; // para gerenciar o loading
 var carregando = true;
 var link = 'https://raw.githubusercontent.com/Dellg/evolution-game/master/';
@@ -185,6 +185,7 @@ function setup(){
   carregaArquivo(humanoImagem, 0, 0, link + 'img/humano/humano.png');
   carregaArquivo(humanoImagem, 0, 1, link + 'img/humano/ossos.png');
   carregaArquivo(humanoImagem, 0, 2, link + 'img/humano/mouseClicou.png');
+  carregaArquivo(humanoImagem, 0, 3, link + 'img/alimento/alimento.png');
   // imagens dos menus
   carregaArquivo(menusImagens, 0, 1, link + 'img/menus/principal.png');
   carregaArquivo(menusImagens, 0, 2, link + 'img/menus/seleciona-nalu.png');
