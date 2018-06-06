@@ -13,7 +13,7 @@ var tipoCriaturas = [];
 var tipoAlimentos = [];
 var geracao = 0;
 var taxaMutacao = 0.01;
-var minigame = 0;
+var minigame = -1;
 var minig1 = false, minig2 = false, minig3 = false; // flag que verifica completude dos minigames
 var esperando = false; // flag para o jogador não poder pressionar
 var ordem = [], ordemAux = [];
@@ -29,6 +29,9 @@ var scale1flag = true;
 var scale2flag = true;
 var scale3flag = true;
 var ultimoPressionado = 0;
+var tempoTexto = 0;
+var indexTexto = 0;
+var flagTexto = false;
 
 function Level(criatura){
   countAlimentos = 80;
@@ -385,6 +388,102 @@ Level.prototype.rodar = function(){
       triangle(0, -80, 30, 30, -30, 30);
       pop();
 
+    } else if (minigame == -1){
+      switch (indexTexto) {
+        case 0:
+          stroke(0, tempoTexto);
+          fill(255, tempoTexto);
+          textFont(fonte, 40);
+          text('Capítulo 1', xGame/2 - 100, 100);
+          break;
+        case 1:
+          stroke(0, tempoTexto);
+          fill(255, tempoTexto);
+          textFont(fonte, 40);
+          text('Variabilidade Genética', xGame/2 - 170, 100);
+          break;
+      }
+      if (flagTexto){
+        tempoTexto -= 5;
+        if (tempoTexto <= 0){
+          indexTexto += 1;
+          flagTexto = false;
+          if (indexTexto == 2){
+            minigame = -2;
+          }
+        }
+      } else {
+        tempoTexto += 5;
+        if (tempoTexto >= 400){
+          flagTexto = true;
+        }
+      }
+
+    } else if (minigame == -2){
+      if (tempoTexto >= 30){
+        if (frameHistoria >= 0 && frameHistoria < 10 || frameHistoria >= 20 && frameHistoria < 30){
+          imgm = humanoImagem[2].get(0, 0, 32, 32);
+          image(imgm, xGame/2 - 130, 40);
+        } else {
+          imgm = humanoImagem[2].get(32, 0, 32, 32);
+          image(imgm, xGame/2 - 130, 40);
+        }
+        frameHistoria += 0.4;
+        if (frameHistoria >= 40){
+          frameHistoria = 0;
+        }
+      }
+      tempoTexto += 0.25;
+
+      switch (indexTexto) {
+        case 2:
+          stroke(0);
+          fill(255);
+          textFont(fonte, 18);
+          text('Bem-vindo(a) à Geb! Aqui começa a aventura, ' + nomeJogador + '!', xGame/2 - 200, 100);
+          break;
+        case 3:
+          stroke(0);
+          fill(255);
+          textFont(fonte, 18);
+          text('A variabilidade genética é um pré-requisito para a evolução', xGame/2 - 200, 100);
+          text('acontecer, os mecanismos que trazem variabilidade genética', xGame/2 - 200, 125);
+          text('para uma espécie são as mutações e a recombinação gênica.', xGame/2 - 200, 150);
+          break;
+        case 4:
+          stroke(0);
+          fill(255);
+          textFont(fonte, 18);
+          text('Você precisa acumular pontos de modificação do DNA para poder', xGame/2 - 200, 100);
+          text('adquirir novas mutações e deixar sua população mais rica', xGame/2 - 200, 125);
+          text('geneticamente.', xGame/2 - 200, 150);
+          break;
+        case 5:
+          stroke(0);
+          fill(255);
+          textFont(fonte, 18);
+          text('Os pontos se encontram na tela do lado esquerdo, junto com a', xGame/2 - 200, 100);
+          text('contagem de quanto tempo está se passando enquanto sua espécie', xGame/2 - 200, 125);
+          text('está evoluindo.', xGame/2 - 200, 150);
+          break;
+        case 6:
+          stroke(0);
+          fill(255);
+          textFont(fonte, 18);
+          text('À medida que a população se alimenta e se reproduz, ela ganha', xGame/2 - 200, 100);
+          text('alguns pontos de modificação. Logo você encontrará 3 minigames', xGame/2 - 200, 125);
+          text('do lado direito da tela que você precisará realizar com sucesso', xGame/2 - 200, 150);
+          text('para acumular pontos suficientes para ir à próxima fase.', xGame/2 - 200, 175);
+          break;
+        case 7:
+          stroke(0);
+          fill(255);
+          textFont(fonte, 18);
+          text('A aventura de ' + criatura[0][0] + ' é seguir o curso natural da evolução.', xGame/2 - 200, 100);
+          text('Boa sorte!', xGame/2 - 200, 125);
+          break;
+      }
+
     } else {
       tempoJogo += 0.05;
       // verifica se não há criaturas vivas para poder iniciar a geração
@@ -524,6 +623,15 @@ Level.prototype.rodar = function(){
 // função que interpreta o valor do botão do mouse
 //______________________________________________________________________________
 Level.prototype.mousePressed = function() {
+  if (indexTexto >= 2){
+    if (tempoTexto >= 30){
+      indexTexto += 1;
+      if (indexTexto == 8) {
+        minigame = 0;
+      }
+      tempoTexto = 0;
+    }
+  }
   // minigame 3 ativo
   if (minig3){
     if (roleta >= 40){
