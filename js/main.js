@@ -685,6 +685,11 @@ function draw(){
   } else {
     if (menu == -1){ // intro
       image(menusImagens[1], 0, 0);
+      fill(255)
+      textFont(fonte, 18);
+      text('Equipe de desenvolvimento:', 25, 35);
+      text('- Wendell Gomes Silva', 40, 55);
+      text('- Jessica Ferreira da Silva', 40, 75);
     } else if (menu == -0.5){
       tempoImagem += 0.1;
       fill(255);
@@ -748,7 +753,7 @@ function draw(){
           image(introImagens[9], 0, 0);
           text('Como pode ver, a vida aqui está aflorando visivelmente, e os', 90, 60);
           text('seres vivos desse planeta apesar de familiares são um pouco', 90, 90);
-          text('diferentes..', 90, 120);
+          text('diferentes.', 90, 120);
           break;
         case 11:
           image(introImagens[10], 0, 0);
@@ -895,6 +900,9 @@ function draw(){
           textFont(fonte, 60);
           text('Fim', xGame/2, 120);
           textFont(fonte, 18);
+          text('Equipe de desenvolvimento:', xGame - 320, yGame - 80);
+          text('- Wendell Gomes Silva', xGame - 305, yGame - 60);
+          text('- Jessica Ferreira da Silva', xGame - 305, yGame - 40);
           text('Jogador: ' + nomeJogador, xGame/2, 200);
           text('Espécie: ' + criatura[0][0], xGame/2, 220);
           text('Pontos de Modificação: ' + pontuacao, xGame/2, 240);

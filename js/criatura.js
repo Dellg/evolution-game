@@ -543,17 +543,17 @@ Criatura.prototype.limites = function() {
 //____________________________________________________________________________
 // método que faz a criatura dar meia volta ao chegar no limite da tela ou no meio (level 4)
 //____________________________________________________________________________
-Criatura.prototype.limitesLevel4 = function() {
-  var tamanho = 28;
+Criatura.prototype.limitesLevel4 = function(espaco) {
+  var tamanho = 32;
   var desejo = null;
 
   if (this.posicao.x < tamanho){
     desejo = createVector(this.maxVelocidade, this.velocidade.y);
-  } else if (this.posicao.x > width/2 - tamanho * 4 && this.posicao.x < width/2){
+  } else if (this.posicao.x > xGame/2 - espacoRio - tamanho && this.posicao.x < xGame/2){
     desejo = createVector(-this.maxVelocidade, this.velocidade.y);
-  } else if (this.posicao.x < width/2 + tamanho * 4 && this.posicao.x >= width/2){
+  } else if (this.posicao.x < xGame/2 + espacoRio + tamanho && this.posicao.x >= xGame/2){
     desejo = createVector(this.maxVelocidade, this.velocidade.y);
-  } else if (this.posicao.x > width - tamanho){
+  } else if (this.posicao.x > xGame - tamanho){
     desejo = createVector(-this.maxVelocidade, this.velocidade.y);
   }
 

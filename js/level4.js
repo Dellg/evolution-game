@@ -20,7 +20,7 @@ var miniGamePontos = 0;
 var arena2 = false;
 var scale1 = 0;
 var scale1flag = true;
-var espacoRio = 100;
+var espacoRio = 128;
 
 // o level 4 a criatura do jogador e uma nova evolução paralela de sua criatura
 function Level4(criaturasAnteriores){
@@ -175,8 +175,18 @@ Level4.prototype.adicionaNovaComida = function(x, y, morto, eraCarn){
       case 0:
         if (alimentosPlanta.length < (countAlimentos - countAlimentos/3)){
           alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
-          alimentosPlanta.push(new Alimento(random(5, xGame-5), random(5, yGame-5), tipoAlimentos[r]));
-          alimentosPlanta.push(new Alimento(random(5, xGame-5), random(5, yGame-5), tipoAlimentos[r]));
+          if (random(1) < 0.5){
+            x = random(5, xGame/2 - espacoRio);
+          } else {
+            x = random(xGame/2 + espacoRio, xGame-5);
+          }
+          alimentosPlanta.push(new Alimento(x, random(5, yGame-5), tipoAlimentos[r]));
+          if (random(1) < 0.5){
+            x = random(5, xGame/2 - espacoRio);
+          } else {
+            x = random(xGame/2 + espacoRio, xGame-5);
+          }
+          alimentosPlanta.push(new Alimento(x, random(5, yGame-5), tipoAlimentos[r]));
         }
         break;
       case 1:
@@ -273,7 +283,7 @@ Level4.prototype.rodar = function(){
         for (var i = criaturas.length - 1; i >= 0; i--){
           var crtr = criaturas[i];
           crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas, obstaculos);
-          crtr.limitesLevel4();
+          crtr.limitesLevel4(espacoRio);
           crtr.update();
           crtr.show();
 
