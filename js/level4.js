@@ -238,6 +238,11 @@ Level4.prototype.rodar = function(){
             moedas.splice(i, 1);
 
             if (miniGamePontos >= 250){
+              for (var i = criaturas.length -1; i >= 0; i--){
+                if (criaturas[i].nome.includes(criatura[0][0]) && criaturas[i].nome != criatura[0][0]){
+                  criaturas[i].atualizaImagem(aparenciaFutura);
+                }
+              }
               arena2 = false;
               miniGameOn = false;
               miniGameCompleto = true;

@@ -134,6 +134,10 @@ function Criatura(x, y, caracteristicas, heranca, geracao){
   }
 }
 
+Criatura.prototype.atualizaImagem = function(novaImagem) {
+  this.imagem = novaImagem;
+}
+
 //____________________________________________________________________________
 //  método que define qual comportamento a criatura irá realizar
 //____________________________________________________________________________

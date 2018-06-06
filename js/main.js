@@ -32,6 +32,7 @@ var tempoImagem = 0;
 var volumeSlider;
 var frameHistoria = 0;
 var fonte;
+var aparenciaFutura;
 
 //______________________________________________________________________________
 // carregando imagens no projeto
@@ -604,7 +605,7 @@ function setup(){
       return false;
     }
 
-    var vida = 2, fome, velocidade, resistencia, aparencia, aparenciaFutura;
+    var vida = 2, fome, velocidade, resistencia, aparencia;
     var infor = [];
     var inforModificada = [];
 
@@ -651,7 +652,7 @@ function setup(){
 
     alert("A criatura " + nome.value() + " foi criada com sucesso!")
     criatura = [infor, tipo, vida, fome, velocidade, resistencia, aparencia];
-    criaturaFutura = [inforModificada, tipo, vida, fome, velocidade, resistencia, aparenciaFutura];
+    criaturaFutura = [inforModificada, tipo, vida, fome, velocidade, resistencia, aparencia];
     level = new Level(criatura);
     limparCampos();
   }
