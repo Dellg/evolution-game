@@ -330,7 +330,7 @@ Level.prototype.rodar = function(){
       fill(200, 0, 0);
       line(xGame/2 - 106, yGame/2 - 106, xGame/2 + 106, yGame/2 + 106);
       line(xGame/2 + 106, yGame/2 - 106, xGame/2 - 106, yGame/2 + 106);
-      textSize(16);
+      textFont(fonte, 16);
       noStroke();
       fill(255);
       text("50 pontos", xGame/2 - 140, yGame/2);

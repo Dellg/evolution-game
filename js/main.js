@@ -31,12 +31,14 @@ var imagemAtual = 0;
 var tempoImagem = 0;
 var volumeSlider;
 var frameHistoria = 0;
+var fonte;
 
 //______________________________________________________________________________
 // carregando imagens no projeto
 //______________________________________________________________________________
 function preload(){
   // carregando imagem inicial
+  fonte = loadFont(link + 'lib/LithosPro.otf');
   menusImagens.push(loadImage(link + 'img/menus/carregando.png'));
 }
 
@@ -94,6 +96,7 @@ function setup(){
 
   // créditos para as músicas
   botaoCrdts = createButton('Woodland Tales - por Adrian von Ziegler');
+  botaoCrdts.style('font-family', 'Lithos Pro');
   botaoCrdts.style('font-weight', 'bold');
   botaoCrdts.style('color', 'white');
   botaoCrdts.id('botaoMusica');
@@ -687,7 +690,7 @@ function draw(){
       fill(255);
       strokeWeight(3);
       stroke(0);
-      textSize(24);
+      textFont(fonte, 24);
       textStyle(BOLD);
       switch (imagemAtual) {
         case 0:
@@ -826,7 +829,7 @@ function draw(){
       fill(255);
       strokeWeight(3);
       stroke(0);
-      textSize(16);
+      textFont(fonte, 16);
       textStyle(BOLD);
       image(menusImagens[8], 25, 25);
       text(pontuacao, 90, 60);
@@ -837,7 +840,7 @@ function draw(){
       fill(255);
       strokeWeight(3);
       stroke(0);
-      textSize(24);
+      textFont(fonte, 24);
       textStyle(BOLD);
       switch (imagemAtual) {
         case 0:
@@ -889,9 +892,9 @@ function draw(){
           break;
         case 10:
           image(zeramentoImagens[6], 0, 0);
-          textSize(60);
+          textFont(fonte, 60);
           text('Fim', xGame/2, 120);
-          textSize(18);
+          textFont(fonte, 18);
           text('Jogador: ' + nomeJogador, xGame/2, 200);
           text('Espécie: ' + criatura[0][0], xGame/2, 220);
           text('Pontos de Modificação: ' + pontuacao, xGame/2, 240);
