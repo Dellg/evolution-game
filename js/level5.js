@@ -286,12 +286,6 @@ Level5.prototype.rodar = function(){
       this.serHumano.update();
       this.serHumano.show();
 
-      // informações relacionadas aos ossos (ficará por cima de tudo)
-      for (var i = ossos.length - 1; i >= 0; i--){
-        var ossoMapa = ossos[i];
-        ossoMapa.show();
-      }
-
       image(levelImagens[7], 0, 0);
       image(menusImagens[11], xGame - 250, 25);
       imgp = menusImagens[5].get(64, 0, 32, 32);
@@ -302,6 +296,12 @@ Level5.prototype.rodar = function(){
       textFont(fonte);
       textStyle(BOLD);
       text(pedacos, xGame - 130, 100);
+
+      // informações relacionadas aos ossos (ficará por cima de tudo)
+      for (var i = ossos.length - 1; i >= 0; i--){
+        var ossoMapa = ossos[i];
+        ossoMapa.show();
+      }
     }
   }
 }
