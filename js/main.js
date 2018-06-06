@@ -417,7 +417,7 @@ function setup(){
     // dá a pontuação apropriada dependendo do upgrade
     switch (upgradeSelecionado) {
       case 0:
-        if (pontuacao >= 150){
+        if (pontuacao >= 200){
           criaturasSalvas[0][0].push("Chifres");
           criaturasSalvas[0][5] += 0.25;
           criaturasSalvas[0][4] -= 0.25;
@@ -426,14 +426,14 @@ function setup(){
           } else if (criatura[1] == 2){
             criaturasSalvas[0][6] = imagens[5];
           }
-          pontuacao -= 150;
+          pontuacao -= 200;
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
         }
         break;
       case 1:
-        if (pontuacao >= 100){
+        if (pontuacao >= 200){
           criaturasSalvas[0][0].push("Orelhas Grandes");
           criaturasSalvas[0][4] += 0.25;
           criaturasSalvas[0][5] -= 0.25;
@@ -442,14 +442,14 @@ function setup(){
           } else if (criatura[1] == 2){
             criaturasSalvas[0][6] = imagens[8];
           }
-          pontuacao -= 100;
+          pontuacao -= 200;
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
         }
         break;
       case 2:
-        if (pontuacao >= 150){
+        if (pontuacao >= 200){
           criaturasSalvas[0][0].push("Duas Caudas");
           criaturasSalvas[0][3] -= 0.3;
           criaturasSalvas[0][5] -= 0.25;
@@ -458,14 +458,14 @@ function setup(){
           } else if (criatura[1] == 1){
             criaturasSalvas[0][6] = imagens[7];
           }
-          pontuacao -= 150;
+          pontuacao -= 200;
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
         }
         break;
       case 3:
-        if (pontuacao >= 100){
+        if (pontuacao >= 150){
           criaturasSalvas[0][0].push("Escalar Árvores");
           criaturasSalvas[0][4] += 0.25;
           criaturasSalvas[0][3] += 0.3;
@@ -476,14 +476,14 @@ function setup(){
           } else if (criatura[1] == 2){
             criaturasSalvas[0][6] = imagens[11];
           }
-          pontuacao -= 100;
+          pontuacao -= 150;
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
         }
         break;
       case 4:
-        if (pontuacao >= 150){
+        if (pontuacao >= 250){
           criaturasSalvas[0][0].push("Peçonha");
           criaturasSalvas[0][3] -= 0.3;
           criaturasSalvas[0][4] -= 0.25;
@@ -494,14 +494,14 @@ function setup(){
           } else if (criatura[1] == 2){
             criaturasSalvas[0][6] = imagens[14];
           }
-          pontuacao -= 150;
+          pontuacao -= 250;
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
         }
         break;
       case 5:
-        if (pontuacao >= 100){
+        if (pontuacao >= 200){
           criaturasSalvas[0][0].push("Carapaça");
           criaturasSalvas[0][5] += 0.33;
           criaturasSalvas[0][4] -= 0.33;
@@ -512,14 +512,14 @@ function setup(){
           } else if (criatura[1] == 2){
             criaturasSalvas[0][6] = imagens[17];
           }
-          pontuacao -= 100;
+          pontuacao -= 200;
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
         }
         break;
       case 6:
-        if (pontuacao >= 150){
+        if (pontuacao >= 250){
           criaturasSalvas[0][0].push("Asas");
           criaturasSalvas[0][3] += 0.3;
           criaturasSalvas[0][4] += 0.25;
@@ -530,14 +530,14 @@ function setup(){
           } else if (criatura[1] == 2){
             criaturasSalvas[0][6] = imagens[20];
           }
-          pontuacao -= 150;
+          pontuacao -= 250;
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
         }
         break;
       case 7:
-        if (pontuacao >= 85){
+        if (pontuacao >= 100){
           criaturasSalvas[0][0].push("Espinhos");
           criaturasSalvas[0][3] += 0.3;
           criaturasSalvas[0][5] += 0.25;
@@ -548,7 +548,7 @@ function setup(){
           } else if (criatura[1] == 2){
             criaturasSalvas[0][6] = imagens[23];
           }
-          pontuacao -= 85;
+          pontuacao -= 100;
         } else {
           alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
@@ -819,14 +819,14 @@ function draw(){
             image(menusImagens[20], 0, 0);
             break;
         }
-        text('150', 120, 390);
-        text('100', 263, 390);
-        text('150', 406, 390);
-        text('100', 549, 390);
-        text('150', 120, 570);
-        text('100', 263, 570);
-        text('150', 406, 570);
-        text('85', 553, 570);
+        text('200', 120, 390);
+        text('200', 263, 390);
+        text('200', 406, 390);
+        text('150', 549, 390);
+        text('250', 120, 570);
+        text('200', 263, 570);
+        text('250', 406, 570);
+        text('100', 553, 570);
       } else {
         level.rodar(); // todos os levels
       }

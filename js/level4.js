@@ -222,6 +222,7 @@ Level4.prototype.rodar = function(){
     if (miniGameOn){
       if (arena2){
         text("Pegue os pontos de modificação que irão cair:", xGame/2 - 100, 30);
+        text(miniGamePontos + '/250', xGame/2 - 50, 500);
         // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
         if (moedas.length <= 0 || random(1) < 0.005){
           moedas.push(new Moeda());

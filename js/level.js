@@ -297,8 +297,9 @@ Level.prototype.rodar = function(){
 
     } else if (minigame == 2){ // minigame arena
       if (arena){
-        text("Você controla a criatura circulada de azul com o mouse", xGame/2 - 100, 30);
-        text("Cace a criatura verde adversária antes que a criatura vermelha cace sua criatura verde", xGame/2 - 100, 60);
+        text("Você controla a criatura circulada de azul com o mouse", xGame/2 - 150, 50);
+        text("Cace a criatura verde adversária antes que a criatura vermelha", xGame/2 - 200, 70);
+        text("cace sua criatura verde!", xGame/2 - 200, 90);
         for (var i = criaturasMiniGame.length - 1; i >= 0; i--){
           var crtr = criaturasMiniGame[i];
           if (crtr.acabou()){
