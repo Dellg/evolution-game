@@ -69,6 +69,11 @@ button:hover {
   background: linear-gradient(rgba(63, 40, 107, 0.5), rgba(45, 16, 78, 0.5));
 }
 
+@font-face {
+  font-family: "Lithos Pro";
+  src: url("https://raw.githubusercontent.com/Dellg/evolution-game/master/lib/LithosPro.otf");
+}
+
 input {
   background-color: Transparent;
   border-radius: 20px;
