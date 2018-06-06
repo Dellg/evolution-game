@@ -161,7 +161,7 @@ Level5.prototype.iniciaGeracao = function(){
 //______________________________________________________________________________
 Level5.prototype.adicionaNovaComida = function(x, y, morto, eraCarn){
   if (x == null || y == null){
-    x = random(5, xGame-5);
+    x = random(5, xGame-200);
     y = random(5, yGame-5);
   }
   // se foi morto, adiciona uma carne de criatura (último índice), ou um veneno se era carnívoro
@@ -178,8 +178,8 @@ Level5.prototype.adicionaNovaComida = function(x, y, morto, eraCarn){
       case 0:
         if (alimentosPlanta.length < (countAlimentos - countAlimentos/3)){
           alimentosPlanta.push(new Alimento(x, y, tipoAlimentos[r]));
-          alimentosPlanta.push(new Alimento(random(5, xGame-5), random(5, yGame-5), tipoAlimentos[r]));
-          alimentosPlanta.push(new Alimento(random(5, xGame-5), random(5, yGame-5), tipoAlimentos[r]));
+          alimentosPlanta.push(new Alimento(random(5, xGame-200), random(5, yGame-5), tipoAlimentos[r]));
+          alimentosPlanta.push(new Alimento(random(5, xGame-200), random(5, yGame-5), tipoAlimentos[r]));
         }
         break;
       case 1:

@@ -585,7 +585,7 @@ Criatura.prototype.limitesLevel5 = function() {
 
   if (this.posicao.x < tamanho){
     desejo = createVector(this.maxVelocidade, this.velocidade.y);
-  } else if (this.posicao.x > xGame - 100 - tamanho * 4){
+  } else if (this.posicao.x > xGame - 128 - tamanho * 4){
     desejo = createVector(-this.maxVelocidade, this.velocidade.y);
   }
 
