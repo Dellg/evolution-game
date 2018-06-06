@@ -94,7 +94,6 @@ function setup(){
 
   // créditos para as músicas
   botaoCrdts = createButton('Woodland Tales - por Adrian von Ziegler');
-  botaoCrdts.style('font-family', 'Lithos Pro');
   botaoCrdts.style('font-weight', 'bold');
   botaoCrdts.style('color', 'white');
   botaoCrdts.id('botaoMusica');
@@ -615,7 +614,7 @@ function setup(){
         velocidade = 1;
         resistencia = 1.5;
         infor.push("Casco");
-        infor.push("Grande");
+        infor.push("Grande porte");
         infor.push("Chifre");
         aparencia = imagens[0];
         aparenciaFutura = imagens[24];
@@ -626,7 +625,7 @@ function setup(){
         velocidade = 1.25;
         resistencia = 2.5;
         infor.push("Garra");
-        infor.push("Pequeno");
+        infor.push("Pequeno porte");
         infor.push("Orelhas grandes");
         aparencia = imagens[1];
         aparenciaFutura = imagens[25];
@@ -637,7 +636,7 @@ function setup(){
         velocidade = 1.1;
         resistencia = 1.9;
         infor.push("Mão");
-        infor.push("Médio");
+        infor.push("Médio porte");
         infor.push("Duas caudas");
         aparencia = imagens[2];
         aparenciaFutura = imagens[26];
@@ -688,25 +687,25 @@ function draw(){
       fill(255);
       strokeWeight(3);
       stroke(0);
-      textFont("Lithos Pro", 24);
+      textSize(24);
       textStyle(BOLD);
       switch (imagemAtual) {
         case 0:
           image(introImagens[0], 0, 0);
-          text('E a humanidade segue seu curso tranquilamente...', 90, 60);
+          text('A humanidade segue seu curso tranquilamente...', 90, 60);
           break;
         case 1:
           image(introImagens[1], 0, 0);
-          text('E a humanidade segue seu curso tranquilamente...', 90, 60);
+          text('A humanidade segue seu curso tranquilamente...', 90, 60);
           break;
         case 2:
           image(introImagens[2], 0, 0);
-          text('Cada um em seu próprio destino, todos dentro de um pequeno', 90, 60);
+          text('Cada um segue seu próprio destino, todos dentro de um pequeno', 90, 60);
           text('planeta em um vasto universo...', 90, 90);
           break;
         case 3:
           image(introImagens[3], 0, 0);
-          text('Cada um em seu próprio destino, todos dentro de um pequeno', 90, 60);
+          text('Cada um segue seu próprio destino, todos dentro de um pequeno', 90, 60);
           text('planeta em um vasto universo...', 90, 90);
           break;
         case 4:
@@ -827,7 +826,7 @@ function draw(){
       fill(255);
       strokeWeight(3);
       stroke(0);
-      textFont("Lithos Pro", 16);
+      textSize(16);
       textStyle(BOLD);
       image(menusImagens[8], 25, 25);
       text(pontuacao, 90, 60);
@@ -838,7 +837,7 @@ function draw(){
       fill(255);
       strokeWeight(3);
       stroke(0);
-      textFont("Lithos Pro", 24);
+      textSize(24);
       textStyle(BOLD);
       switch (imagemAtual) {
         case 0:
@@ -890,13 +889,17 @@ function draw(){
           break;
         case 10:
           image(zeramentoImagens[6], 0, 0);
-          textFont("Lithos Pro", 60);
+          textSize(60);
           text('Fim', xGame/2, 120);
-          textFont("Lithos Pro", 18);
+          textSize(18);
           text('Jogador: ' + nomeJogador, xGame/2, 200);
           text('Espécie: ' + criatura[0][0], xGame/2, 220);
           text('Pontos de Modificação: ' + pontuacao, xGame/2, 240);
           text('Tempo de Jogo: ' + int(tempoJogo), xGame/2, 260);
+          text('Características adquiriras pela espécie:', xGame/2, 280);
+          for (var i = 1; i < criatura[0].length; i++){
+            text('-' + criatura[0][i], xGame/2 + 20, 280 + (20 * i));
+          }
           break;
       }
       if (tempoImagem >= 30 && imagemAtual != 10){

@@ -330,7 +330,6 @@ Level.prototype.rodar = function(){
       fill(200, 0, 0);
       line(xGame/2 - 106, yGame/2 - 106, xGame/2 + 106, yGame/2 + 106);
       line(xGame/2 + 106, yGame/2 - 106, xGame/2 - 106, yGame/2 + 106);
-      textFont('Lithos Pro');
       textSize(16);
       noStroke();
       fill(255);

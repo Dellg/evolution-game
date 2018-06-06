@@ -20,6 +20,7 @@ var miniGamePontos = 0;
 var arena2 = false;
 var scale1 = 0;
 var scale1flag = true;
+var espacoRio = 100;
 
 // o level 4 a criatura do jogador e uma nova evolução paralela de sua criatura
 function Level4(criaturasAnteriores){
@@ -57,7 +58,7 @@ Level4.prototype.iniciaGeracao = function(){
   // cria quantidades das criaturas pré-definidas
   for (var i = 0; i < tipoCriaturasLevel4.length; i++){
     for (var j = 0; j < quantiaEspecie/2; j++){
-      var x = random(xGame/2 - 32);
+      var x = random(xGame/2 - espacoRio);
       var y = random(yGame);
       var criatura = new Criatura(x, y, tipoCriaturasLevel4[i], null, geracao);
       criaturas.push(criatura);
@@ -126,7 +127,7 @@ Level4.prototype.iniciaGeracao = function(){
   // cria quantidades das criaturas pré-definidas
   for (var i = 0; i < tipoCriaturasLevel4.length; i++){
     for (var j = 0; j < quantiaEspecie/2; j++){
-      var x = random(xGame/2 + 32, xGame);
+      var x = random(xGame/2 + espacoRio, xGame);
       var y = random(yGame);
       if (i == 0){
         var criatura = new Criatura(x, y, criaturaFutura, null, geracao);
@@ -154,9 +155,9 @@ Level4.prototype.iniciaGeracao = function(){
 Level4.prototype.adicionaNovaComida = function(x, y, morto, eraCarn){
   if (x == null || y == null){
     if (random(1) < 0.5){
-      x = random(5, xGame/2 - 32);
+      x = random(5, xGame/2 - espacoRio);
     } else {
-      x = random(xGame/2 + 32, xGame-5);
+      x = random(xGame/2 + espacoRio, xGame-5);
     }
     y = random(5, yGame-5);
   }
@@ -305,7 +306,7 @@ Level4.prototype.rodar = function(){
           imgp = menusImagens[7].get(64, 96, 32, 32);
           image(imgp, xGame - 90, 75);
         } else {
-          if (tempoJogo >= 210){
+          if (tempoJogo >= 220){
             imgp = menusImagens[7].get(32, 96, 32, 32);
             image(imgp, xGame - 90, 75, imgp.width + scale1, imgp.height + scale1);
             if (scale1flag){
@@ -333,7 +334,7 @@ Level4.prototype.rodar = function(){
 // função que interpreta o valor do botão pressionado
 //______________________________________________________________________________
 Level4.prototype.keyPressed = function() {
-  if (tempoJogo >= 210){
+  if (tempoJogo >= 220){
     if (!miniGameCompleto){
       // botões que acessam os minigames
       if (keyCode === 49 || keyCode === 97) {

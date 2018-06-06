@@ -90,7 +90,7 @@ Level3.prototype.rodar = function(){
   var aleatorioY = random(-2, 2);
   image(levelImagens[1], aleatorioX, aleatorioY);
   fill(255);
-  if (tempoJogo >= 180){
+  if (tempoJogo >= 200){
     alert("Fim do capítulo 3!");
     criaturasSalvas = tipoCriaturas;
     musicas[5].stop();
@@ -140,7 +140,6 @@ Level3.prototype.rodar = function(){
       fill(255);
       strokeWeight(3);
       stroke(0);
-      textFont("Lithos Pro", 16);
       textStyle(BOLD);
       text(criaturas.length, xGame - 130, 100);
     }

@@ -299,7 +299,6 @@ Level5.prototype.rodar = function(){
       fill(255);
       strokeWeight(3);
       stroke(0);
-      textFont("Lithos Pro", 16);
       textStyle(BOLD);
       text(pedacos, xGame - 130, 100);
     }
