@@ -991,8 +991,10 @@ function mousePressed(){
       level.mousePressed();
     }
   } else if (levelnum == 5){
-    if (level.serHumano.cavando){
-      level.serHumano.carrega(10);
+    if (level.serHumano != undefined){
+      if (level.serHumano.cavando){
+        level.serHumano.carrega(10);
+      }
     } else {
       if (level != undefined){
         level.mousePressed();
