@@ -19,9 +19,14 @@ var matriz = [];
 var indexVazio;
 var quantiaCerta = 0;
 var flagMontou = false;
+var minigame;
 
 // o level 4 a criatura do jogador e uma nova evolução paralela de sua criatura
 function Level5(criaturasAnteriores, fossil){
+  tempoTexto = 0;
+  indexTexto = 0;
+  flagTexto = false;
+  minigame = -1;
   for (var i = 0; i < 8; i++){
     fossilImagens[i].name = (i % 8) + 1;
   }
@@ -222,85 +227,170 @@ Level5.prototype.rodar = function(){
     }
 
   } else {
-    tempoJogo += 0.05;
-    // verifica se não há criaturas vivas para poder iniciar a geração
-    if (criaturas.length <= 0){
-      geracao += 1;
-      this.iniciaGeracao();
-    } else {
-      // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
-      if ((alimentosPlanta.length + alimentosInseto.length + alimentosVeneno.length) < countAlimentos){
-        if (random(1) < 0.2) {
-          this.adicionaNovaComida(null, null);
+    if (minigame == -1){
+      switch (indexTexto) {
+        case 0:
+          stroke(0, tempoTexto);
+          fill(255, tempoTexto);
+          textFont(fonte, 40);
+          text('Capítulo 5', xGame/2 - 100, 100);
+          break;
+        case 1:
+          stroke(0, tempoTexto);
+          fill(255, tempoTexto);
+          textFont(fonte, 40);
+          text('Evidências da evolução', xGame/2 - 210, 100);
+          break;
+      }
+      if (flagTexto){
+        tempoTexto -= 5;
+        if (tempoTexto <= 0){
+          indexTexto += 1;
+          flagTexto = false;
+          if (indexTexto == 2){
+            minigame = -2;
+          }
+        }
+      } else {
+        tempoTexto += 5;
+        if (tempoTexto >= 400){
+          flagTexto = true;
         }
       }
-      // informações relacionadas às comidas
-      for (var i = 0; i < alimentosPlanta.length; i++){
-        var almt = alimentosPlanta[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosInseto.length; i++){
-        var almt = alimentosInseto[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosVeneno.length; i++){
-        var almt = alimentosVeneno[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosCarne.length; i++){
-        var almt = alimentosCarne[i];
-        almt.show();
-      }
-      // informações relacionadas às criaturas
-      for (var i = criaturas.length - 1; i >= 0; i--){
-        var crtr = criaturas[i];
-        crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas, obstaculos);
-        crtr.limitesLevel5();
-        crtr.update();
-        crtr.show();
 
-        // aqui verifica se foi feita reprodução, para adicionar os filhos à população
-        if (crtr != undefined){
-          // criatura só reproduzirá se for fêmea
-          if (crtr.genero == 1){
-            var filho = crtr.reproduz();
-            if (filho != null) {
-              criaturas.push(filho);
+    } else if (minigame == -2){
+      if (tempoTexto >= 30){
+        if (frameHistoria >= 0 && frameHistoria < 10 || frameHistoria >= 20 && frameHistoria < 30){
+          imgm = humanoImagem[2].get(0, 0, 32, 32);
+          image(imgm, xGame/2 - 130, 40);
+        } else {
+          imgm = humanoImagem[2].get(32, 0, 32, 32);
+          image(imgm, xGame/2 - 130, 40);
+        }
+        frameHistoria += 0.4;
+        if (frameHistoria >= 40){
+          frameHistoria = 0;
+        }
+      }
+      tempoTexto += 0.25;
+
+      switch (indexTexto) {
+        case 2:
+          stroke(0);
+          fill(255);
+          textFont(fonte, 18);
+          text('Ora, ora, quem resolveu aparecer?! Os humanos finalmente', xGame/2 - 200, 100);
+          text('encontraram o planeta Geb no universo, mas chegaram um pouco', xGame/2 - 200, 125);
+          text('tarde para ver o show...', xGame/2 - 200, 150);
+          break;
+        case 3:
+          stroke(0);
+          fill(255);
+          textFont(fonte, 18);
+          text('De toda forma, eles querem saber o que tem acontecido por aqui.', xGame/2 - 200, 100);
+          text('Ele precisa de evidências para descobrir como tem sido a história', xGame/2 - 200, 125);
+          text('da vida em Geb.', xGame/2 - 200, 150);
+          break;
+        case 4:
+          stroke(0);
+          fill(255);
+          textFont(fonte, 18);
+          text('Uma dessas evidências evolutivas são os registros fósseis, através', xGame/2 - 200, 100);
+          text('deles você pode adquirir informações sobre os seres vivos que', xGame/2 - 200, 125);
+          text('viveram antes e sobre o ambiente que existia antes.', xGame/2 - 200, 150);
+          break;
+        case 5:
+          stroke(0);
+          fill(255);
+          textFont(fonte, 18);
+          text('Quer ajudá-lo? Procure no ambiente os 8 pedaços fósseis', xGame/2 - 200, 100);
+          text('dos ossos da sua espécie quando não haviam todas essas', xGame/2 - 200, 125);
+          text('modificações que adquiriu ao longo dos anos...', xGame/2 - 200, 150);
+          text('E ajude o humano a escavar.', xGame/2 - 200, 175);
+          break;
+      }
+
+    } else {
+      tempoJogo += 0.05;
+      // verifica se não há criaturas vivas para poder iniciar a geração
+      if (criaturas.length <= 0){
+        geracao += 1;
+        this.iniciaGeracao();
+      } else {
+        // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
+        if ((alimentosPlanta.length + alimentosInseto.length + alimentosVeneno.length) < countAlimentos){
+          if (random(1) < 0.2) {
+            this.adicionaNovaComida(null, null);
+          }
+        }
+        // informações relacionadas às comidas
+        for (var i = 0; i < alimentosPlanta.length; i++){
+          var almt = alimentosPlanta[i];
+          almt.show();
+        }
+        for (var i = 0; i < alimentosInseto.length; i++){
+          var almt = alimentosInseto[i];
+          almt.show();
+        }
+        for (var i = 0; i < alimentosVeneno.length; i++){
+          var almt = alimentosVeneno[i];
+          almt.show();
+        }
+        for (var i = 0; i < alimentosCarne.length; i++){
+          var almt = alimentosCarne[i];
+          almt.show();
+        }
+        // informações relacionadas às criaturas
+        for (var i = criaturas.length - 1; i >= 0; i--){
+          var crtr = criaturas[i];
+          crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas, obstaculos);
+          crtr.limitesLevel5();
+          crtr.update();
+          crtr.show();
+
+          // aqui verifica se foi feita reprodução, para adicionar os filhos à população
+          if (crtr != undefined){
+            // criatura só reproduzirá se for fêmea
+            if (crtr.genero == 1){
+              var filho = crtr.reproduz();
+              if (filho != null) {
+                criaturas.push(filho);
+              }
+            }
+          }
+          // aqui verifica se a criatura morreu, para retirá-la da população
+          if (crtr.morreu()){
+            criaturas.splice(i, 1);
+            console.log(crtr.nome + " morreu.")
+            // se a criatura morta era um carnívoro, aparece um veneno (evitar canibalismo)
+            if (crtr.tipo != 1){
+              this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, false);
+            } else {
+              this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, true);
             }
           }
         }
-        // aqui verifica se a criatura morreu, para retirá-la da população
-        if (crtr.morreu()){
-          criaturas.splice(i, 1);
-          console.log(crtr.nome + " morreu.")
-          // se a criatura morta era um carnívoro, aparece um veneno (evitar canibalismo)
-          if (crtr.tipo != 1){
-            this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, false);
-          } else {
-            this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, true);
-          }
+        // informações relacionadas ao humano
+        this.serHumano.comportamentos(ossos);
+        this.serHumano.update();
+        this.serHumano.show();
+
+        image(levelImagens[7], 0, 0);
+        image(menusImagens[11], xGame - 250, 25);
+        imgp = menusImagens[5].get(64, 0, 32, 32);
+        image(imgp, xGame - 170, 80);
+        fill(255);
+        strokeWeight(3);
+        stroke(0);
+        textFont(fonte);
+        textStyle(BOLD);
+        text(pedacos, xGame - 130, 100);
+
+        // informações relacionadas aos ossos (ficará por cima de tudo)
+        for (var i = ossos.length - 1; i >= 0; i--){
+          var ossoMapa = ossos[i];
+          ossoMapa.show();
         }
-      }
-      // informações relacionadas ao humano
-      this.serHumano.comportamentos(ossos);
-      this.serHumano.update();
-      this.serHumano.show();
-
-      image(levelImagens[7], 0, 0);
-      image(menusImagens[11], xGame - 250, 25);
-      imgp = menusImagens[5].get(64, 0, 32, 32);
-      image(imgp, xGame - 170, 80);
-      fill(255);
-      strokeWeight(3);
-      stroke(0);
-      textFont(fonte);
-      textStyle(BOLD);
-      text(pedacos, xGame - 130, 100);
-
-      // informações relacionadas aos ossos (ficará por cima de tudo)
-      for (var i = ossos.length - 1; i >= 0; i--){
-        var ossoMapa = ossos[i];
-        ossoMapa.show();
       }
     }
   }
@@ -381,4 +471,21 @@ function embaralha(paraEmbaralhar){
     }
   } while (bugado);
   return paraEmbaralhar;
+}
+
+//______________________________________________________________________________
+// função que interpreta o valor do botão do mouse
+//______________________________________________________________________________
+Level5.prototype.mousePressed = function() {
+  if (minigame == -2){
+    if (indexTexto >= 2){
+      if (tempoTexto >= 30){
+        indexTexto += 1;
+        if (indexTexto == 6) {
+          minigame = 0;
+        }
+        tempoTexto = 0;
+      }
+    }
+  }
 }

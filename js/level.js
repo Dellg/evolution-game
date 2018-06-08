@@ -29,11 +29,11 @@ var scale1flag = true;
 var scale2flag = true;
 var scale3flag = true;
 var ultimoPressionado = 0;
-var tempoTexto = 0;
-var indexTexto = 0;
-var flagTexto = false;
 
 function Level(criatura){
+  tempoTexto = 0;
+  indexTexto = 0;
+  flagTexto = false;
   countAlimentos = 80;
   if (criatura != null){
     tipoCriaturas.push(criatura);
@@ -210,6 +210,9 @@ Level.prototype.rodar = function(){
   if (tempoJogo >= 80){
     alert("Fim do capítulo 1!");
     criaturasSalvas = tipoCriaturas;
+    indexTexto = 0;
+    tempoTexto = 0;
+    flagTexto = false;
     musicas[3].stop();
     musicas[4].loop();
     botaoUpgrade1.show();
@@ -454,17 +457,17 @@ Level.prototype.rodar = function(){
           stroke(0);
           fill(255);
           textFont(fonte, 18);
-          text('Você precisa acumular pontos de modificação do DNA para poder', xGame/2 - 200, 100);
-          text('adquirir novas mutações e deixar sua população mais rica', xGame/2 - 200, 125);
-          text('geneticamente.', xGame/2 - 200, 150);
+          text('Você precisa acumular pontos de modificação do DNA para', xGame/2 - 200, 100);
+          text('poder adquirir novas mutações e deixar sua população mais', xGame/2 - 200, 125);
+          text('rica geneticamente.', xGame/2 - 200, 150);
           break;
         case 5:
           stroke(0);
           fill(255);
           textFont(fonte, 18);
-          text('Os pontos se encontram na tela do lado esquerdo, junto com a', xGame/2 - 200, 100);
-          text('contagem de quanto tempo está se passando enquanto sua espécie', xGame/2 - 200, 125);
-          text('está evoluindo.', xGame/2 - 200, 150);
+          text('Os pontos se encontram na tela do lado esquerdo, junto com', xGame/2 - 200, 100);
+          text('a contagem de quanto tempo está se passando enquanto sua', xGame/2 - 200, 125);
+          text('espécie está evoluindo.', xGame/2 - 200, 150);
           break;
         case 6:
           stroke(0);
@@ -623,13 +626,15 @@ Level.prototype.rodar = function(){
 // função que interpreta o valor do botão do mouse
 //______________________________________________________________________________
 Level.prototype.mousePressed = function() {
-  if (indexTexto >= 2){
-    if (tempoTexto >= 30){
-      indexTexto += 1;
-      if (indexTexto == 8) {
-        minigame = 0;
+  if (minigame == -2){
+    if (indexTexto >= 2){
+      if (tempoTexto >= 30){
+        indexTexto += 1;
+        if (indexTexto == 8) {
+          minigame = 0;
+        }
+        tempoTexto = 0;
       }
-      tempoTexto = 0;
     }
   }
   // minigame 3 ativo

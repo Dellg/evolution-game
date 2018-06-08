@@ -21,9 +21,14 @@ var arena2 = false;
 var scale1 = 0;
 var scale1flag = true;
 var espacoRio = 128;
+var minigame;
 
 // o level 4 a criatura do jogador e uma nova evolução paralela de sua criatura
 function Level4(criaturasAnteriores){
+  tempoTexto = 0;
+  indexTexto = 0;
+  flagTexto = false;
+  minigame = -1;
   countAlimentos = 80;
   alimentosPlanta = [];
   alimentosInseto = [];
@@ -258,87 +263,170 @@ Level4.prototype.rodar = function(){
       }
 
     } else {
-      tempoJogo += 0.05;
-      // verifica se não há criaturas vivas para poder iniciar a geração
-      if (criaturas.length <= 0){
-        geracao += 1;
-        this.iniciaGeracao();
-      } else {
-        // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
-        if ((alimentosPlanta.length + alimentosInseto.length + alimentosVeneno.length) < countAlimentos){
-          if (random(1) < 0.2) {
-            this.adicionaNovaComida(null, null);
-          }
+      if (minigame == -1){
+        switch (indexTexto) {
+          case 0:
+            stroke(0, tempoTexto);
+            fill(255, tempoTexto);
+            textFont(fonte, 40);
+            text('Capítulo 4', xGame/2 - 100, 100);
+            break;
+          case 1:
+            stroke(0, tempoTexto);
+            fill(255, tempoTexto);
+            textFont(fonte, 40);
+            text('Deriva genética: especiação', xGame/2 - 210, 100);
+            break;
         }
-        for (var i = 0; i < alimentosPlanta.length; i++){
-          var almt = alimentosPlanta[i];
-          almt.show();
-        }
-        for (var i = 0; i < alimentosInseto.length; i++){
-          var almt = alimentosInseto[i];
-          almt.show();
-        }
-        for (var i = 0; i < alimentosVeneno.length; i++){
-          var almt = alimentosVeneno[i];
-          almt.show();
-        }
-        for (var i = 0; i < alimentosCarne.length; i++){
-          var almt = alimentosCarne[i];
-          almt.show();
-        }
-        for (var i = criaturas.length - 1; i >= 0; i--){
-          var crtr = criaturas[i];
-          crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas, obstaculos);
-          crtr.limitesLevel4(espacoRio);
-          crtr.update();
-          crtr.show();
-
-          // aqui verifica se foi feita reprodução, para adicionar os filhos à população
-          if (crtr != undefined){
-            // criatura só reproduzirá se for fêmea
-            if (crtr.genero == 1){
-              var filho = crtr.reproduz();
-              if (filho != null) {
-                criaturas.push(filho);
-              }
+        if (flagTexto){
+          tempoTexto -= 5;
+          if (tempoTexto <= 0){
+            indexTexto += 1;
+            flagTexto = false;
+            if (indexTexto == 2){
+              minigame = -2;
             }
           }
-          // aqui verifica se a criatura morreu, para retirá-la da população
-          if (crtr.morreu()){
-            criaturas.splice(i, 1);
-            console.log(crtr.nome + " morreu.")
-            // se a criatura morta era um carnívoro, aparece um veneno (evitar canibalismo)
-            if (crtr.tipo != 1){
-              this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, false);
-            } else {
-              this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, true);
-            }
-          }
-        }
-
-        image(levelImagens[6], 0, 0);
-        image(menusImagens[9], xGame - 250, 25);
-        if (miniGameCompleto){
-          imgp = menusImagens[7].get(64, 96, 32, 32);
-          image(imgp, xGame - 90, 75);
         } else {
-          if (tempoJogo >= 220){
-            imgp = menusImagens[7].get(32, 96, 32, 32);
-            image(imgp, xGame - 90, 75, imgp.width + scale1, imgp.height + scale1);
-            if (scale1flag){
-              scale1 += 0.25;
-              if (scale1 >= 3){
-                scale1flag = false;
-              }
-            } else {
-              scale1 -= 0.25;
-              if (scale1 <= 0){
-                scale1flag = true;
+          tempoTexto += 5;
+          if (tempoTexto >= 400){
+            flagTexto = true;
+          }
+        }
+
+      } else if (minigame == -2){
+        if (tempoTexto >= 30){
+          if (frameHistoria >= 0 && frameHistoria < 10 || frameHistoria >= 20 && frameHistoria < 30){
+            imgm = humanoImagem[2].get(0, 0, 32, 32);
+            image(imgm, xGame/2 - 130, 40);
+          } else {
+            imgm = humanoImagem[2].get(32, 0, 32, 32);
+            image(imgm, xGame/2 - 130, 40);
+          }
+          frameHistoria += 0.4;
+          if (frameHistoria >= 40){
+            frameHistoria = 0;
+          }
+        }
+        tempoTexto += 0.25;
+
+        switch (indexTexto) {
+          case 2:
+            stroke(0);
+            fill(255);
+            textFont(fonte, 18);
+            text('Que sufoco, hein?!', xGame/2 - 200, 100);
+            break;
+          case 3:
+            stroke(0);
+            fill(255);
+            textFont(fonte, 18);
+            text(criatura[0][0] + ' sofreu bastante perdas e o terremoto mudou', xGame/2 - 200, 100);
+            text('o ambiente drasticamente, a terra foi separada por um rio.', xGame/2 - 200, 125);
+            break;
+          case 4:
+            stroke(0);
+            fill(255);
+            textFont(fonte, 18);
+            text('Alguns indivíduos de ' + criatura[0][0] + ' ficaram separados pelo rio, esses', xGame/2 - 200, 100);
+            text('você não terá mais controle! Eles irão evoluir independentemente', xGame/2 - 200, 125);
+            text('do outro lado do rio e irão adquirir caraterísticas diferentes', xGame/2 - 200, 150);
+            text('das suas, até que em algum momento serão uma espécie diferente.', xGame/2 - 200, 175);
+            text('Esse processo é a especiação.', xGame/2 - 200, 200);
+            break;
+          case 5:
+            stroke(0);
+            fill(255);
+            textFont(fonte, 18);
+            text('Com toda essa mudança, agora você deve acumular pontos de', xGame/2 - 200, 100);
+            text('modificação rapidamente através do minigame para se adaptar ao', xGame/2 - 200, 125);
+            text('novo ambiente e seguir para a próxima fase.', xGame/2 - 200, 150);
+            break;
+        }
+
+      } else {
+        tempoJogo += 0.05;
+        // verifica se não há criaturas vivas para poder iniciar a geração
+        if (criaturas.length <= 0){
+          geracao += 1;
+          this.iniciaGeracao();
+        } else {
+          // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
+          if ((alimentosPlanta.length + alimentosInseto.length + alimentosVeneno.length) < countAlimentos){
+            if (random(1) < 0.2) {
+              this.adicionaNovaComida(null, null);
+            }
+          }
+          for (var i = 0; i < alimentosPlanta.length; i++){
+            var almt = alimentosPlanta[i];
+            almt.show();
+          }
+          for (var i = 0; i < alimentosInseto.length; i++){
+            var almt = alimentosInseto[i];
+            almt.show();
+          }
+          for (var i = 0; i < alimentosVeneno.length; i++){
+            var almt = alimentosVeneno[i];
+            almt.show();
+          }
+          for (var i = 0; i < alimentosCarne.length; i++){
+            var almt = alimentosCarne[i];
+            almt.show();
+          }
+          for (var i = criaturas.length - 1; i >= 0; i--){
+            var crtr = criaturas[i];
+            crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas, obstaculos);
+            crtr.limitesLevel4(espacoRio);
+            crtr.update();
+            crtr.show();
+
+            // aqui verifica se foi feita reprodução, para adicionar os filhos à população
+            if (crtr != undefined){
+              // criatura só reproduzirá se for fêmea
+              if (crtr.genero == 1){
+                var filho = crtr.reproduz();
+                if (filho != null) {
+                  criaturas.push(filho);
+                }
               }
             }
-          } else {
-            imgp = menusImagens[7].get(0, 96, 32, 32);
+            // aqui verifica se a criatura morreu, para retirá-la da população
+            if (crtr.morreu()){
+              criaturas.splice(i, 1);
+              console.log(crtr.nome + " morreu.")
+              // se a criatura morta era um carnívoro, aparece um veneno (evitar canibalismo)
+              if (crtr.tipo != 1){
+                this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, false);
+              } else {
+                this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, true);
+              }
+            }
+          }
+
+          image(levelImagens[6], 0, 0);
+          image(menusImagens[9], xGame - 250, 25);
+          if (miniGameCompleto){
+            imgp = menusImagens[7].get(64, 96, 32, 32);
             image(imgp, xGame - 90, 75);
+          } else {
+            if (tempoJogo >= 220){
+              imgp = menusImagens[7].get(32, 96, 32, 32);
+              image(imgp, xGame - 90, 75, imgp.width + scale1, imgp.height + scale1);
+              if (scale1flag){
+                scale1 += 0.25;
+                if (scale1 >= 3){
+                  scale1flag = false;
+                }
+              } else {
+                scale1 -= 0.25;
+                if (scale1 <= 0){
+                  scale1flag = true;
+                }
+              }
+            } else {
+              imgp = menusImagens[7].get(0, 96, 32, 32);
+              image(imgp, xGame - 90, 75);
+            }
           }
         }
       }
@@ -357,6 +445,23 @@ Level4.prototype.keyPressed = function() {
         if (!miniGameOn){
           miniGameOn = true;
         }
+      }
+    }
+  }
+}
+
+//______________________________________________________________________________
+// função que interpreta o valor do botão do mouse
+//______________________________________________________________________________
+Level4.prototype.mousePressed = function() {
+  if (minigame == -2){
+    if (indexTexto >= 2){
+      if (tempoTexto >= 30){
+        indexTexto += 1;
+        if (indexTexto == 6) {
+          minigame = 0;
+        }
+        tempoTexto = 0;
       }
     }
   }

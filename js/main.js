@@ -1,10 +1,6 @@
 var xGame = 1045;
 var yGame = 760;
-var menu = -1///0;
-// -1 = video da intro
-// 0 = menu principal
-// 1 = levels
-// 2 = fim do jogo
+var menu = -1
 var criatura = null;
 var pontuacao = 0; // pontuação do jogador, contará como "moeda" do jogo
 var tempoJogo = 0; // quantidade de anos que se passaram
@@ -33,6 +29,9 @@ var volumeSlider;
 var frameHistoria = 0;
 var fonte;
 var aparenciaFutura;
+var tempoTexto = 0;
+var indexTexto = 0;
+var flagTexto = false;
 
 //______________________________________________________________________________
 // carregando imagens no projeto
@@ -819,6 +818,33 @@ function draw(){
             image(menusImagens[20], 0, 0);
             break;
         }
+        if (indexTexto == 0) {
+          if (tempoTexto >= 30){
+            if (frameHistoria >= 0 && frameHistoria < 10 || frameHistoria >= 20 && frameHistoria < 30){
+              imgm = humanoImagem[2].get(0, 0, 32, 32);
+              image(imgm, xGame/2 - 200, 100);
+            } else {
+              imgm = humanoImagem[2].get(32, 0, 32, 32);
+              image(imgm, xGame/2 - 200, 100);
+            }
+            frameHistoria += 0.4;
+            if (frameHistoria >= 40){
+              frameHistoria = 0;
+            }
+          }
+          tempoTexto += 0.25;
+
+          stroke(0);
+          fill(255);
+          textFont(fonte, 14);
+          text('Você acumulou pontos de modificação', 40, 150);
+          text('suficientes para transformá-los em', 40, 165);
+          text('uma estrutura para sua espécie! Escolha', 40, 180);
+          text('com sabedoria, avaliando as vantagens e', 40, 195);
+          text('desvantagens de cada uma.', 40, 210);
+        }
+
+        textFont(fonte, 16);
         text('200', 120, 390);
         text('200', 263, 390);
         text('200', 406, 390);
@@ -948,14 +974,19 @@ function mousePressed(){
         botaoAdcCrt.show();
       }
     }
-  }
-  if (menu == 2){
+  } else if (menu == 2){
     if (tempoImagem >= 30 && imagemAtual != 10){
       tempoImagem = 0;
       imagemAtual += 1;
     }
   }
-  if (levelnum == 1){
+  if (levelnum == 1.5){
+    if (indexTexto == 0){
+      if (tempoTexto >= 30){
+        indexTexto = -1;
+      }
+    }
+  } else if (levelnum == 1 || levelnum == 2 || levelnum == 3 || levelnum == 4 || levelnum == 5){
     if (level != undefined){
       level.mousePressed();
     }

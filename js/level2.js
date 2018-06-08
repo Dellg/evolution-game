@@ -12,9 +12,14 @@ var countAlimentos; // o level 2 terá menos almentos (dificuldade maior)
 var tipoCriaturas = [];
 var tipoAlimentos = [];
 var geracao = 0;
+var minigame;
 
 // o level 2 receberá as criaturas do level 1, ao invés de criar novas
 function Level2(criaturasAnteriores){
+  tempoTexto = 0;
+  indexTexto = 0;
+  flagTexto = false;
+  minigame = -1;
   countAlimentos = 20;
   alimentosPlanta = [];
   alimentosInseto = [];
@@ -172,64 +177,156 @@ Level2.prototype.rodar = function(){
     level = new Level3(criaturasSalvas);
 
   } else {
-    tempoJogo += 0.05;
-    // verifica se não há criaturas vivas para poder iniciar a geração
-    if (criaturas.length <= 0){
-      geracao += 1;
-      this.iniciaGeracao();
-    } else {
-      // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
-      if ((alimentosPlanta.length + alimentosInseto.length + alimentosVeneno.length) < countAlimentos){
-        if (random(1) < 0.2) {
-          this.adicionaNovaComida(null, null);
+    if (minigame == -1){
+      switch (indexTexto) {
+        case 0:
+          stroke(0, tempoTexto);
+          fill(255, tempoTexto);
+          textFont(fonte, 40);
+          text('Capítulo 2', xGame/2 - 100, 100);
+          break;
+        case 1:
+          stroke(0, tempoTexto);
+          fill(255, tempoTexto);
+          textFont(fonte, 40);
+          text('Seleção natural e Adaptação', xGame/2 - 210, 100);
+          break;
+      }
+      if (flagTexto){
+        tempoTexto -= 5;
+        if (tempoTexto <= 0){
+          indexTexto += 1;
+          flagTexto = false;
+          if (indexTexto == 2){
+            minigame = -2;
+          }
+        }
+      } else {
+        tempoTexto += 5;
+        if (tempoTexto >= 400){
+          flagTexto = true;
         }
       }
-      for (var i = 0; i < alimentosPlanta.length; i++){
-        var almt = alimentosPlanta[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosInseto.length; i++){
-        var almt = alimentosInseto[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosVeneno.length; i++){
-        var almt = alimentosVeneno[i];
-        almt.show();
-      }
-      for (var i = 0; i < alimentosCarne.length; i++){
-        var almt = alimentosCarne[i];
-        almt.show();
-      }
-      for (var i = criaturas.length - 1; i >= 0; i--){
-        var crtr = criaturas[i];
-        crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas, obstaculos);
-        crtr.limites();
-        crtr.update();
-        crtr.show();
 
-        // aqui verifica se foi feita reprodução, para adicionar os filhos à população
-        if (crtr != undefined){
-          // criatura só reproduzirá se for fêmea
-          if (crtr.genero == 1){
-            var filho = crtr.reproduz();
-            if (filho != null) {
-              criaturas.push(filho);
+    } else if (minigame == -2){
+      if (tempoTexto >= 30){
+        if (frameHistoria >= 0 && frameHistoria < 10 || frameHistoria >= 20 && frameHistoria < 30){
+          imgm = humanoImagem[2].get(0, 0, 32, 32);
+          image(imgm, xGame/2 - 130, 40);
+        } else {
+          imgm = humanoImagem[2].get(32, 0, 32, 32);
+          image(imgm, xGame/2 - 130, 40);
+        }
+        frameHistoria += 0.4;
+        if (frameHistoria >= 40){
+          frameHistoria = 0;
+        }
+      }
+      tempoTexto += 0.25;
+
+      switch (indexTexto) {
+        case 2:
+          stroke(0);
+          fill(255);
+          textFont(fonte, 18);
+          text('Veja quanto tempo já se passou, o ambiente não é mais o mesmo,', xGame/2 - 200, 100);
+          text('está mudando, isso quer dizer que há novas pressões seletivas', xGame/2 - 200, 125);
+          text('e essas pressões originam a seleção natural.', xGame/2 - 200, 150);
+          break;
+        case 3:
+          stroke(0);
+          fill(255);
+          textFont(fonte, 18);
+          text('No geral, a seleção natural vai, ao longo das gerações,', xGame/2 - 200, 100);
+          text('selecionar as mutações e características favoráveis ao', xGame/2 - 200, 125);
+          text('ambiente e eliminar as não favoráveis', xGame/2 - 200, 150);
+          break;
+        case 4:
+          stroke(0);
+          fill(255);
+          textFont(fonte, 18);
+          text('Será que a nova estrutura que você escolheu irá permanecer', xGame/2 - 200, 100);
+          text('na sua espécie ou será eliminada? Observe um pouco...', xGame/2 - 200, 125);
+          break;
+      }
+
+    } else {
+      tempoJogo += 0.05;
+      // verifica se não há criaturas vivas para poder iniciar a geração
+      if (criaturas.length <= 0){
+        geracao += 1;
+        this.iniciaGeracao();
+      } else {
+        // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
+        if ((alimentosPlanta.length + alimentosInseto.length + alimentosVeneno.length) < countAlimentos){
+          if (random(1) < 0.2) {
+            this.adicionaNovaComida(null, null);
+          }
+        }
+        for (var i = 0; i < alimentosPlanta.length; i++){
+          var almt = alimentosPlanta[i];
+          almt.show();
+        }
+        for (var i = 0; i < alimentosInseto.length; i++){
+          var almt = alimentosInseto[i];
+          almt.show();
+        }
+        for (var i = 0; i < alimentosVeneno.length; i++){
+          var almt = alimentosVeneno[i];
+          almt.show();
+        }
+        for (var i = 0; i < alimentosCarne.length; i++){
+          var almt = alimentosCarne[i];
+          almt.show();
+        }
+        for (var i = criaturas.length - 1; i >= 0; i--){
+          var crtr = criaturas[i];
+          crtr.comportamentos(alimentosPlanta, alimentosInseto, alimentosVeneno, alimentosCarne, criaturas, obstaculos);
+          crtr.limites();
+          crtr.update();
+          crtr.show();
+
+          // aqui verifica se foi feita reprodução, para adicionar os filhos à população
+          if (crtr != undefined){
+            // criatura só reproduzirá se for fêmea
+            if (crtr.genero == 1){
+              var filho = crtr.reproduz();
+              if (filho != null) {
+                criaturas.push(filho);
+              }
+            }
+          }
+          // aqui verifica se a criatura morreu, para retirá-la da população
+          if (crtr.morreu()){
+            criaturas.splice(i, 1);
+            console.log(crtr.nome + " morreu.")
+            // se a criatura morta era um carnívoro, aparece um veneno (evitar canibalismo)
+            if (crtr.tipo != 1){
+              this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, false);
+            } else {
+              this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, true);
             }
           }
         }
-        // aqui verifica se a criatura morreu, para retirá-la da população
-        if (crtr.morreu()){
-          criaturas.splice(i, 1);
-          console.log(crtr.nome + " morreu.")
-          // se a criatura morta era um carnívoro, aparece um veneno (evitar canibalismo)
-          if (crtr.tipo != 1){
-            this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, false);
-          } else {
-            this.adicionaNovaComida(crtr.posicao.x, crtr.posicao.y, true, true);
-          }
+      }
+      image(levelImagens[5], 0, 0);
+    }
+  }
+}
+
+//______________________________________________________________________________
+// função que interpreta o valor do botão do mouse
+//______________________________________________________________________________
+Level2.prototype.mousePressed = function() {
+  if (minigame == -2){
+    if (indexTexto >= 2){
+      if (tempoTexto >= 30){
+        indexTexto += 1;
+        if (indexTexto == 5) {
+          minigame = 0;
         }
+        tempoTexto = 0;
       }
     }
   }
-  image(levelImagens[5], 0, 0);
 }

@@ -4,9 +4,14 @@ var tipoCriaturas = [];
 var obstaculos = [];
 var geracao = 0;
 var jaIniciou = false;
+var minigame;
 
 // o level 3 a criatura do jogador apenas
 function Level3(criaturasAnteriores){
+  tempoTexto = 0;
+  indexTexto = 0;
+  flagTexto = false;
+  minigame = -1;
   criaturas = [];
   tipoCriaturas = criaturasAnteriores;
 }
@@ -100,48 +105,131 @@ Level3.prototype.rodar = function(){
     level = new Level4(criaturasSalvas);
 
   } else {
-    text("Salve o máximo de criaturas da sua espécie desviando dos obstáculos!", xGame/2 - 140, 30);
-    tempoJogo += 0.05;
-    // verifica se não há criaturas vivas para poder iniciar a geração
-    if (criaturas.length <= 0){
-      geracao += 1;
-      this.iniciaGeracao();
+    if (minigame == -1){
+      switch (indexTexto) {
+        case 0:
+          stroke(0, tempoTexto);
+          fill(255, tempoTexto);
+          textFont(fonte, 40);
+          text('Capítulo 3', xGame/2 - 100, 100);
+          break;
+        case 1:
+          stroke(0, tempoTexto);
+          fill(255, tempoTexto);
+          textFont(fonte, 40);
+          text('Deriva genética: uma catástrofe natural', xGame/2 - 210, 100);
+          break;
+      }
+      if (flagTexto){
+        tempoTexto -= 5;
+        if (tempoTexto <= 0){
+          indexTexto += 1;
+          flagTexto = false;
+          if (indexTexto == 2){
+            minigame = -2;
+          }
+        }
+      } else {
+        tempoTexto += 5;
+        if (tempoTexto >= 400){
+          flagTexto = true;
+        }
+      }
+
+    } else if (minigame == -2){
+      if (tempoTexto >= 30){
+        if (frameHistoria >= 0 && frameHistoria < 10 || frameHistoria >= 20 && frameHistoria < 30){
+          imgm = humanoImagem[2].get(0, 0, 32, 32);
+          image(imgm, xGame/2 - 130, 40);
+        } else {
+          imgm = humanoImagem[2].get(32, 0, 32, 32);
+          image(imgm, xGame/2 - 130, 40);
+        }
+        frameHistoria += 0.4;
+        if (frameHistoria >= 40){
+          frameHistoria = 0;
+        }
+      }
+      tempoTexto += 0.25;
+
+      switch (indexTexto) {
+        case 2:
+          stroke(0);
+          fill(255);
+          textFont(fonte, 18);
+          text('Imprevistos acontecem na natureza e  muitos desses imprevistos', xGame/2 - 200, 100);
+          text('podem ser bem perigosos!', xGame/2 - 200, 125);
+          break;
+        case 3:
+          stroke(0);
+          fill(255);
+          textFont(fonte, 18);
+          text('Prepare-se!! Um grande terremoto está acontecendo!', xGame/2 - 200, 100);
+          text('Tente salvar sua espécie desviando das pedras!', xGame/2 - 200, 125);
+          break;
+      }
+
     } else {
-      if (random(1) < 0.05) {
-        obstaculos.push(new Obstaculo(false, 0, 0, 0));
-      }
-      for (var i = criaturas.length - 1; i >= 0; i--){
-        var crtr = criaturas[i];
-        if (crtr != undefined){
-          crtr.posicao.y += crtr.maxVelocidade - (0.5 * crtr.maxVelocidade);
-          crtr.comportamentos(criaturas, obstaculos);
-          crtr.limites();
-          crtr.update();
-          crtr.show();
+      text("Salve o máximo de criaturas da sua espécie desviando dos obstáculos!", xGame/2 - 140, 30);
+      tempoJogo += 0.05;
+      // verifica se não há criaturas vivas para poder iniciar a geração
+      if (criaturas.length <= 0){
+        geracao += 1;
+        this.iniciaGeracao();
+      } else {
+        if (random(1) < 0.05) {
+          obstaculos.push(new Obstaculo(false, 0, 0, 0));
         }
+        for (var i = criaturas.length - 1; i >= 0; i--){
+          var crtr = criaturas[i];
+          if (crtr != undefined){
+            crtr.posicao.y += crtr.maxVelocidade - (0.5 * crtr.maxVelocidade);
+            crtr.comportamentos(criaturas, obstaculos);
+            crtr.limites();
+            crtr.update();
+            crtr.show();
+          }
 
-        // aqui verifica se a criatura morreu, para retirá-la da população
-        if (crtr.morreu()){
-          criaturas.splice(i, 1);
+          // aqui verifica se a criatura morreu, para retirá-la da população
+          if (crtr.morreu()){
+            criaturas.splice(i, 1);
+          }
         }
-      }
-      image(levelImagens[5], aleatorioX, aleatorioY);
+        image(levelImagens[5], aleatorioX, aleatorioY);
 
-      for (var i = obstaculos.length - 1; i >= 9; i--){
-        var obst = obstaculos[i];
-        obst.show();
-        if (obst.sumiu()){
-          obstaculos.splice(i, 1);
+        for (var i = obstaculos.length - 1; i >= 9; i--){
+          var obst = obstaculos[i];
+          obst.show();
+          if (obst.sumiu()){
+            obstaculos.splice(i, 1);
+          }
         }
+        image(menusImagens[10], xGame - 250, 25);
+        imgp = menusImagens[5].get(32 * criatura[1], 32, 32, 32);
+        image(imgp, xGame - 170, 80);
+        fill(255);
+        strokeWeight(3);
+        stroke(0);
+        textStyle(BOLD);
+        text(criaturas.length, xGame - 130, 100);
       }
-      image(menusImagens[10], xGame - 250, 25);
-      imgp = menusImagens[5].get(32 * criatura[1], 32, 32, 32);
-      image(imgp, xGame - 170, 80);
-      fill(255);
-      strokeWeight(3);
-      stroke(0);
-      textStyle(BOLD);
-      text(criaturas.length, xGame - 130, 100);
+    }
+  }
+}
+
+//______________________________________________________________________________
+// função que interpreta o valor do botão do mouse
+//______________________________________________________________________________
+Level3.prototype.mousePressed = function() {
+  if (minigame == -2){
+    if (indexTexto >= 2){
+      if (tempoTexto >= 30){
+        indexTexto += 1;
+        if (indexTexto == 4) {
+          minigame = 0;
+        }
+        tempoTexto = 0;
+      }
     }
   }
 }
