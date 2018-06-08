@@ -986,13 +986,17 @@ function mousePressed(){
         indexTexto = -1;
       }
     }
-  } else if (levelnum == 1 || levelnum == 2 || levelnum == 3 || levelnum == 4 || levelnum == 5){
+  } else if (levelnum == 1 || levelnum == 2 || levelnum == 3 || levelnum == 4){
     if (level != undefined){
       level.mousePressed();
     }
   } else if (levelnum == 5){
     if (level.serHumano.cavando){
       level.serHumano.carrega(10);
+    } else {
+      if (level != undefined){
+        level.mousePressed();
+      }
     }
   }
 }

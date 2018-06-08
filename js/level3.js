@@ -117,7 +117,8 @@ Level3.prototype.rodar = function(){
           stroke(0, tempoTexto);
           fill(255, tempoTexto);
           textFont(fonte, 40);
-          text('Deriva genética: uma catástrofe natural', xGame/2 - 210, 100);
+          text('Deriva genética:', xGame/2 - 210, 100);
+          text('Uma catástrofe natural', xGame/2 - 210, 145);
           break;
       }
       if (flagTexto){

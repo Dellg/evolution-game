@@ -275,7 +275,8 @@ Level4.prototype.rodar = function(){
             stroke(0, tempoTexto);
             fill(255, tempoTexto);
             textFont(fonte, 40);
-            text('Deriva genética: especiação', xGame/2 - 210, 100);
+            text('Deriva genética:', xGame/2 - 210, 100);
+            text('Especiação', xGame/2 - 210, 145);
             break;
         }
         if (flagTexto){
