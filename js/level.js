@@ -541,15 +541,6 @@ Level.prototype.rodar = function(){
         text("150 pontos", xGame/2 - 45, yGame/2 + 110);
         text("300 pontos", xGame/2 - 45, yGame/2 - 110);
 
-        push();
-
-        fill(255, 0, 0);
-        translate(xGame/2, yGame/2);
-        stroke(24);
-        angleMode(DEGREES);
-        strokeWeight(3);
-        rotate(contador);
-        contador += roleta;
         if (roletaPara == 2){
           if (esperandoClique){
             if (tempoTexto >= 30){
@@ -590,26 +581,37 @@ Level.prototype.rodar = function(){
               text('Perfeito! Você ganhou 300 pontos de modificação!', xGame/2 - 200, 100);
             }
           }
-        } else if (roletaPara == 1){
-          if (roleta > 0){
-            roleta -= 0.2;
-          } else if (roleta < 0){
-            roleta = 0;
-            roletaPara = 2;
-            esperandoClique = true;
-          }
         } else {
-          if (roleta < 40){
-            roleta += 0.1;
+          push();
+
+          fill(255, 0, 0);
+          translate(xGame/2, yGame/2);
+          stroke(24);
+          angleMode(DEGREES);
+          strokeWeight(3);
+          rotate(contador);
+          contador += roleta;
+          if (roletaPara == 1){
+            if (roleta > 0){
+              roleta -= 0.2;
+            } else if (roleta < 0){
+              roleta = 0;
+              roletaPara = 2;
+              esperandoClique = true;
+            }
           } else {
-            fill(0, 255, 0);
+            if (roleta < 40){
+              roleta += 0.1;
+            } else {
+              fill(0, 255, 0);
+            }
           }
+          if (contador >= 360){
+            contador -= 360;
+          }
+          triangle(0, -80, 30, 30, -30, 30);
+          pop();
         }
-        if (contador >= 360){
-          contador -= 360;
-        }
-        triangle(0, -80, 30, 30, -30, 30);
-        pop();
       }
 
     } else if (minigame == -1){
