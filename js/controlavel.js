@@ -263,10 +263,9 @@ Controlavel.prototype.limites = function() {
 Controlavel.prototype.acabou = function() {
   if (this.terminou){
     if (this.venceu){
-      alert("Muito bem! Você manteve sua criatura viva e recebeu 100 pontos.");
-      pontuacao += 100;
+      perdeu = false;
     } else {
-      alert("Que pena! Sua criatura foi devorada pela criatura adversária.");
+      perdeu = true;
     }
   }
   return this.terminou;

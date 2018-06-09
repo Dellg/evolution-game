@@ -13,6 +13,7 @@ var tipoCriaturas = [];
 var tipoAlimentos = [];
 var geracao = 0;
 var taxaMutacao = 0.01;
+var minigameEsperando = false;
 var minigame = -1;
 var minig1 = false, minig2 = false, minig3 = false; // flag que verifica completude dos minigames
 var esperando = false; // flag para o jogador não poder pressionar
@@ -29,6 +30,8 @@ var scale1flag = true;
 var scale2flag = true;
 var scale3flag = true;
 var ultimoPressionado = 0;
+var esperandoClique = false;
+var perdeu;
 
 function Level(criatura){
   tempoTexto = 0;
@@ -230,166 +233,384 @@ Level.prototype.rodar = function(){
 
   } else {
     if (minigame == 1){ // minigame reprodução
-      if (esperando){
-        text("Decore a ordem:", xGame/2 - 100, 30);
-        if (contador < 1.5){
-          switch (ordem[0]) {
+      if (minigameEsperando){
+        if (tempoTexto >= 30){
+          if (frameHistoria >= 0 && frameHistoria < 10 || frameHistoria >= 20 && frameHistoria < 30){
+            imgm = humanoImagem[2].get(0, 0, 32, 32);
+            image(imgm, xGame/2 - 130, 40);
+          } else {
+            imgm = humanoImagem[2].get(32, 0, 32, 32);
+            image(imgm, xGame/2 - 130, 40);
+          }
+          frameHistoria += 0.4;
+          if (frameHistoria >= 40){
+            frameHistoria = 0;
+          }
+        }
+        tempoTexto += 0.25;
+
+        switch (indexTexto) {
+          case 0:
+            stroke(0);
+            fill(255);
+            textFont(fonte, 18);
+            text('A reprodução sexuada traz variabilidade genética para uma', xGame/2 - 200, 100);
+            text('população, na medida em que os descendentes nascem com', xGame/2 - 200, 125);
+            text('informações genéticas misturadas dos pais, ou seja, há uma', xGame/2 - 200, 150);
+            text('recombinação gênica.', xGame/2 - 200, 175);
+            break;
+          case 1:
+            stroke(0);
+            fill(255);
+            textFont(fonte, 18);
+            text('Faça a dança do acasalamento para atrair parceiros e deixar', xGame/2 - 200, 100);
+            text('descendentes férteis na população.', xGame/2 - 200, 125);
+            break;
+          case 2:
+            stroke(0);
+            fill(255);
+            textFont(fonte, 18);
+            text('Você deve repetir a sequência de passos da dança que', xGame/2 - 200, 100);
+            text('aparecerão na tela. Preparado?', xGame/2 - 200, 125);
+            break;
+          }
+      } else {
+        if (esperando){
+          text("Decore a ordem:", xGame/2 - 100, 30);
+          if (contador < 1.5){
+            textFont(fonte, 22);
+            switch (ordem[0]) {
+              case 37:
+                image(imagens[30 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
+                text("Esquerda", xGame/2 - 100, 60);
+                break;
+              case 38:
+                image(imagens[31 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
+                text("Cima", xGame/2 - 100, 60);
+                break;
+              case 39:
+                image(imagens[28 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
+                text("Direita", xGame/2 - 100, 60);
+                break;
+              case 40:
+                image(imagens[29 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
+                text("Baixo", xGame/2 - 100, 60);
+                break;
+              default:
+                image(imagens[27 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
+                break;
+            }
+            contador += 0.03;
+          } else if (contador >= 1.5){
+            contador = 0;
+            if (ordem.length){
+              ordem.splice(0, 1);
+            } else {
+              esperando = false;
+            }
+          }
+        } else {
+          switch (ultimoPressionado) {
             case 37:
               image(imagens[30 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
-              text("Esquerda", xGame/2 - 100, 60);
               break;
             case 38:
               image(imagens[31 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
-              text("Cima", xGame/2 - 100, 60);
               break;
             case 39:
               image(imagens[28 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
-              text("Direita", xGame/2 - 100, 60);
               break;
             case 40:
               image(imagens[29 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
-              text("Baixo", xGame/2 - 100, 60);
               break;
             default:
               image(imagens[27 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
               break;
           }
-          contador += 0.03;
-        } else if (contador >= 1.5){
-          contador = 0;
-          if (ordem.length){
-            ordem.splice(0, 1);
-          } else {
-            esperando = false;
+          if (contador < 4){
+            text("Aperte na ordem:", xGame/2 - 100, 30);
+            text("Valendo...", xGame/2 - 100, 60);
           }
         }
-      } else {
-        switch (ultimoPressionado) {
-          case 37:
-            image(imagens[30 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
-            break;
-          case 38:
-            image(imagens[31 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
-            break;
-          case 39:
-            image(imagens[28 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
-            break;
-          case 40:
-            image(imagens[29 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
-            break;
-          default:
-            image(imagens[27 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
-            break;
-        }
-        text("Aperte na ordem:", xGame/2 - 100, 30);
-        text("Valendo...", xGame/2 - 100, 60);
-      }
-      if (contador == 4){
-        var perdeu = false;
-        for (var i = 0; i < 4; i++){
-          if (ordem[i] != ordemAux[i]){
-            alert("Que pena! Você não conseguiu acertar.");
-            minigame = 0;
-            perdeu = true;
-            break;
+        if (contador == 4){
+          switch (ultimoPressionado) {
+            case 37:
+              image(imagens[30 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
+              break;
+            case 38:
+              image(imagens[31 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
+              break;
+            case 39:
+              image(imagens[28 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
+              break;
+            case 40:
+              image(imagens[29 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
+              break;
+            default:
+              image(imagens[27 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
+              break;
           }
-        }
-        if (!perdeu){
-          alert("Muito bem! Você conseguiu realizar a dança do acasalamento! Você recebeu 150 pontos.");
-          pontuacao += 150;
-          minigame = 0;
+
+          if (tempoTexto >= 30){
+            if (frameHistoria >= 0 && frameHistoria < 10 || frameHistoria >= 20 && frameHistoria < 30){
+              imgm = humanoImagem[2].get(0, 0, 32, 32);
+              image(imgm, xGame/2 - 130, 40);
+            } else {
+              imgm = humanoImagem[2].get(32, 0, 32, 32);
+              image(imgm, xGame/2 - 130, 40);
+            }
+            frameHistoria += 0.4;
+            if (frameHistoria >= 40){
+              frameHistoria = 0;
+            }
+          }
+          tempoTexto += 0.25;
+
+          perdeu = false;
+          for (var i = 0; i < 4; i++){
+            if (ordem[i] != ordemAux[i]){
+              stroke(0);
+              fill(255);
+              textFont(fonte, 18);
+              text('Infelizmente não foi dessa vez que você conseguiu deixar', xGame/2 - 200, 100);
+              text('descendente.', xGame/2 - 200, 125);
+              perdeu = true;
+              break;
+            }
+          }
+          if (!perdeu){
+            stroke(0);
+            fill(255);
+            textFont(fonte, 18);
+            text('Parabéns! Você atraiu parceiros e deixou descendentes,', xGame/2 - 200, 100);
+            text('gerando maior riqueza genética na sua espécie.', xGame/2 - 200, 125);
+          }
         }
       }
 
     } else if (minigame == 2){ // minigame arena
-      if (arena){
-        text("Você controla a criatura circulada de azul com o mouse", xGame/2 - 150, 50);
-        text("Cace a criatura verde adversária antes que a criatura vermelha", xGame/2 - 200, 70);
-        text("cace sua criatura verde!", xGame/2 - 200, 90);
-        for (var i = criaturasMiniGame.length - 1; i >= 0; i--){
-          var crtr = criaturasMiniGame[i];
-          if (crtr.acabou()){
-            minigame = 0;
+      if (minigameEsperando){
+        if (tempoTexto >= 30){
+          if (frameHistoria >= 0 && frameHistoria < 10 || frameHistoria >= 20 && frameHistoria < 30){
+            imgm = humanoImagem[2].get(0, 0, 32, 32);
+            image(imgm, xGame/2 - 130, 40);
+          } else {
+            imgm = humanoImagem[2].get(32, 0, 32, 32);
+            image(imgm, xGame/2 - 130, 40);
+          }
+          frameHistoria += 0.4;
+          if (frameHistoria >= 40){
+            frameHistoria = 0;
+          }
+        }
+        tempoTexto += 0.25;
+
+        switch (indexTexto) {
+          case 0:
+            stroke(0);
+            fill(255);
+            textFont(fonte, 18);
+            text('Aqui não está sendo gerada variabilidade genética, mas no', xGame/2 - 200, 100);
+            text('ambiente natural a competição é uma realidade constante,', xGame/2 - 200, 125);
+            text('onde muitas vezes é preciso atacar ou fugir.', xGame/2 - 200, 150);
+            break;
+          case 1:
+            stroke(0);
+            fill(255);
+            textFont(fonte, 18);
+            text('Você controla a criatura circulada de azul, siga o', xGame/2 - 200, 100);
+            text('indivíduo circulado de verde da espécie oposta com o', xGame/2 - 200, 125);
+            text('mouse e torça para não ser encontrado primeiro.', xGame/2 - 200, 150);
+            break;
+          case 2:
+            stroke(0);
+            fill(255);
+            textFont(fonte, 18);
+            text('Preparado? Não se deixe ser atacado e não deixe a vítima', xGame/2 - 200, 100);
+            text('fugir!', xGame/2 - 200, 125);
             break;
           }
-          crtr.comportamentos(criaturasMiniGame);
-          crtr.update();
-          crtr.limites();
-          crtr.show();
-        }
       } else {
-        var player = new Controlavel(random(100,150), random(100, yGame - 132), tipoCriaturas[0], true, true);
-        criaturasMiniGame.push(player);
-        player = new Controlavel(random(100,150), random(100, yGame - 132), tipoCriaturas[0], false, false);
-        criaturasMiniGame.push(player);
-        player = new Controlavel(random(xGame - 182, xGame - 132), random(100, yGame - 132), tipoCriaturas[1], false, true);
-        criaturasMiniGame.push(player);
-        player = new Controlavel(random(xGame - 182, xGame - 132), random(100, yGame - 132), tipoCriaturas[1], false, false);
-        criaturasMiniGame.push(player);
-        arena = true;
+        if (esperandoClique){
+          if (tempoTexto >= 30){
+            if (frameHistoria >= 0 && frameHistoria < 10 || frameHistoria >= 20 && frameHistoria < 30){
+              imgm = humanoImagem[2].get(0, 0, 32, 32);
+              image(imgm, xGame/2 - 130, 40);
+            } else {
+              imgm = humanoImagem[2].get(32, 0, 32, 32);
+              image(imgm, xGame/2 - 130, 40);
+            }
+            frameHistoria += 0.4;
+            if (frameHistoria >= 40){
+              frameHistoria = 0;
+            }
+          }
+          tempoTexto += 0.25;
+
+          if (perdeu){
+            stroke(0);
+            fill(255);
+            textFont(fonte, 18);
+            text('Você foi atacado! Que pena!', xGame/2 - 200, 100);
+
+          } else {
+            stroke(0);
+            fill(255);
+            textFont(fonte, 18);
+            text('Parabéns! Mostrou que saber a hora certa de atacar e de', xGame/2 - 200, 100);
+            text('fugir é importante para a sobrevivência dos indivíduos.', xGame/2 - 200, 125);
+          }
+
+        } else {
+          if (arena){
+            for (var i = criaturasMiniGame.length - 1; i >= 0; i--){
+              var crtr = criaturasMiniGame[i];
+              if (crtr.acabou()){
+                esperandoClique = true;
+              }
+              crtr.comportamentos(criaturasMiniGame);
+              crtr.update();
+              crtr.limites();
+              crtr.show();
+            }
+          } else {
+            var player = new Controlavel(random(100,150), random(100, yGame - 132), tipoCriaturas[0], true, true);
+            criaturasMiniGame.push(player);
+            player = new Controlavel(random(100,150), random(100, yGame - 132), tipoCriaturas[0], false, false);
+            criaturasMiniGame.push(player);
+            player = new Controlavel(random(xGame - 182, xGame - 132), random(100, yGame - 132), tipoCriaturas[1], false, true);
+            criaturasMiniGame.push(player);
+            player = new Controlavel(random(xGame - 182, xGame - 132), random(100, yGame - 132), tipoCriaturas[1], false, false);
+            criaturasMiniGame.push(player);
+            arena = true;
+          }
+        }
       }
 
     } else if (minigame == 3){ // roleta sorte
-      strokeWeight(3);
-      stroke(0);
-      fill(92, 64, 51);
-      ellipse(xGame/2, yGame/2, 300, 300);
-      fill(200, 0, 0);
-      line(xGame/2 - 106, yGame/2 - 106, xGame/2 + 106, yGame/2 + 106);
-      line(xGame/2 + 106, yGame/2 - 106, xGame/2 - 106, yGame/2 + 106);
-      textFont(fonte, 16);
-      noStroke();
-      fill(255);
-      text("50 pontos", xGame/2 - 140, yGame/2);
-      text("0 pontos", xGame/2 + 60, yGame/2);
-      text("150 pontos", xGame/2 - 45, yGame/2 + 110);
-      text("300 pontos", xGame/2 - 45, yGame/2 - 110);
+      if (minigameEsperando){
 
-      push();
+        if (tempoTexto >= 30){
+          if (frameHistoria >= 0 && frameHistoria < 10 || frameHistoria >= 20 && frameHistoria < 30){
+            imgm = humanoImagem[2].get(0, 0, 32, 32);
+            image(imgm, xGame/2 - 130, 40);
+          } else {
+            imgm = humanoImagem[2].get(32, 0, 32, 32);
+            image(imgm, xGame/2 - 130, 40);
+          }
+          frameHistoria += 0.4;
+          if (frameHistoria >= 40){
+            frameHistoria = 0;
+          }
+        }
+        tempoTexto += 0.25;
 
-      fill(255, 0, 0);
-      translate(xGame/2, yGame/2);
-      stroke(24);
-      angleMode(DEGREES);
-      strokeWeight(3);
-      rotate(contador);
-      contador += roleta;
-      if (roletaPara == 2){
-        if (contador >= 45 && contador < 135){
-          alert("Que pena! Você não conseguiu pegar nenhum ponto.");
-          minigame = 0;
-        } else if (contador >= 135 && contador < 225){
-          alert("Muito bem! Você conseguiu 150 pontos.");
-          pontuacao += 150;
-          minigame = 0;
-        } else if (contador >= 225 && contador < 315){
-          alert("Bom! Você conseguiu 50 pontos.");
-          pontuacao += 50;
-          minigame = 0;
-        } else {
-          alert("Incrível! Você conseguiu 300 pontos.");
-          pontuacao += 300;
-          minigame = 0;
-        }
-      } else if (roletaPara == 1){
-        if (roleta > 0){
-          roleta -= 0.2;
-        } else if (roleta < 0){
-          roleta = 0;
-          roletaPara = 2;
-        }
+        switch (indexTexto) {
+          case 0:
+            stroke(0);
+            fill(255);
+            textFont(fonte, 18);
+            text('As mutações podem introduzir, remover, ou modificar genes,', xGame/2 - 200, 100);
+            text('sendo assim, matéria prima para a variabilidade genética.', xGame/2 - 200, 125);
+            text('São totalmente aleatórias, significando que podem ou não', xGame/2 - 200, 150);
+            text('trazer benefícios para uma espécie, e podem ou não serem', xGame/2 - 200, 175);
+            text('selecionadas pelo processo de seleção natural.', xGame/2 - 200, 200);
+            break;
+          case 1:
+            stroke(0);
+            fill(255);
+            textFont(fonte, 18);
+            text('Gire a roleta e veremos quantos pontos de modificação', xGame/2 - 200, 100);
+            text('vai receber ao acaso!', xGame/2 - 200, 125);
+            break;
+          }
+
       } else {
-        if (roleta < 40){
-          roleta += 0.1;
+        strokeWeight(3);
+        stroke(0);
+        fill(92, 64, 51);
+        ellipse(xGame/2, yGame/2, 300, 300);
+        fill(200, 0, 0);
+        line(xGame/2 - 106, yGame/2 - 106, xGame/2 + 106, yGame/2 + 106);
+        line(xGame/2 + 106, yGame/2 - 106, xGame/2 - 106, yGame/2 + 106);
+        textFont(fonte, 16);
+        noStroke();
+        fill(255);
+        text("50 pontos", xGame/2 - 140, yGame/2);
+        text("0 pontos", xGame/2 + 60, yGame/2);
+        text("150 pontos", xGame/2 - 45, yGame/2 + 110);
+        text("300 pontos", xGame/2 - 45, yGame/2 - 110);
+
+        push();
+
+        fill(255, 0, 0);
+        translate(xGame/2, yGame/2);
+        stroke(24);
+        angleMode(DEGREES);
+        strokeWeight(3);
+        rotate(contador);
+        contador += roleta;
+        if (roletaPara == 2){
+          if (esperandoClique){
+            if (tempoTexto >= 30){
+              if (frameHistoria >= 0 && frameHistoria < 10 || frameHistoria >= 20 && frameHistoria < 30){
+                imgm = humanoImagem[2].get(0, 0, 32, 32);
+                image(imgm, xGame/2 - 130, 40);
+              } else {
+                imgm = humanoImagem[2].get(32, 0, 32, 32);
+                image(imgm, xGame/2 - 130, 40);
+              }
+              frameHistoria += 0.4;
+              if (frameHistoria >= 40){
+                frameHistoria = 0;
+              }
+            }
+            tempoTexto += 0.25;
+
+            if (contador >= 45 && contador < 135){
+              stroke(0);
+              fill(255);
+              textFont(fonte, 18);
+              text('Você não ganhou nenhum ponto de modificação dessa vez!', xGame/2 - 200, 100);
+            } else if (contador >= 135 && contador < 225){
+              stroke(0);
+              fill(255);
+              textFont(fonte, 18);
+              text('Ótimo! Você ganhou 150 pontos de modificação!', xGame/2 - 200, 100);
+              pontuacao += 150;
+            } else if (contador >= 225 && contador < 315){
+              stroke(0);
+              fill(255);
+              textFont(fonte, 18);
+              text('Muito bom! Você ganhou 50 pontos de modificação!', xGame/2 - 200, 100);
+            } else {
+              stroke(0);
+              fill(255);
+              textFont(fonte, 18);
+              text('Perfeito! Você ganhou 300 pontos de modificação!', xGame/2 - 200, 100);
+            }
+          }
+        } else if (roletaPara == 1){
+          if (roleta > 0){
+            roleta -= 0.2;
+          } else if (roleta < 0){
+            roleta = 0;
+            roletaPara = 2;
+            esperandoClique = true;
+          }
         } else {
-          fill(0, 255, 0);
+          if (roleta < 40){
+            roleta += 0.1;
+          } else {
+            fill(0, 255, 0);
+          }
         }
+        if (contador >= 360){
+          contador -= 360;
+        }
+        triangle(0, -80, 30, 30, -30, 30);
+        pop();
       }
-      if (contador >= 360){
-        contador -= 360;
-      }
-      triangle(0, -80, 30, 30, -30, 30);
-      pop();
 
     } else if (minigame == -1){
       switch (indexTexto) {
@@ -637,6 +858,50 @@ Level.prototype.mousePressed = function() {
       }
     }
   }
+  if (minigame == 1 || minigame == 2){
+    if (indexTexto >= 0){
+      if (tempoTexto >= 30){
+        indexTexto += 1;
+        if (indexTexto == 3) {
+          minigameEsperando = false;
+        }
+        tempoTexto = 0;
+      }
+    }
+  } else if (minigame == 3){
+    if (indexTexto >= 0){
+      if (tempoTexto >= 30){
+        indexTexto += 1;
+        if (indexTexto == 2) {
+          minigameEsperando = false;
+        }
+        tempoTexto = 0;
+      }
+    }
+  }
+  // variável que identifica se terminou algum minigame
+  if (esperandoClique){
+    if (!perdeu){
+      if (minigame == 1){
+        pontuacao += 150;
+      } else if (minigame == 2){
+        pontuacao += 100;
+      }
+    }
+    if (minigame == 3){
+      if (contador >= 45 && contador < 135){
+        // faz nada
+      } else if (contador >= 135 && contador < 225){
+        pontuacao += 150;
+      } else if (contador >= 225 && contador < 315){
+        pontuacao += 50;
+      } else {
+        pontuacao += 300;
+      }
+    }
+    minigame = 0;
+    esperandoClique = false;
+  }
   // minigame 3 ativo
   if (minig3){
     if (roleta >= 40){
@@ -656,6 +921,7 @@ Level.prototype.keyPressed = function() {
         ultimoPressionado = keyCode;
         ordem.push(keyCode);
         contador += 1;
+        esperandoClique = true;
       }
     }
     // minigame 3 ativo
@@ -675,6 +941,8 @@ Level.prototype.keyPressed = function() {
             ordemAux.push(ordem[i]);
           }
           minig1 = true;
+          indexTexto = 0;
+          minigameEsperando = true;
         }
       }
     }
@@ -683,6 +951,8 @@ Level.prototype.keyPressed = function() {
         if (!minig2 && minigame == 0){
           minigame = 2;
           minig2 = true;
+          indexTexto = 0;
+          minigameEsperando = true;
         }
       }
     }
@@ -691,6 +961,8 @@ Level.prototype.keyPressed = function() {
         if (!minig3 && minigame == 0){
           minigame = 3;
           minig3 = true;
+          indexTexto = 0;
+          minigameEsperando = true;
         }
       }
     }
