@@ -40,6 +40,15 @@ var l2 = false; // escolheu característica
 var l3 = 0; // sobreviventes level3
 var l4m1 = false; // minigame1 level4
 var pontoNota = 0.0;
+var foto = false;
+// auxiliadores da nota
+var nota1contou = false;
+var nota2contou = false;
+var nota3contou = false;
+var nota4contou = false;
+var nota5contou = false;
+var nota6contou = false;
+var nota7contou = false;
 
 //______________________________________________________________________________
 // carregando imagens no projeto
@@ -973,52 +982,83 @@ function draw(){
           text('Capítulo 1:', xGame/2 + 30, 135);
           if (l1m1){
             text('MiniGame Acasalamento: Acertou', xGame/2 + 45, 152);
-            pontoNota += 0.5;
+            if (!nota1contou){
+              pontoNota += 0.5;
+              nota1contou = true;
+            }
           } else {
             text('MiniGame Acasalamento: Errou', xGame/2 + 45, 152);
           }
           if (l1m2){
             text('MiniGame Combate: Jogou', xGame/2 + 45, 169);
-            pontoNota += 0.25;
+            if (!nota2contou){
+              pontoNota += 0.25;
+              nota2contou = true;
+            }
           } else {
             text('MiniGame Combate: Não Jogou', xGame/2 + 45, 169);
           }
           if (l1m3){
             text('MiniGame Casualidade: Jogou', xGame/2 + 45, 186);
-            pontoNota += 0.25;
+            if (!nota3contou){
+              pontoNota += 0.25;
+              nota3contou = true;
+            }
           } else {
             text('MiniGame Casualidade: Não Jogou', xGame/2 + 45, 186);
           }
           text('Capítulo 2:', xGame/2 + 30, 203);
           if (l2){
             text('Escolha de nova característica: Concluído', xGame/2 + 45, 220);
-            pontoNota += 1;
+            if (!nota4contou){
+              pontoNota += 1;
+              nota4contou = true;
+            }
           } else {
             text('Escolha de nova característica: Incompleto', xGame/2 + 45, 220);
           }
           text('Capítulo 3:', xGame/2 + 30, 237);
           text('Sobreviventes: ' + l3 + '/25', xGame/2 + 45, 254);
           if (l3 >= 10){
-            pontoNota += 1;
+            if (!nota5contou){
+              pontoNota += 1;
+              nota5contou = true;
+            }
           } else {
-            pontoNota += 0.5;
+            if (!nota5contou){
+              pontoNota += 0.5;
+              nota5contou = true;
+            }
           }
           text('Capítulo 4:', xGame/2 + 30, 271);
           if (l4m1){
             text('MiniGame Pontos: Jogou', xGame/2 + 45, 288);
-            pontoNota += 1;
+            if (!nota6contou){
+              pontoNota += 1;
+              nota6contou = true;
+            }
           } else {
             text('MiniGame Pontos: Não Jogou', xGame/2 + 45, 288);
-            pontoNota += 0.5;
+            if (!nota6contou){
+              pontoNota += 0.5;
+              nota6contou = true;
+            }
           }
           text('Capítulo 5:', xGame/2 + 30, 305);
           text('MiniGame Quebra-Cabeça: Jogou', xGame/2 + 45, 322);
-          pontoNota += 1;
+          if (!nota7contou){
+            pontoNota += 1;
+            nota7contou = true;
+          }
           text('Características adquiriras pela espécie:', xGame/2, 339);
           for (var i = 1; i < criatura[0].length; i++){
             text('-' + criatura[0][i], xGame/2 + 20, 339 + (17 * i));
           }
-          text('Pontuação total: ' + pontoNota, xGame/2, 339);
+          text('Pontuação total: ' + pontoNota, xGame/2, 402);
+          if (!foto){
+            saveCanvas('estatísticas', 'png');
+            foto = true;
+          }
           break;
       }
       if (tempoImagem >= 30 && imagemAtual != 10){
