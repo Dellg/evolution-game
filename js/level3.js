@@ -79,7 +79,6 @@ Level3.prototype.iniciaGeracao = function(){
 
   // redesenha a tela com a nova geração
   if (jaIniciou){
-    alert("Você teve muitas baixas! Por sorte, algumas de suas criaturas já tinha chegado lá!");
     levelnum = 4;
   } else {
     jaIniciou = true;

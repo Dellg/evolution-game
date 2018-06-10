@@ -409,7 +409,6 @@ function setup(){
   //______________________________________________________________________________
   function confirmarNovaCaracteristica() {
     if (criatura[1] == upgradeSelecionado){
-      alert("Você já possui essa melhoria, escolha outra!");
       return false;
     }
 
@@ -427,7 +426,6 @@ function setup(){
           }
           pontuacao -= 200;
         } else {
-          alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
         }
         break;
@@ -443,7 +441,6 @@ function setup(){
           }
           pontuacao -= 200;
         } else {
-          alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
         }
         break;
@@ -459,7 +456,6 @@ function setup(){
           }
           pontuacao -= 200;
         } else {
-          alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
         }
         break;
@@ -477,7 +473,6 @@ function setup(){
           }
           pontuacao -= 150;
         } else {
-          alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
         }
         break;
@@ -495,7 +490,6 @@ function setup(){
           }
           pontuacao -= 250;
         } else {
-          alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
         }
         break;
@@ -513,7 +507,6 @@ function setup(){
           }
           pontuacao -= 200;
         } else {
-          alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
         }
         break;
@@ -531,7 +524,6 @@ function setup(){
           }
           pontuacao -= 250;
         } else {
-          alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
         }
         break;
@@ -549,7 +541,6 @@ function setup(){
           }
           pontuacao -= 100;
         } else {
-          alert("Você não tem pontuação suficiente para pegar esta mutação.");
           return false;
         }
         break;
@@ -599,7 +590,6 @@ function setup(){
   //______________________________________________________________________________
   function adicionarCriatura() {
     if (nome.value() == ""){
-      alert("Você deve dar um nome a sua criatura!");
       return false;
     }
 
@@ -648,7 +638,6 @@ function setup(){
     arrayCopy(infor, inforModificada);
     inforModificada[0] = inforModificada[0] + " Modificada";
 
-    alert("A criatura " + nome.value() + " foi criada com sucesso!")
     criatura = [infor, tipo, vida, fome, velocidade, resistencia, aparencia];
     criaturaFutura = [inforModificada, tipo, vida, fome, velocidade, resistencia, aparencia];
     level = new Level(criatura);
@@ -786,32 +775,65 @@ function draw(){
       } else if (tipo == 2){
         image(menusImagens[4], 0, 0);
       }
+      if (nome.value() == ''){
+        text('Nome obrigatório!', xGame - 370, yGame - 50);
+      }
     } else if (menu == 1){ // levels
       if (levelnum == 1.5){ // escolha de novas características .hide() e .show()
         switch (upgradeSelecionado) {
           case 0:
             image(menusImagens[12], 0, 0);
+            if (criatura[1] == upgradeSelecionado){
+              text('Você já possui essa melhoria, escolha outra!', xGame - 500, yGame - 50);
+            } else if (pontuacao < 200) {
+              text('Pontos de modificação insuficientes!', xGame - 500, yGame - 50);
+            }
             break;
           case 1:
             image(menusImagens[13], 0, 0);
+            if (criatura[1] == upgradeSelecionado){
+              text('Você já possui essa melhoria, escolha outra!', xGame - 500, yGame - 50);
+            } else if (pontuacao < 200) {
+              text('Pontos de modificação insuficientes!', xGame - 500, yGame - 50);
+            }
             break;
           case 2:
             image(menusImagens[14], 0, 0);
+            if (criatura[1] == upgradeSelecionado){
+              text('Você já possui essa melhoria, escolha outra!', xGame - 500, yGame - 50);
+            } else if (pontuacao < 200) {
+              text('Pontos de modificação insuficientes!', xGame - 500, yGame - 50);
+            }
             break;
           case 3:
             image(menusImagens[15], 0, 0);
+            if (pontuacao < 150) {
+              text('Pontos de modificação insuficientes!', xGame - 500, yGame - 50);
+            }
             break;
           case 4:
             image(menusImagens[16], 0, 0);
+            if (pontuacao < 250) {
+              text('Pontos de modificação insuficientes!', xGame - 500, yGame - 50);
+            }
             break;
           case 5:
             image(menusImagens[17], 0, 0);
+            if (pontuacao < 200) {
+              text('Pontos de modificação insuficientes!', xGame - 500, yGame - 50);
+            }
             break;
           case 6:
             image(menusImagens[18], 0, 0);
+            if (pontuacao < 250) {
+              text('Pontos de modificação insuficientes!', xGame - 500, yGame - 50);
+            }
             break;
           case 7:
             image(menusImagens[19], 0, 0);
+            if (pontuacao < 100) {
+              text('Pontos de modificação insuficientes!', xGame - 500, yGame - 50);
+            }
             break;
           case 8:
             image(menusImagens[20], 0, 0);

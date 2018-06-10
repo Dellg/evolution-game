@@ -428,8 +428,8 @@ Level.prototype.rodar = function(){
             stroke(0);
             fill(255);
             textFont(fonte, 18);
-            text('Preparado? Não se deixe ser atacado e não deixe a vítima', xGame/2 - 200, 100);
-            text('fugir!', xGame/2 - 200, 125);
+            text('Preparado? Não se deixe ser atacado e não deixe o seu', xGame/2 - 200, 100);
+            text('oponente fugir!', xGame/2 - 200, 125);
             break;
           }
       } else {
