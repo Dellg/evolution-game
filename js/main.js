@@ -592,7 +592,6 @@ function setup(){
     botaoConfirmar.remove();
     levelnum = 2;
     level = new Level2(criaturasSalvas);
-    alert("Iniciando capítulo 2");
   }
 
   //______________________________________________________________________________
@@ -990,14 +989,13 @@ function mousePressed(){
     if (level != undefined){
       level.mousePressed();
     }
-  } else if (levelnum == 5){
+  } else if (levelnum == 5) {
+    if (level != undefined){
+      level.mousePressed();
+    }
     if (level.serHumano != undefined){
       if (level.serHumano.cavando){
         level.serHumano.carrega(10);
-      }
-    } else {
-      if (level != undefined){
-        level.mousePressed();
       }
     }
   }

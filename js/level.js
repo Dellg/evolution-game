@@ -211,7 +211,6 @@ Level.prototype.rodar = function(){
   image(levelImagens[0], 0, 0);
   fill(255);
   if (tempoJogo >= 80){
-    alert("Fim do capítulo 1!");
     criaturasSalvas = tipoCriaturas;
     indexTexto = 0;
     tempoTexto = 0;
@@ -276,25 +275,25 @@ Level.prototype.rodar = function(){
           }
       } else {
         if (esperando){
-          text("Decore a ordem:", xGame/2 - 100, 30);
+          text("Decore a ordem:", xGame/2 - 100, 100);
           if (contador < 1.5){
             textFont(fonte, 22);
             switch (ordem[0]) {
               case 37:
                 image(imagens[30 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
-                text("Esquerda", xGame/2 - 100, 60);
+                text("Esquerda", xGame/2 - 100, 125);
                 break;
               case 38:
                 image(imagens[31 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
-                text("Cima", xGame/2 - 100, 60);
+                text("Cima", xGame/2 - 100, 125);
                 break;
               case 39:
                 image(imagens[28 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
-                text("Direita", xGame/2 - 100, 60);
+                text("Direita", xGame/2 - 100, 125);
                 break;
               case 40:
                 image(imagens[29 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
-                text("Baixo", xGame/2 - 100, 60);
+                text("Baixo", xGame/2 - 100, 125);
                 break;
               default:
                 image(imagens[27 + criatura[1] * 5], xGame/2 - 200, yGame/2 - 200);
@@ -328,8 +327,8 @@ Level.prototype.rodar = function(){
               break;
           }
           if (contador < 4){
-            text("Aperte na ordem:", xGame/2 - 100, 30);
-            text("Valendo...", xGame/2 - 100, 60);
+            text("Aperte na ordem:", xGame/2 - 100, 100);
+            text("Valendo...", xGame/2 - 100, 125);
           }
         }
         if (contador == 4){

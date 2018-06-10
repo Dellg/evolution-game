@@ -168,13 +168,26 @@ Level2.prototype.rodar = function(){
   image(levelImagens[1], 0, 0);
   fill(255);
   if (tempoJogo >= 110){
-    alert("Fim do capítulo 2!");
-    criaturasSalvas = tipoCriaturas;
-    musicas[4].stop();
-    musicas[5].loop();
-    levelnum = 3;
-    botaoCrdts.elt.textContent = 'Fable - por Adrian von Ziegler';
-    level = new Level3(criaturasSalvas);
+    if (tempoTexto >= 30){
+      if (frameHistoria >= 0 && frameHistoria < 10 || frameHistoria >= 20 && frameHistoria < 30){
+        imgm = humanoImagem[2].get(0, 0, 32, 32);
+        image(imgm, xGame/2 - 130, 40);
+      } else {
+        imgm = humanoImagem[2].get(32, 0, 32, 32);
+        image(imgm, xGame/2 - 130, 40);
+      }
+      frameHistoria += 0.4;
+      if (frameHistoria >= 40){
+        frameHistoria = 0;
+      }
+    }
+    tempoTexto += 0.25;
+
+    stroke(0);
+    fill(255);
+    textFont(fonte, 18);
+    text('Parabéns! A nova estrutura se mostrou favorável no ambiente e', xGame/2 - 200, 100);
+    text('foi adicionada à espécie pela seleção natural!', xGame/2 - 200, 125);
 
   } else {
     if (minigame == -1){
@@ -318,6 +331,14 @@ Level2.prototype.rodar = function(){
 // função que interpreta o valor do botão do mouse
 //______________________________________________________________________________
 Level2.prototype.mousePressed = function() {
+  if (tempoJogo >= 110 && tempoTexto >= 30) {
+    criaturasSalvas = tipoCriaturas;
+    musicas[4].stop();
+    musicas[5].loop();
+    levelnum = 3;
+    botaoCrdts.elt.textContent = 'Fable - por Adrian von Ziegler';
+    level = new Level3(criaturasSalvas);
+  }
   if (minigame == -2){
     if (indexTexto >= 2){
       if (tempoTexto >= 30){

@@ -98,6 +98,9 @@ Humano.prototype.show = function(){
       if (this.carga >= 100){
         this.cavando = false;
         pedacos += 1;
+        if (pedacos == 8){
+          esperandoClique = true;
+        }
         this.carga = 0;
       }
     }

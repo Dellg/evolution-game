@@ -96,7 +96,6 @@ Level3.prototype.rodar = function(){
   image(levelImagens[1], aleatorioX, aleatorioY);
   fill(255);
   if (tempoJogo >= 200){
-    alert("Fim do capítulo 3!");
     criaturasSalvas = tipoCriaturas;
     musicas[5].stop();
     musicas[6].loop();

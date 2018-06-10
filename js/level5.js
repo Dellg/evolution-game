@@ -20,6 +20,7 @@ var indexVazio;
 var quantiaCerta = 0;
 var flagMontou = false;
 var minigame;
+var esperandoClique;
 
 // o level 4 a criatura do jogador e uma nova evolução paralela de sua criatura
 function Level5(criaturasAnteriores, fossil){
@@ -27,6 +28,8 @@ function Level5(criaturasAnteriores, fossil){
   indexTexto = 0;
   flagTexto = false;
   minigame = -1;
+  esperandoClique = false;
+  tempoTexto = 0;
   for (var i = 0; i < 8; i++){
     fossilImagens[i].name = (i % 8) + 1;
   }
@@ -209,21 +212,60 @@ Level5.prototype.rodar = function(){
   fill(255);
 
   if (pedacos == 8){
-    text("Monte o quebra-cabeça com os pedaços do fóssil encontrado:", xGame/2 - 195, 100);
-    for (var i = 0; i < matriz.length; i++){
-      var x = 127 * (i % 3);
-      var y = 127 * floor(i / 3);
-      image(matriz[i], xGame/2 - (127 + 127/2) + x, yGame/2 - (127 + 127/2) + y);
-    }
-    if (flagMontou){
-      botaoCrdts.elt.textContent = 'Sacred Earth - por Adrian von Ziegler';
-      levelnum = 6;
-      menu = 2;
-      alert("Parabéns! Você montou o fóssil!");
-      musicas[7].stop();
-      musicas[8].loop();
-      imagemAtual = 0;
-      tempoImagem = 0;
+    if (esperandoClique) {
+      if (tempoTexto >= 30){
+        if (frameHistoria >= 0 && frameHistoria < 10 || frameHistoria >= 20 && frameHistoria < 30){
+          imgm = humanoImagem[2].get(0, 0, 32, 32);
+          image(imgm, xGame/2 - 130, 40);
+        } else {
+          imgm = humanoImagem[2].get(32, 0, 32, 32);
+          image(imgm, xGame/2 - 130, 40);
+        }
+        frameHistoria += 0.4;
+        if (frameHistoria >= 40){
+          frameHistoria = 0;
+        }
+      }
+      tempoTexto += 0.25;
+
+      stroke(0);
+      fill(255);
+      textFont(fonte, 18);
+      text('Ótimo! Agora ajude o humano a montar o quebra-cabeça', xGame/2 - 200, 100);
+      text('do fóssil completo, para que ele retorne à Terra com', xGame/2 - 200, 125);
+      text('as informações corretas sobre a evolução de Geb.', xGame/2 - 200, 150);
+
+    } else {
+      for (var i = 0; i < matriz.length; i++){
+        var x = 127 * (i % 3);
+        var y = 127 * floor(i / 3);
+        image(matriz[i], xGame/2 - (127 + 127/2) + x, yGame/2 - (127 + 127/2) + y);
+      }
+      if (flagMontou){
+        if (tempoTexto >= 30){
+          if (frameHistoria >= 0 && frameHistoria < 10 || frameHistoria >= 20 && frameHistoria < 30){
+            imgm = humanoImagem[2].get(0, 0, 32, 32);
+            image(imgm, xGame/2 - 130, 40);
+          } else {
+            imgm = humanoImagem[2].get(32, 0, 32, 32);
+            image(imgm, xGame/2 - 130, 40);
+          }
+          frameHistoria += 0.4;
+          if (frameHistoria >= 40){
+            frameHistoria = 0;
+          }
+        }
+        tempoTexto += 0.25;
+
+        stroke(0);
+        fill(255);
+        textFont(fonte, 18);
+        text('Enfim, agora o fóssil será levado para a Terra para', xGame/2 - 200, 100);
+        text('que os humanos possam estudar mais sobre a evolução', xGame/2 - 200, 125);
+        text('de Geb.', xGame/2 - 200, 150);
+      } else {
+        text("Monte o quebra-cabeça com os pedaços do fóssil encontrado:", xGame/2 - 195, 100);
+      }
     }
 
   } else {
@@ -280,8 +322,8 @@ Level5.prototype.rodar = function(){
           fill(255);
           textFont(fonte, 18);
           text('Ora, ora, quem resolveu aparecer?! Os humanos finalmente', xGame/2 - 200, 100);
-          text('encontraram o planeta Geb no universo, mas chegaram um pouco', xGame/2 - 200, 125);
-          text('tarde para ver o show...', xGame/2 - 200, 150);
+          text('encontraram o planeta Geb no universo, mas chegaram um', xGame/2 - 200, 125);
+          text('pouco tarde para ver o show...', xGame/2 - 200, 150);
           break;
         case 3:
           stroke(0);
@@ -465,7 +507,6 @@ function embaralha(paraEmbaralhar){
         }
       }
     }
-    console.log('contagem: ' + contagemImpares);
     if (contagemImpares % 2 == 0){
       bugado = false;
     }
@@ -477,6 +518,25 @@ function embaralha(paraEmbaralhar){
 // função que interpreta o valor do botão do mouse
 //______________________________________________________________________________
 Level5.prototype.mousePressed = function() {
+  // variável que identifica se terminou algum minigame
+  if (esperandoClique){
+    if (tempoTexto >= 30){
+      esperandoClique = false;
+      tempoTexto = 0;
+    }
+  }
+  if (flagMontou){
+    if (tempoTexto >= 30){
+      botaoCrdts.elt.textContent = 'Sacred Earth - por Adrian von Ziegler';
+      levelnum = 6;
+      menu = 2;
+      musicas[7].stop();
+      musicas[8].loop();
+      imagemAtual = 0;
+      tempoImagem = 0;
+      flagMontou = false;
+    }
+  }
   if (minigame == -2){
     if (indexTexto >= 2){
       if (tempoTexto >= 30){

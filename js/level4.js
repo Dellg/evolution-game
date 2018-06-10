@@ -22,6 +22,7 @@ var scale1 = 0;
 var scale1flag = true;
 var espacoRio = 128;
 var minigame;
+var esperandoClique;
 
 // o level 4 a criatura do jogador e uma nova evolução paralela de sua criatura
 function Level4(criaturasAnteriores){
@@ -29,6 +30,7 @@ function Level4(criaturasAnteriores){
   indexTexto = 0;
   flagTexto = false;
   minigame = -1;
+  esperandoClique = false;
   countAlimentos = 80;
   alimentosPlanta = [];
   alimentosInseto = [];
@@ -215,7 +217,6 @@ Level4.prototype.rodar = function(){
   image(levelImagens[2], 0, 0);
   fill(255);
   if (tempoJogo >= 250){
-    alert("Fim do capítulo 4!");
     criaturasSalvas = tipoCriaturas;
     musicas[6].stop();
     musicas[7].loop();
@@ -225,41 +226,65 @@ Level4.prototype.rodar = function(){
 
   } else {
     if (miniGameOn){
-      if (arena2){
-        text("Pegue os pontos de modificação que irão cair:", xGame/2 - 100, 30);
-        text(miniGamePontos + '/250', xGame/2 - 50, 500);
-        // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
-        if (moedas.length <= 0 || random(1) < 0.005){
-          moedas.push(new Moeda());
-        }
-
-        criaturaMiniGame.comportamentos();
-        criaturaMiniGame.update();
-        criaturaMiniGame.show();
-
-        for (var i = moedas.length - 1; i >= 0; i--){
-          var md = moedas[i];
-          md.show();
-          if (md.sumiu(criaturaMiniGame)){
-            moedas.splice(i, 1);
-
-            if (miniGamePontos >= 250){
-              for (var i = criaturas.length -1; i >= 0; i--){
-                if (criaturas[i].nome.includes(criatura[0][0]) && criaturas[i].nome != criatura[0][0]){
-                  criaturas[i].atualizaImagem(aparenciaFutura);
-                }
-              }
-              arena2 = false;
-              miniGameOn = false;
-              miniGameCompleto = true;
-              alert("Parabéns! Você conseguiu juntar alguns pontos de modificação!");
-            }
+      if (esperandoClique){
+        if (tempoTexto >= 30){
+          if (frameHistoria >= 0 && frameHistoria < 10 || frameHistoria >= 20 && frameHistoria < 30){
+            imgm = humanoImagem[2].get(0, 0, 32, 32);
+            image(imgm, xGame/2 - 130, 40);
+          } else {
+            imgm = humanoImagem[2].get(32, 0, 32, 32);
+            image(imgm, xGame/2 - 130, 40);
+          }
+          frameHistoria += 0.4;
+          if (frameHistoria >= 40){
+            frameHistoria = 0;
           }
         }
+        tempoTexto += 0.25;
+
+        stroke(0);
+        fill(255);
+        textFont(fonte, 18);
+        text('Parabéns! Você acumulou pontos de modificação suficientes', xGame/2 - 200, 100);
+        text('para se adaptar ao novo ambiente. Dê uma boa olhada na', xGame/2 - 200, 125);
+        text('espécie do outro lado do rio!', xGame/2 - 200, 150);
+        text('Vocês agora são espécies diferentes!', xGame/2 - 200, 175);
 
       } else {
-        criaturaMiniGame = new Controlavel2(random(xGame/2 - xGame/2, xGame - xGame/2), yGame - yGame/2, tipoCriaturas[0]);
-        arena2 = true;
+        if (arena2){
+          text("Pegue os pontos de modificação que irão cair:", xGame/2 - 100, 100);
+          text(miniGamePontos + '/250', xGame/2 - 50, 500);
+          // gera novas comidas se tiver menos da quantidade definida de comidas no canvas
+          if (moedas.length <= 0 || random(1) < 0.005){
+            moedas.push(new Moeda());
+          }
+
+          criaturaMiniGame.comportamentos();
+          criaturaMiniGame.update();
+          criaturaMiniGame.show();
+
+          for (var i = moedas.length - 1; i >= 0; i--){
+            var md = moedas[i];
+            md.show();
+            if (md.sumiu(criaturaMiniGame)){
+              moedas.splice(i, 1);
+
+              if (miniGamePontos >= 250){
+                for (var i = criaturas.length -1; i >= 0; i--){
+                  if (criaturas[i].nome.includes(criatura[0][0]) && criaturas[i].nome != criatura[0][0]){
+                    criaturas[i].atualizaImagem(aparenciaFutura);
+                  }
+                }
+                arena2 = false;
+                esperandoClique = true;
+              }
+            }
+          }
+
+        } else {
+          criaturaMiniGame = new Controlavel2(random(xGame/2 - xGame/2, xGame - xGame/2), yGame - yGame/2, tipoCriaturas[0]);
+          arena2 = true;
+        }
       }
 
     } else {
@@ -340,8 +365,8 @@ Level4.prototype.rodar = function(){
             fill(255);
             textFont(fonte, 18);
             text('Com toda essa mudança, agora você deve acumular pontos de', xGame/2 - 200, 100);
-            text('modificação rapidamente através do minigame para se adaptar ao', xGame/2 - 200, 125);
-            text('novo ambiente e seguir para a próxima fase.', xGame/2 - 200, 150);
+            text('modificação rapidamente através do minigame para se adaptar', xGame/2 - 200, 125);
+            text('ao novo ambiente e seguir para a próxima fase.', xGame/2 - 200, 150);
             break;
         }
 
@@ -455,6 +480,13 @@ Level4.prototype.keyPressed = function() {
 // função que interpreta o valor do botão do mouse
 //______________________________________________________________________________
 Level4.prototype.mousePressed = function() {
+  // variável que identifica se terminou algum minigame
+  if (esperandoClique){
+    minigame = 0;
+    miniGameOn = false;
+    miniGameCompleto = true;
+    esperandoClique = false;
+  }
   if (minigame == -2){
     if (indexTexto >= 2){
       if (tempoTexto >= 30){
