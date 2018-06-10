@@ -568,7 +568,6 @@ Level.prototype.rodar = function(){
               fill(255);
               textFont(fonte, 18);
               text('Ótimo! Você ganhou 150 pontos de modificação!', xGame/2 - 200, 100);
-              pontuacao += 150;
             } else if (contador >= 225 && contador < 315){
               stroke(0);
               fill(255);
@@ -889,16 +888,19 @@ Level.prototype.mousePressed = function() {
       } else if (minigame == 2){
         pontuacao += 100;
       }
+      perdeu = true;
     }
     if (minigame == 3){
-      if (contador >= 45 && contador < 135){
-        // faz nada
-      } else if (contador >= 135 && contador < 225){
-        pontuacao += 150;
-      } else if (contador >= 225 && contador < 315){
-        pontuacao += 50;
-      } else {
-        pontuacao += 300;
+      if (roletaPara == 2){
+        if (contador >= 45 && contador < 135){
+          // faz nada
+        } else if (contador >= 135 && contador < 225){
+          pontuacao += 150;
+        } else if (contador >= 225 && contador < 315){
+          pontuacao += 50;
+        } else {
+          pontuacao += 300;
+        }
       }
     }
     minigame = 0;
