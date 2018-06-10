@@ -79,6 +79,7 @@ Level3.prototype.iniciaGeracao = function(){
 
   // redesenha a tela com a nova geração
   if (jaIniciou){
+    tempoJogo = 200;
     levelnum = 4;
   } else {
     jaIniciou = true;

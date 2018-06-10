@@ -84,23 +84,28 @@ Controlavel.prototype.persegue = function(presas) {
   var maisProximo = null;
 
   if (this.player){
-    var distancia = this.posicao.dist(presas[3].posicao);
-    if (distancia < this.maxVelocidade + this.raio * 2){
-      this.terminou = true;
-      this.venceu = true;
+    if (presas[3] != undefined){
+      var distancia = this.posicao.dist(presas[3].posicao);
+      if (distancia < this.maxVelocidade + this.raio * 2){
+        this.terminou = true;
+        this.venceu = true;
+      }
     }
     return this.movimenta(createVector(mouseX, mouseY), false);
   } else {
-    var distancia = this.posicao.dist(presas[1].posicao);
-    if (distancia < this.maxVelocidade + this.raio * 2) {
-      this.terminou = true;
-    } else {
-      if (distancia < lembranca) {
-        lembranca = distancia;
-        maisProximo = presas[1];
+    if (presas[1] != undefined){
+      var distancia = this.posicao.dist(presas[1].posicao);
+      if (distancia < this.maxVelocidade + this.raio * 2) {
+        this.terminou = true;
+      } else {
+        if (distancia < lembranca) {
+          lembranca = distancia;
+          maisProximo = presas[1];
+        }
       }
+      return this.movimenta(maisProximo, false);
     }
-    return this.movimenta(maisProximo, false);
+    return this.movimenta(createVector(0,0), false);
   }
 }
 
@@ -123,13 +128,15 @@ Controlavel.prototype.fugir = function(predadores) {
 
   if (levelnum == 3){
     for (var i = predadores.length - 1; i >= 0; i--) {
-      var distancia = this.posicao.dist(predadores[i].posicao);
-      if (distancia < (predadores[i].raio/2)-1){
-        this.perdeu = true;
-      }
-      if (distancia < lembranca && distancia < predadores[i].raio + predadores[i].raio / 2) {
-        lembranca = distancia;
-        maisProximo = predadores[i];
+      if (predadores[i] != undefined){
+        var distancia = this.posicao.dist(predadores[i].posicao);
+        if (distancia < (predadores[i].raio/2)-1){
+          this.perdeu = true;
+        }
+        if (distancia < lembranca && distancia < predadores[i].raio + predadores[i].raio / 2) {
+          lembranca = distancia;
+          maisProximo = predadores[i];
+        }
       }
     }
   }
