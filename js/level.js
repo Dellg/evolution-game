@@ -16,6 +16,7 @@ var taxaMutacao = 0.01;
 var minigameEsperando = false;
 var minigame = -1;
 var minig1 = false, minig2 = false, minig3 = false; // flag que verifica completude dos minigames
+var minig1Terminado = false;
 var esperando = false; // flag para o jogador não poder pressionar
 var ordem = [], ordemAux = [];
 var contador = 0; // contador usando no minigame 1
@@ -373,11 +374,13 @@ Level.prototype.rodar = function(){
               textFont(fonte, 18);
               text('Infelizmente não foi dessa vez que você conseguiu deixar', xGame/2 - 200, 100);
               text('descendente.', xGame/2 - 200, 125);
+              minig1Terminado = true;
               perdeu = true;
               break;
             }
           }
           if (!perdeu){
+            minig1Terminado = true;
             stroke(0);
             fill(255);
             textFont(fonte, 18);
@@ -920,11 +923,13 @@ Level.prototype.keyPressed = function() {
   if (!esperando){
     // minigame 1 ativo
     if (minig1){
-      if (keyCode === UP_ARROW || keyCode === DOWN_ARROW || keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW){
-        ultimoPressionado = keyCode;
-        ordem.push(keyCode);
-        contador += 1;
-        esperandoClique = true;
+      if (!minig1Terminado){
+        if (keyCode === UP_ARROW || keyCode === DOWN_ARROW || keyCode === LEFT_ARROW || keyCode === RIGHT_ARROW){
+          ultimoPressionado = keyCode;
+          ordem.push(keyCode);
+          contador += 1;
+          esperandoClique = true;
+        }
       }
     }
     // minigame 3 ativo
