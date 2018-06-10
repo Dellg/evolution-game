@@ -32,6 +32,14 @@ var aparenciaFutura;
 var tempoTexto = 0;
 var indexTexto = 0;
 var flagTexto = false;
+// estatísticas para mostrar no final do jogo
+var l1m1 = false; // minigame1 level1
+var l1m2 = false; // minigame2 level1
+var l1m3 = false; // minigame3 level1
+var l2 = false; // escolheu característica
+var l3 = 0; // sobreviventes level3
+var l4m1 = false; // minigame1 level4
+var pontoNota = 0.0;
 
 //______________________________________________________________________________
 // carregando imagens no projeto
@@ -394,6 +402,9 @@ function setup(){
   // iniciar um jogo apenas com as criaturas pré-definidas do level
   //______________________________________________________________________________
   function passouMenuPrincipal() {
+    if (nomeJog.value() == ''){
+      return false;
+    }
     nomeJogador = nomeJog.value();
     nomeJog.remove();
     botaoIniciar.remove();
@@ -678,6 +689,9 @@ function draw(){
       text('Equipe de desenvolvimento:', 25, 35);
       text('- Wendell Gomes Silva', 40, 55);
       text('- Jessica Ferreira da Silva', 40, 75);
+      if (nomeJog.value() == ''){
+        text('Nome obrigatório!', 270, yGame - 200);
+      }
     } else if (menu == -0.5){
       tempoImagem += 0.1;
       fill(255);
@@ -946,19 +960,65 @@ function draw(){
         case 10:
           image(zeramentoImagens[6], 0, 0);
           textFont(fonte, 60);
-          text('Fim', xGame/2, 120);
-          textFont(fonte, 18);
-          text('Equipe de desenvolvimento:', xGame - 320, yGame - 80);
-          text('- Wendell Gomes Silva', xGame - 305, yGame - 60);
+          text('Fim', xGame/2 - 200, 120);
+          textFont(fonte, 15);
+          text('Equipe de desenvolvimento:', xGame - 320, yGame - 74);
+          text('- Wendell Gomes Silva', xGame - 305, yGame - 57);
           text('- Jessica Ferreira da Silva', xGame - 305, yGame - 40);
-          text('Jogador: ' + nomeJogador, xGame/2, 200);
-          text('Espécie: ' + criatura[0][0], xGame/2, 220);
-          text('Pontos de Modificação: ' + pontuacao, xGame/2, 240);
-          text('Tempo de Jogo: ' + int(tempoJogo), xGame/2, 260);
-          text('Características adquiriras pela espécie:', xGame/2, 280);
-          for (var i = 1; i < criatura[0].length; i++){
-            text('-' + criatura[0][i], xGame/2 + 20, 280 + (20 * i));
+          text('Jogador: ' + nomeJogador, xGame/2, 50);
+          text('Espécie: ' + criatura[0][0], xGame/2, 67);
+          text('Pontos de Modificação: ' + pontuacao, xGame/2, 84);
+          text('Tempo de Jogo: ' + int(tempoJogo), xGame/2, 101);
+          text('Status dos Níveis:', xGame/2, 118);
+          text('Capítulo 1:', xGame/2 + 30, 135);
+          if (l1m1){
+            text('MiniGame Acasalamento: Acertou', xGame/2 + 45, 152);
+            pontoNota += 0.5;
+          } else {
+            text('MiniGame Acasalamento: Errou', xGame/2 + 45, 152);
           }
+          if (l1m2){
+            text('MiniGame Combate: Jogou', xGame/2 + 45, 169);
+            pontoNota += 0.25;
+          } else {
+            text('MiniGame Combate: Não Jogou', xGame/2 + 45, 169);
+          }
+          if (l1m3){
+            text('MiniGame Casualidade: Jogou', xGame/2 + 45, 186);
+            pontoNota += 0.25;
+          } else {
+            text('MiniGame Casualidade: Não Jogou', xGame/2 + 45, 186);
+          }
+          text('Capítulo 2:', xGame/2 + 30, 203);
+          if (l2){
+            text('Escolha de nova característica: Concluído', xGame/2 + 45, 220);
+            pontoNota += 1;
+          } else {
+            text('Escolha de nova característica: Incompleto', xGame/2 + 45, 220);
+          }
+          text('Capítulo 3:', xGame/2 + 30, 237);
+          text('Sobreviventes: ' + l3 + '/25', xGame/2 + 45, 254);
+          if (l3 >= 10){
+            pontoNota += 1;
+          } else {
+            pontoNota += 0.5;
+          }
+          text('Capítulo 4:', xGame/2 + 30, 271);
+          if (l4m1){
+            text('MiniGame Pontos: Jogou', xGame/2 + 45, 288);
+            pontoNota += 1;
+          } else {
+            text('MiniGame Pontos: Não Jogou', xGame/2 + 45, 288);
+            pontoNota += 0.5;
+          }
+          text('Capítulo 5:', xGame/2 + 30, 305);
+          text('MiniGame Quebra-Cabeça: Jogou', xGame/2 + 45, 322);
+          pontoNota += 1;
+          text('Características adquiriras pela espécie:', xGame/2, 339);
+          for (var i = 1; i < criatura[0].length; i++){
+            text('-' + criatura[0][i], xGame/2 + 20, 339 + (17 * i));
+          }
+          text('Pontuação total: ' + pontoNota, xGame/2, 339);
           break;
       }
       if (tempoImagem >= 30 && imagemAtual != 10){

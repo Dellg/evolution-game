@@ -226,6 +226,7 @@ Level4.prototype.rodar = function(){
 
   } else {
     if (miniGameOn){
+      l4m1 = true;
       if (esperandoClique){
         if (tempoTexto >= 30){
           if (frameHistoria >= 0 && frameHistoria < 10 || frameHistoria >= 20 && frameHistoria < 30){

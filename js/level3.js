@@ -79,6 +79,7 @@ Level3.prototype.iniciaGeracao = function(){
 
   // redesenha a tela com a nova geração
   if (jaIniciou){
+    l3 = 0;
     tempoJogo = 200;
     levelnum = 4;
   } else {
@@ -96,6 +97,7 @@ Level3.prototype.rodar = function(){
   image(levelImagens[1], aleatorioX, aleatorioY);
   fill(255);
   if (tempoJogo >= 200){
+    l3 = criaturas.length;
     criaturasSalvas = tipoCriaturas;
     musicas[5].stop();
     musicas[6].loop();

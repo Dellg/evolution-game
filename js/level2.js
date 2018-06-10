@@ -21,6 +21,9 @@ function Level2(criaturasAnteriores){
   flagTexto = false;
   minigame = -1;
   countAlimentos = 20;
+  if (criatura[0][0].length == 5){
+    l2 = true;
+  }
   alimentosPlanta = [];
   alimentosInseto = [];
   alimentosVeneno = [];

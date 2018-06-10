@@ -386,11 +386,13 @@ Level.prototype.rodar = function(){
             textFont(fonte, 18);
             text('Parabéns! Você atraiu parceiros e deixou descendentes,', xGame/2 - 200, 100);
             text('gerando maior riqueza genética na sua espécie.', xGame/2 - 200, 125);
+            l1m1 = true;
           }
         }
       }
 
     } else if (minigame == 2){ // minigame arena
+      l1m2 = true;
       if (minigameEsperando){
         if (tempoTexto >= 30){
           if (frameHistoria >= 0 && frameHistoria < 10 || frameHistoria >= 20 && frameHistoria < 30){
@@ -490,8 +492,8 @@ Level.prototype.rodar = function(){
       }
 
     } else if (minigame == 3){ // roleta sorte
+      l1m3 = true;
       if (minigameEsperando){
-
         if (tempoTexto >= 30){
           if (frameHistoria >= 0 && frameHistoria < 10 || frameHistoria >= 20 && frameHistoria < 30){
             imgm = humanoImagem[2].get(0, 0, 32, 32);
