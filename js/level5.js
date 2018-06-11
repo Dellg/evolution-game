@@ -443,46 +443,48 @@ Level5.prototype.rodar = function(){
 //______________________________________________________________________________
 Level5.prototype.keyPressed = function() {
   if (pedacos == 8){
-    if (keyCode === UP_ARROW){
-      if (indexVazio >= 3 && indexVazio <= 8){
-        var aux = matriz[indexVazio];
-        matriz[indexVazio] = matriz[indexVazio - 3];
-        matriz[indexVazio - 3] = aux;
-        indexVazio -= 3;
+    if (!flagMontou){
+      if (keyCode === UP_ARROW){
+        if (indexVazio >= 3 && indexVazio <= 8){
+          var aux = matriz[indexVazio];
+          matriz[indexVazio] = matriz[indexVazio - 3];
+          matriz[indexVazio - 3] = aux;
+          indexVazio -= 3;
+        }
+      } else if (keyCode === DOWN_ARROW){
+        if (indexVazio >= 0 && indexVazio <= 5){
+          var aux = matriz[indexVazio];
+          matriz[indexVazio] = matriz[indexVazio + 3];
+          matriz[indexVazio + 3] = aux;
+          indexVazio += 3;
+        }
+      } else if (keyCode === LEFT_ARROW){
+        if (indexVazio != 0 && indexVazio != 3 && indexVazio != 6){
+          var aux = matriz[indexVazio];
+          matriz[indexVazio] = matriz[indexVazio - 1];
+          matriz[indexVazio - 1] = aux;
+          indexVazio -= 1;
+        }
+      } else if (keyCode === RIGHT_ARROW){
+        if (indexVazio != 2 && indexVazio != 5 && indexVazio != 8){
+          var aux = matriz[indexVazio];
+          matriz[indexVazio] = matriz[indexVazio + 1];
+          matriz[indexVazio + 1] = aux;
+          indexVazio += 1;
+        }
       }
-    } else if (keyCode === DOWN_ARROW){
-      if (indexVazio >= 0 && indexVazio <= 5){
-        var aux = matriz[indexVazio];
-        matriz[indexVazio] = matriz[indexVazio + 3];
-        matriz[indexVazio + 3] = aux;
-        indexVazio += 3;
+      // após o movimento da peça, verifica se a imagem está montada
+      for (var i = 0; i < matriz.length; i++){
+        if (matriz[i].name == i+1){
+          quantiaCerta += 1;
+        }
       }
-    } else if (keyCode === LEFT_ARROW){
-      if (indexVazio != 0 && indexVazio != 3 && indexVazio != 6){
-        var aux = matriz[indexVazio];
-        matriz[indexVazio] = matriz[indexVazio - 1];
-        matriz[indexVazio - 1] = aux;
-        indexVazio -= 1;
+      if (quantiaCerta == 9){
+        flagMontou = true;
+        return;
       }
-    } else if (keyCode === RIGHT_ARROW){
-      if (indexVazio != 2 && indexVazio != 5 && indexVazio != 8){
-        var aux = matriz[indexVazio];
-        matriz[indexVazio] = matriz[indexVazio + 1];
-        matriz[indexVazio + 1] = aux;
-        indexVazio += 1;
-      }
+      quantiaCerta = 0;
     }
-    // após o movimento da peça, verifica se a imagem está montada
-    for (var i = 0; i < matriz.length; i++){
-      if (matriz[i].name == i+1){
-        quantiaCerta += 1;
-      }
-    }
-    if (quantiaCerta == 9){
-      flagMontou = true;
-      return;
-    }
-    quantiaCerta = 0;
   }
 }
 
