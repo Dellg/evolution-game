@@ -1054,7 +1054,7 @@ function draw(){
           for (var i = 1; i < criatura[0].length; i++){
             text('-' + criatura[0][i], xGame/2 + 20, 339 + (17 * i));
           }
-          text('Pontuação total: ' + pontoNota, xGame/2, 402);
+          text('Pontuação total: ' + pontoNota + '/5', xGame/2, 450);
           if (!foto){
             saveCanvas('estatísticas', 'png');
             foto = true;
