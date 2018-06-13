@@ -71,6 +71,8 @@ function carregaArquivo(vetor, tipo, id, arquivo){
         volumeSlider.show();
         nomeJog.show();
         botaoIniciar.show();
+        btEmailW.show();
+        btEmailJ.show();
         musicas[0].loop();
         carregando = false;
       }
@@ -85,6 +87,8 @@ function carregaArquivo(vetor, tipo, id, arquivo){
         volumeSlider.show();
         nomeJog.show();
         botaoIniciar.show();
+        btEmailW.show();
+        btEmailJ.show();
         musicas[0].loop();
         carregando = false;
       }
@@ -138,6 +142,21 @@ function setup(){
       }
     }
   }
+
+  // botões para entrar em contato com os desenvolvedores
+  btEmailW = createButton('');
+  btEmailW.class('botaoUpgrade');
+  btEmailW.position(43,47);
+  btEmailW.size(240,20);
+  btEmailW.mousePressed(function t(){ enviarEmail('wendell.uepb@gmail.com');});
+  btEmailW.hide();
+
+  btEmailJ = createButton('');
+  btEmailJ.class('botaoUpgrade');
+  btEmailJ.position(43,67);
+  btEmailJ.size(280,20);
+  btEmailJ.mousePressed(function t(){ enviarEmail('fjes.ks@gmail.com');});
+  btEmailJ.hide();
 
   // informações do menu principal
   nomeJog = createInput();
@@ -366,6 +385,13 @@ function setup(){
   botaoConfirmar.hide();
 
   //______________________________________________________________________________
+  // função que envia um email para um dos desenvolvedores
+  //______________________________________________________________________________
+  function enviarEmail(dev){
+    window.location.href='mailto:' + dev + '?subject=' + encodeURIComponent('Vida em Geb: contato');
+  }
+
+  //______________________________________________________________________________
   // função que redireciona o jogador para o link do canal do Adrian von Ziegler (músico)
   //______________________________________________________________________________
   function redireciona() {
@@ -417,6 +443,8 @@ function setup(){
     nomeJogador = nomeJog.value();
     nomeJog.remove();
     botaoIniciar.remove();
+    btEmailW.hide();
+    btEmailJ.hide();
     tipo = 0;
     musicas[0].stop();
     musicas[1].loop();
@@ -970,10 +998,19 @@ function draw(){
           image(zeramentoImagens[6], 0, 0);
           textFont(fonte, 60);
           text('Fim', xGame/2 - 200, 120);
+          textFont(fonte, 20);
+          text('Equipe de desenvolvimento:', xGame - 350, yGame - 100);
+          text('- Wendell Gomes Silva', xGame - 335, yGame - 70);
+          text('- Jessica Ferreira da Silva', xGame - 335, yGame - 40);
+          btEmailW.show();
+          btEmailW.position(xGame - 335, yGame - 85);
+          btEmailW.size(280, 30);
+          btEmailJ.show();
+          btEmailJ.position(xGame - 335, yGame - 55);
+          btEmailJ.size(320, 30);
+          textFont(fonte, 10);
+          text('Clique para entrar em contato com a gente.', xGame - 335, yGame - 15);
           textFont(fonte, 15);
-          text('Equipe de desenvolvimento:', xGame - 320, yGame - 74);
-          text('- Wendell Gomes Silva', xGame - 305, yGame - 57);
-          text('- Jessica Ferreira da Silva', xGame - 305, yGame - 40);
           text('Jogador: ' + nomeJogador, xGame/2, 50);
           text('Espécie: ' + criatura[0][0], xGame/2, 67);
           text('Pontos de Modificação: ' + pontuacao, xGame/2, 84);
