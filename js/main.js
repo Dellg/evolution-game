@@ -473,6 +473,7 @@ function setup(){
             criaturasSalvas[0][6] = imagens[5];
           }
           pontuacao -= 200;
+          l2 = true;
         } else {
           return false;
         }
@@ -488,6 +489,7 @@ function setup(){
             criaturasSalvas[0][6] = imagens[8];
           }
           pontuacao -= 200;
+          l2 = true;
         } else {
           return false;
         }
@@ -503,6 +505,7 @@ function setup(){
             criaturasSalvas[0][6] = imagens[7];
           }
           pontuacao -= 200;
+          l2 = true;
         } else {
           return false;
         }
@@ -520,6 +523,7 @@ function setup(){
             criaturasSalvas[0][6] = imagens[11];
           }
           pontuacao -= 150;
+          l2 = true;
         } else {
           return false;
         }
@@ -537,6 +541,7 @@ function setup(){
             criaturasSalvas[0][6] = imagens[14];
           }
           pontuacao -= 250;
+          l2 = true;
         } else {
           return false;
         }
@@ -554,6 +559,7 @@ function setup(){
             criaturasSalvas[0][6] = imagens[17];
           }
           pontuacao -= 200;
+          l2 = true;
         } else {
           return false;
         }
@@ -571,6 +577,7 @@ function setup(){
             criaturasSalvas[0][6] = imagens[20];
           }
           pontuacao -= 250;
+          l2 = true;
         } else {
           return false;
         }
@@ -588,6 +595,7 @@ function setup(){
             criaturasSalvas[0][6] = imagens[23];
           }
           pontuacao -= 100;
+          l2 = true;
         } else {
           return false;
         }
