@@ -41,6 +41,7 @@ var l3 = 0; // sobreviventes level3
 var l4m1 = false; // minigame1 level4
 var pontoNota = 0.0;
 var foto = false;
+var velocidadeJogo = 0.035;
 // auxiliadores da nota
 var nota1contou = false;
 var nota2contou = false;

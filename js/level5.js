@@ -353,7 +353,7 @@ Level5.prototype.rodar = function(){
       }
 
     } else {
-      tempoJogo += 0.05;
+      tempoJogo += velocidadeJogo;
       // verifica se não há criaturas vivas para poder iniciar a geração
       if (criaturas.length <= 0){
         geracao += 1;

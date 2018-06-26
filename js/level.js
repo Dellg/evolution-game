@@ -708,13 +708,14 @@ Level.prototype.rodar = function(){
           stroke(0);
           fill(255);
           textFont(fonte, 18);
-          text('A aventura de ' + criatura[0][0] + ' é seguir o curso natural da evolução.', xGame/2 - 200, 100);
-          text('Boa sorte!', xGame/2 - 200, 125);
+          text('A aventura de ' + criatura[0][0] + ' é seguir o curso natural', xGame/2 - 200, 100);
+          text('da evolução.', xGame/2 - 200, 125);
+          text('Boa sorte!', xGame/2 - 200, 150);
           break;
       }
 
     } else {
-      tempoJogo += 0.05;
+      tempoJogo += velocidadeJogo;
       // verifica se não há criaturas vivas para poder iniciar a geração
       if (criaturas.length <= 0){
         geracao += 1;

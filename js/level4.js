@@ -355,11 +355,12 @@ Level4.prototype.rodar = function(){
             stroke(0);
             fill(255);
             textFont(fonte, 18);
-            text('Alguns indivíduos de ' + criatura[0][0] + ' ficaram separados pelo rio, esses', xGame/2 - 200, 100);
-            text('você não terá mais controle! Eles irão evoluir independentemente', xGame/2 - 200, 125);
-            text('do outro lado do rio e irão adquirir caraterísticas diferentes', xGame/2 - 200, 150);
-            text('das suas, até que em algum momento serão uma espécie diferente.', xGame/2 - 200, 175);
-            text('Esse processo é a especiação.', xGame/2 - 200, 200);
+            text('Alguns indivíduos de ' + criatura[0][0] + ' ficaram separados', xGame/2 - 200, 100);
+            text('pelo rio, esses você não terá mais controle! Eles irão evoluir', xGame/2 - 200, 125);
+            text('independentemente do outro lado do rio e irão adquirir caraterísticas', xGame/2 - 200, 150);
+            text('diferentes das suas, até que em algum momento serão uma espécie', xGame/2 - 200, 175);
+            text('diferente.', xGame/2 - 200, 200);
+            text('Esse processo é a especiação.', xGame/2 - 200, 225);
             break;
           case 5:
             stroke(0);
@@ -372,7 +373,7 @@ Level4.prototype.rodar = function(){
         }
 
       } else {
-        tempoJogo += 0.05;
+        tempoJogo += velocidadeJogo;
         // verifica se não há criaturas vivas para poder iniciar a geração
         if (criaturas.length <= 0){
           geracao += 1;

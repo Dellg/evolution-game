@@ -173,7 +173,7 @@ Level3.prototype.rodar = function(){
 
     } else {
       text("Salve o máximo de criaturas da sua espécie desviando dos obstáculos!", xGame/2 - 140, 30);
-      tempoJogo += 0.05;
+      tempoJogo += velocidadeJogo;
       // verifica se não há criaturas vivas para poder iniciar a geração
       if (criaturas.length <= 0){
         geracao += 1;
