@@ -741,7 +741,7 @@ function draw(){
     } else if (menu == -0.5){
       tempoImagem += 0.1;
       fill(255);
-      strokeWeight(3);
+      strokeWeight(5);
       stroke(0);
       textFont(fonte, 24);
       textStyle(BOLD);
@@ -817,10 +817,10 @@ function draw(){
       if (tempoImagem >= 30){
         if (frameHistoria >= 0 && frameHistoria < 10 || frameHistoria >= 20 && frameHistoria < 30){
           imgm = humanoImagem[2].get(0, 0, 32, 32);
-          image(imgm, 40, 40);
+          image(imgm, mouseX - 30, mouseY - 30);//40, 40);
         } else {
           imgm = humanoImagem[2].get(32, 0, 32, 32);
-          image(imgm, 40, 40);
+          image(imgm, mouseX - 30, mouseY - 30);//40, 40);
         }
         frameHistoria += 0.4;
         if (frameHistoria >= 40){
@@ -951,7 +951,7 @@ function draw(){
     } else if (menu == 2){ // fim do jogo
       tempoImagem += 0.1;
       fill(255);
-      strokeWeight(3);
+      strokeWeight(5);
       stroke(0);
       textFont(fonte, 24);
       textStyle(BOLD);
@@ -1110,10 +1110,10 @@ function draw(){
       if (tempoImagem >= 30 && imagemAtual != 10){
         if (frameHistoria >= 0 && frameHistoria < 10 || frameHistoria >= 20 && frameHistoria < 30){
           imgm = humanoImagem[2].get(0, 0, 32, 32);
-          image(imgm, 40, 40);
+          image(imgm, mouseX - 30, mouseY - 30);
         } else {
           imgm = humanoImagem[2].get(32, 0, 32, 32);
-          image(imgm, 40, 40);
+          image(imgm, mouseX - 30, mouseY - 30);
         }
         frameHistoria += 0.4;
         if (frameHistoria >= 40){
